@@ -1,3 +1,5 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/49jsxe0gwet1bddt/branch/master?svg=true)](https://ci.appveyor.com/project/pthutta/kentico-onboarding-cs/branch/master)
+
 # kentico-onboarding-cs
 
 #### Summary
