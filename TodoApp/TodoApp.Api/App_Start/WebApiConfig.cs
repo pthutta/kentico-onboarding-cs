@@ -23,12 +23,6 @@ namespace TodoApp.Api
             // Web API routes
             config.MapHttpAttributeRoutes(constraintResolver);
             config.AddApiVersioning();
-
-            config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "api/v{version:apiVersion}/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
-            );
         }
     }
 }

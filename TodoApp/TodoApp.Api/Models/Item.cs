@@ -10,6 +10,7 @@ namespace TodoApp.Api.Models
     {
         [Key]
         public string Id { get; set; }
+
         [MinLength(1, ErrorMessage = "Text length must be greater than 1.")]
         public string Text { get; set; }
     }
