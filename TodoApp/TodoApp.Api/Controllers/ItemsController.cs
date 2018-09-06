@@ -34,20 +34,18 @@ namespace TodoApp.Api.Controllers
             }
         };
 
-        // test for content/value, status code, 
-
-        // GET: api/v1/Items
+        // GET: api/v1/items
         [Route]
         public async Task<IEnumerable<Item>> GetAllItemsAsync()
             => await Task.FromResult(Items);
 
-        // GET: api/v1/Items/5
+        // GET: api/v1/items/5
         [Route("{id}")]
         public async Task<IHttpActionResult> GetItemByIdAsync(string id)
             => await Task.FromResult(Ok(Items.FirstOrDefault(i => i.Id == id)));
         
 
-        // POST: api/v1/Items
+        // POST: api/v1/items
         [Route("", Name = "PostNewItem")]
         public async Task<IHttpActionResult> PostItemAsync([FromBody]Item item)
         {
@@ -55,7 +53,7 @@ namespace TodoApp.Api.Controllers
             return await Task.FromResult(CreatedAtRoute("PostNewItem", new { id = item.Id }, item));
         }
 
-        // PUT: api/v1/Items/5
+        // PUT: api/v1/items/5
         [Route("{id}")]
         public async Task<IHttpActionResult> PutItemAsync(string id, [FromBody]Item value)
         {
@@ -67,7 +65,7 @@ namespace TodoApp.Api.Controllers
             return await Task.FromResult(StatusCode(HttpStatusCode.NoContent));
         }
 
-        // DELETE: api/v1/Items/5
+        // DELETE: api/v1/items/5
         [Route("{id}")]
         public async Task<IHttpActionResult> DeleteItemAsync(string id)
         {
