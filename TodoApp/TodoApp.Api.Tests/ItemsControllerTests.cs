@@ -4,16 +4,18 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
+using NSubstitute;
 using NUnit.Framework;
 using TodoApp.Api.Controllers;
+using TodoApp.Api.Tests.Utils;
+using TodoApp.DAL.Entities;
+using TodoApp.DAL.Repositories;
 
 namespace TodoApp.Api.Tests
 {
     [TestFixture]
     public class ItemsControllerTests
     {
-        private ItemsController _itemsController;
-
         private static readonly Item[] Items =
         {
             new Item
@@ -38,20 +40,15 @@ namespace TodoApp.Api.Tests
             }
         };
 
-        [SetUp]
-        public void SetUp()
-        {
-            _itemsController = new ItemsController
-            {
-                Request = new HttpRequestMessage(),
-                Configuration = new HttpConfiguration()
-            };
-        }
-
         [Test]
         public async Task GetAllItemsAsync_ReturnsAllItems()
         {
-            var message = await ExecuteAsyncAction(() => _itemsController.GetAllItemsAsync());
+            var itemRepository = Substitute.For<IItemRepository>();
+            itemRepository.GetAllAsync().Returns(Items);
+
+            var itemsController = CreateController(itemRepository);
+
+            var message = await ExecuteAsyncAction(() => itemsController.GetAllItemsAsync());
             message.TryGetContentValue<Item[]>(out var items);
 
             Assert.Multiple(() =>
@@ -65,38 +62,50 @@ namespace TodoApp.Api.Tests
         public async Task GetItemByIdAsync_ReturnsOkWithRequiredItem()
         {
             var id = Items[0].Id.ToString();
+            var expected = Items[0];
+            var itemRepository = Substitute.For<IItemRepository>();
+            itemRepository.GetByIdAsync(id).Returns(expected);
 
-            var message = await ExecuteAsyncAction(() => _itemsController.GetItemByIdAsync(id));
+            var itemsController = CreateController(itemRepository);
+
+            var message = await ExecuteAsyncAction(() => itemsController.GetItemByIdAsync(id));
             message.TryGetContentValue<Item>(out var item);
 
             Assert.Multiple(() =>
             {
                 Assert.That(message.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-                Assert.That(item, Is.EqualTo(Items[0]).UsingItemComparer());
+                Assert.That(item, Is.EqualTo(expected).UsingItemComparer());
             });
         }
 
         [Test]
         public async Task PutItemAsync_ReturnsOkWithUpdatedItem()
         {
-            var updatedItem = Items[2];
+            var changedItem = Items[2];
 
-            var message = await ExecuteAsyncAction(() => _itemsController.PutItemAsync(updatedItem.Id.ToString(), updatedItem));
-            message.TryGetContentValue<Item>(out var item);
+            var itemRepository = Substitute.For<IItemRepository>();
+            itemRepository.UpdateAsync(changedItem).Returns(Task.CompletedTask);
 
-            Assert.Multiple(() =>
-            {
-                Assert.That(message.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-                Assert.That(item, Is.EqualTo(Items[2]).UsingItemComparer());
-            });
+            var itemsController = CreateController(itemRepository);
+
+            var message = await ExecuteAsyncAction(() => itemsController.PutItemAsync(changedItem.Id.ToString(), changedItem));
+
+            Assert.AreEqual(HttpStatusCode.NoContent, message.StatusCode);
         }
 
         [Test]
         public async Task DeleteItemAsync_ReturnsOkWithDeletedItem()
         {
             var id = Items[3].Id.ToString();
+            var expected = Items[3];
 
-            var message = await ExecuteAsyncAction(() => _itemsController.DeleteItemAsync(id));
+            var itemRepository = Substitute.For<IItemRepository>();
+            itemRepository.GetByIdAsync(id).Returns(expected);
+            itemRepository.DeleteAsync(expected).Returns(Task.CompletedTask);
+
+            var itemsController = CreateController(itemRepository);
+
+            var message = await ExecuteAsyncAction(() => itemsController.DeleteItemAsync(id));
             message.TryGetContentValue<Item>(out var item);
 
             Assert.Multiple(() =>
@@ -109,20 +118,25 @@ namespace TodoApp.Api.Tests
         [Test]
         public async Task PostItemAsync_ReturnsCreatedWithLinkToItem()
         {
-            _itemsController.Request = new HttpRequestMessage
+            var newItem = Items[1];
+
+            var itemRepository = Substitute.For<IItemRepository>();
+            itemRepository.CreateAsync(newItem).Returns(Task.CompletedTask);
+
+            var itemsController = CreateController(itemRepository); 
+            itemsController.Request = new HttpRequestMessage
             {
                 RequestUri = new Uri("http://localhost/api/test")
             };
-            _itemsController.Configuration.Routes.MapHttpRoute(
+
+            itemsController.Configuration.Routes.MapHttpRoute(
                 name: "PostNewItem",
                 routeTemplate: "api/{id}/test",
                 defaults: new { id = RouteParameter.Optional }
             );
 
-            var newItem = Items[1];
             var headerLocation = "http://localhost/api/" + newItem.Id + "/test";
-
-            var message = await ExecuteAsyncAction(() => _itemsController.PostItemAsync(newItem));
+            var message = await ExecuteAsyncAction(() => itemsController.PostItemAsync(newItem));
             message.TryGetContentValue<Item>(out var item);
 
             Assert.Multiple(() =>
@@ -138,5 +152,12 @@ namespace TodoApp.Api.Tests
             IHttpActionResult response = await httpAction();
             return await response.ExecuteAsync(CancellationToken.None);
         }
+
+        private static ItemsController CreateController(IItemRepository repository)
+            => new ItemsController(repository)
+            {
+                Request = new HttpRequestMessage(),
+                Configuration = new HttpConfiguration()
+            };
     }
 }
