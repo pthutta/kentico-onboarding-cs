@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.Web.Http;
-using TodoApp.Api.Models;
 
 namespace TodoApp.Api.Controllers
 {
