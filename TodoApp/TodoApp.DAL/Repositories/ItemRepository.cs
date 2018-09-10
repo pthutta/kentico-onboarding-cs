@@ -9,29 +9,48 @@ namespace TodoApp.DAL.Repositories
 {
     public class ItemRepository : IItemRepository
     {
-        public async Task<IEnumerable<Item>> GetAllAsync()
+        internal static readonly IList<Item> Items = new List<Item>
         {
-            throw new NotImplementedException();
-        }
+            new Item
+            {
+                Id = "1",
+                Text = "Learn react"
+            },
+            new Item
+            {
+                Id = "2",
+                Text = "Learn redux"
+            },
+            new Item
+            {
+                Id = "3",
+                Text = "Write Web API"
+            }
+        };
+
+        public async Task<IEnumerable<Item>> GetAllAsync()
+            => await Task.FromResult(Items);
 
         public async Task<Item> GetByIdAsync(string id)
-        {
-            throw new NotImplementedException();
-        }
+            => await Task.FromResult(Items.FirstOrDefault(i => i.Id == id));
 
         public async Task CreateAsync(Item item)
         {
-            throw new NotImplementedException();
+            Items.Add(item);
         }
 
         public async Task DeleteAsync(Item item)
         {
-            throw new NotImplementedException();
+            Items.Remove(item);
         }
 
         public async Task UpdateAsync(Item item)
         {
-            throw new NotImplementedException();
+            var updatedItem = Items.FirstOrDefault(i => i.Id == item.Id);
+            if (updatedItem != null)
+            {
+                updatedItem.Text = item.Text;
+            }
         }
     }
 }
