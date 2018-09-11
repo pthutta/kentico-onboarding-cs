@@ -15,7 +15,7 @@ namespace TodoApp.Api.Controllers
     [RoutePrefix("api/v{version:apiVersion}/items")]
     public class ItemsController : ApiController
     {
-        internal static readonly IList<Item> Items = new List<Item>
+        internal static readonly Item[] Items = 
         {
             new Item
             {
@@ -31,6 +31,11 @@ namespace TodoApp.Api.Controllers
             {
                 Id = "3",
                 Text = "Write Web API"
+            },
+            new Item
+            {
+                Id = "4",
+                Text = "Write dummier controller"
             }
         };
 
@@ -42,39 +47,22 @@ namespace TodoApp.Api.Controllers
         // GET: api/v1/items/5
         [Route("{id}")]
         public async Task<IHttpActionResult> GetItemByIdAsync(string id)
-            => await Task.FromResult(Ok(Items.FirstOrDefault(i => i.Id == id)));
+            => await Task.FromResult(Ok(Items[0]));
         
 
         // POST: api/v1/items
         [Route("", Name = "PostNewItem")]
         public async Task<IHttpActionResult> PostItemAsync([FromBody]Item item)
-        {
-            Items.Add(item);
-            return await Task.FromResult(CreatedAtRoute("PostNewItem", new { id = item.Id }, item));
-        }
+            => await Task.FromResult(CreatedAtRoute("PostNewItem", new { id = Items[1].Id }, Items[1]));
 
         // PUT: api/v1/items/5
         [Route("{id}")]
         public async Task<IHttpActionResult> PutItemAsync(string id, [FromBody]Item value)
-        {
-            var item = Items.FirstOrDefault(i => i.Id == id);
-            if (item != null)
-            {
-                item.Text = value.Text;
-            }
-            return await Task.FromResult(StatusCode(HttpStatusCode.NoContent));
-        }
+            => await Task.FromResult(Ok(Items[2]));
 
         // DELETE: api/v1/items/5
         [Route("{id}")]
         public async Task<IHttpActionResult> DeleteItemAsync(string id)
-        {
-            var item = Items.FirstOrDefault(i => i.Id == id);
-            if (item != null)
-            {
-                Items.Remove(item);
-            }
-            return await Task.FromResult(Ok(item));
-        }
+            => await Task.FromResult(Ok(Items[3]));
     }
 }
