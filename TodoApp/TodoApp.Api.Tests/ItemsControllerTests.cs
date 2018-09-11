@@ -34,18 +34,19 @@ namespace TodoApp.Api.Tests
         [Test]
         public async Task GetAllItemsAsync_ReturnsAllItems()
         {
-            var expected = ItemsController.Items;
+            var message = await ExecuteAsyncAction(async () => await _itemsController.GetAllItemsAsync());
 
-            var response = await _itemsController.GetAllItemsAsync();
-
-            Assert.That(response, Is.EquivalentTo(expected));
+            Assert.Multiple(() =>
+            {
+                Assert.That(message.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+                Assert.That(message.Content, Is.Not.Null);
+            });
         }
 
         [Test]
         public async Task GetItemByIdAsync_ReturnsOkWithRequiredItem()
         {
             const string id = "1";
-            var expected = ItemsController.Items[0];
 
             var message = await ExecuteAsyncAction(async () => await _itemsController.GetItemByIdAsync(id));
 
@@ -54,32 +55,35 @@ namespace TodoApp.Api.Tests
                 Assert.That(message.StatusCode, Is.EqualTo(HttpStatusCode.OK));
                 Assert.That(message.Content, Is.Not.Null);
                 Assert.That(message.TryGetContentValue<Item>(out var item), Is.Not.Null);
-                Assert.That(item.IsEqual(expected), Is.True);
+                Assert.That(item.Id, Is.EqualTo(id));
             });
         }
 
         [Test]
-        public async Task PutItemAsync_ReturnsNoContent()
+        public async Task PutItemAsync_ReturnsOkWithUpdatedItem()
         {
-            const string id = "1";
-            var expected = ItemsController.Items[2];
+            const string id = "3";
+            var updatedItem = new Item
+            {
+                Id = id,
+                Text = "Write tests"
+            };
 
-            var message = await ExecuteAsyncAction(async () => await _itemsController.PutItemAsync(id, expected));
+            var message = await ExecuteAsyncAction(async () => await _itemsController.PutItemAsync(id, updatedItem));
 
             Assert.Multiple(() =>
             {
                 Assert.That(message.StatusCode, Is.EqualTo(HttpStatusCode.OK));
                 Assert.That(message.Content, Is.Not.Null);
                 Assert.That(message.TryGetContentValue<Item>(out var item), Is.Not.Null);
-                Assert.That(item.IsEqual(expected), Is.True);
+                Assert.That(item.Id, Is.EqualTo(id));
             });
         }
 
         [Test]
         public async Task DeleteItemAsync_ReturnsOkWithDeletedItem()
         {
-            const string id = "3";
-            var expected = ItemsController.Items[3];
+            const string id = "4";
 
             var message = await ExecuteAsyncAction(async () => await _itemsController.DeleteItemAsync(id));
 
@@ -88,7 +92,7 @@ namespace TodoApp.Api.Tests
                 Assert.That(message.StatusCode, Is.EqualTo(HttpStatusCode.OK));
                 Assert.That(message.Content, Is.Not.Null);
                 Assert.That(message.TryGetContentValue<Item>(out var item), Is.Not.Null);
-                Assert.That(item.IsEqual(expected), Is.True);
+                Assert.That(item.Id, Is.EqualTo(id));
             });
         }
 
@@ -105,7 +109,11 @@ namespace TodoApp.Api.Tests
                 defaults: new { id = RouteParameter.Optional }
             );
 
-            var newItem = ItemsController.Items[1];
+            var newItem = new Item
+            {
+                Id = "2",
+                Text = "Write tests"
+            };
 
             var message = await ExecuteAsyncAction(async () => await _itemsController.PostItemAsync(newItem));
 
@@ -115,7 +123,7 @@ namespace TodoApp.Api.Tests
                 Assert.That(message.Headers.Location.AbsoluteUri, Is.EqualTo("http://localhost/api/test/2"));
                 Assert.That(message.Content, Is.Not.Null);
                 Assert.That(message.TryGetContentValue<Item>(out var item), Is.Not.Null);
-                Assert.That(item.IsEqual(newItem), Is.True);
+                Assert.That(item.Id, Is.EqualTo(newItem.Id));
             });
         }
 
