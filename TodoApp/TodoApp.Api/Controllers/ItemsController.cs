@@ -15,7 +15,7 @@ namespace TodoApp.Api.Controllers
     [RoutePrefix("api/v{version:apiVersion}/items")]
     public class ItemsController : ApiController
     {
-        internal static readonly Item[] Items = 
+        private static readonly Item[] Items = 
         {
             new Item
             {
@@ -41,8 +41,8 @@ namespace TodoApp.Api.Controllers
 
         // GET: api/v1/items
         [Route]
-        public async Task<IEnumerable<Item>> GetAllItemsAsync()
-            => await Task.FromResult(Items);
+        public async Task<IHttpActionResult> GetAllItemsAsync()
+            => await Task.FromResult(Ok(Items));
 
         // GET: api/v1/items/5
         [Route("{id}")]
