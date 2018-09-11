@@ -26,13 +26,6 @@ namespace TodoApp.Api
             // Web API routes
             config.MapHttpAttributeRoutes(constraintResolver);
             config.AddApiVersioning();
-            
-            // Configure Json Formatter
-            JsonMediaTypeFormatter jsonFormatter = config.Formatters.JsonFormatter;
-            jsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
-            jsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/x-www-form-urlencoded"));
-            jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-            jsonFormatter.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
         }
     }
 }
