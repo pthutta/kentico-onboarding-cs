@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Http.Description;
 using Microsoft.Web.Http;
 using TodoApp.Api.Models;
 
@@ -19,22 +14,22 @@ namespace TodoApp.Api.Controllers
         {
             new Item
             {
-                Id = "1",
+                Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
                 Text = "Learn react"
             },
             new Item
             {
-                Id = "2",
+                Id = Guid.Parse("00000000-0000-0000-0000-000000000002"),
                 Text = "Learn redux"
             },
             new Item
             {
-                Id = "3",
+                Id = Guid.Parse("00000000-0000-0000-0000-000000000003"),
                 Text = "Write Web API"
             },
             new Item
             {
-                Id = "4",
+                Id = Guid.Parse("00000000-0000-0000-0000-000000000004"),
                 Text = "Write dummier controller"
             }
         };
