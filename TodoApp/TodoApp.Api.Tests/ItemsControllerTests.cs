@@ -43,12 +43,13 @@ namespace TodoApp.Api.Tests
             const string id = "1";
 
             var message = await ExecuteAsyncAction(async () => await _itemsController.GetItemByIdAsync(id));
+            var tryGetContentValue = message.TryGetContentValue<Item>(out var item);
 
             Assert.Multiple(() =>
             {
                 Assert.That(message.StatusCode, Is.EqualTo(HttpStatusCode.OK));
                 Assert.That(message.Content, Is.Not.Null);
-                Assert.That(message.TryGetContentValue<Item>(out var item), Is.Not.Null);
+                Assert.That(tryGetContentValue, Is.True);
                 Assert.That(item.Id, Is.EqualTo(id));
             });
         }
@@ -64,12 +65,13 @@ namespace TodoApp.Api.Tests
             };
 
             var message = await ExecuteAsyncAction(async () => await _itemsController.PutItemAsync(id, updatedItem));
+            var tryGetContentValue = message.TryGetContentValue<Item>(out var item);
 
             Assert.Multiple(() =>
             {
                 Assert.That(message.StatusCode, Is.EqualTo(HttpStatusCode.OK));
                 Assert.That(message.Content, Is.Not.Null);
-                Assert.That(message.TryGetContentValue<Item>(out var item), Is.Not.Null);
+                Assert.That(tryGetContentValue, Is.True);
                 Assert.That(item.Id, Is.EqualTo(id));
             });
         }
@@ -80,12 +82,13 @@ namespace TodoApp.Api.Tests
             const string id = "4";
 
             var message = await ExecuteAsyncAction(async () => await _itemsController.DeleteItemAsync(id));
+            var tryGetContentValue = message.TryGetContentValue<Item>(out var item);
 
             Assert.Multiple(() =>
             {
                 Assert.That(message.StatusCode, Is.EqualTo(HttpStatusCode.OK));
                 Assert.That(message.Content, Is.Not.Null);
-                Assert.That(message.TryGetContentValue<Item>(out var item), Is.Not.Null);
+                Assert.That(tryGetContentValue, Is.True);
                 Assert.That(item.Id, Is.EqualTo(id));
             });
         }
@@ -110,13 +113,14 @@ namespace TodoApp.Api.Tests
             };
 
             var message = await ExecuteAsyncAction(async () => await _itemsController.PostItemAsync(newItem));
+            var tryGetContentValue = message.TryGetContentValue<Item>(out var item);
 
             Assert.Multiple(() =>
             {
                 Assert.That(message.StatusCode, Is.EqualTo(HttpStatusCode.Created));
                 Assert.That(message.Headers.Location.AbsoluteUri, Is.EqualTo("http://localhost/api/test/2"));
                 Assert.That(message.Content, Is.Not.Null);
-                Assert.That(message.TryGetContentValue<Item>(out var item), Is.Not.Null);
+                Assert.That(tryGetContentValue, Is.True);
                 Assert.That(item.Id, Is.EqualTo(newItem.Id));
             });
         }
