@@ -1,4 +1,4 @@
-﻿using TodoApp.Api.Models;
+﻿using TodoApp.Contracts.Models;
 
 namespace TodoApp.Api.Tests.Utils
 {

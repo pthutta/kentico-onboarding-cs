@@ -11,22 +11,27 @@ namespace TodoApp.DAL.Repositories
 {
     public class ItemRepository : IItemRepository
     {
-        internal static readonly IList<Item> Items = new List<Item>
+        private static readonly Item[] Items =
         {
             new Item
             {
-                Id = "1",
+                Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
                 Text = "Learn react"
             },
             new Item
             {
-                Id = "2",
+                Id = Guid.Parse("00000000-0000-0000-0000-000000000002"),
                 Text = "Learn redux"
             },
             new Item
             {
-                Id = "3",
+                Id = Guid.Parse("00000000-0000-0000-0000-000000000003"),
                 Text = "Write Web API"
+            },
+            new Item
+            {
+                Id = Guid.Parse("00000000-0000-0000-0000-000000000004"),
+                Text = "Write dummier controller"
             }
         };
 
@@ -34,25 +39,21 @@ namespace TodoApp.DAL.Repositories
             => await Task.FromResult(Items);
 
         public async Task<Item> GetByIdAsync(string id)
-            => await Task.FromResult(Items.FirstOrDefault(i => i.Id == id));
+            => await Task.FromResult(Items[0]);
 
         public async Task CreateAsync(Item item)
         {
-            Items.Add(item);
+            await Task.CompletedTask;
         }
 
         public async Task DeleteAsync(Item item)
         {
-            Items.Remove(item);
+            await Task.CompletedTask;
         }
 
         public async Task UpdateAsync(Item item)
         {
-            var updatedItem = Items.FirstOrDefault(i => i.Id == item.Id);
-            if (updatedItem != null)
-            {
-                updatedItem.Text = item.Text;
-            }
+            await Task.CompletedTask;
         }
     }
 }
