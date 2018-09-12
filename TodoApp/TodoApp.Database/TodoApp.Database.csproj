@@ -62,9 +62,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\Item.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\IItemRepository.cs" />
     <Compile Include="Repositories\ItemRepository.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -81,6 +79,12 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TodoApp.Contracts\TodoApp.Contracts.csproj">
+      <Project>{FDAB04B3-56AB-430D-B4B2-3B0B81536F5E}</Project>
+      <Name>TodoApp.Contracts</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -136,9 +136,13 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TodoApp.DAL\TodoApp.DAL.csproj">
+    <ProjectReference Include="..\TodoApp.Contracts\TodoApp.Contracts.csproj">
+      <Project>{FDAB04B3-56AB-430D-B4B2-3B0B81536F5E}</Project>
+      <Name>TodoApp.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TodoApp.Database\TodoApp.Database.csproj">
       <Project>{E8120002-790C-4E80-9146-006746B4F922}</Project>
-      <Name>TodoApp.DAL</Name>
+      <Name>TodoApp.Database</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

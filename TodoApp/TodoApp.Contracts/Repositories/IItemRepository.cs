@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using TodoApp.DAL.Entities;
+using TodoApp.Contracts.Models;
 
-namespace TodoApp.DAL.Repositories
+namespace TodoApp.Contracts.Repositories
 {
     public interface IItemRepository
     {

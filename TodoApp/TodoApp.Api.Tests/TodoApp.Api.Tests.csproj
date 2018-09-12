@@ -92,9 +92,9 @@
       <Project>{C94FBFBA-B38B-4F39-BEF5-2A79BEBBCD13}</Project>
       <Name>TodoApp.Api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TodoApp.DAL\TodoApp.DAL.csproj">
-      <Project>{E8120002-790C-4E80-9146-006746B4F922}</Project>
-      <Name>TodoApp.DAL</Name>
+    <ProjectReference Include="..\TodoApp.Contracts\TodoApp.Contracts.csproj">
+      <Project>{FDAB04B3-56AB-430D-B4B2-3B0B81536F5E}</Project>
+      <Name>TodoApp.Contracts</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

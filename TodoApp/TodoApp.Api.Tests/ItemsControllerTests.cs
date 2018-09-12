@@ -8,8 +8,8 @@ using NSubstitute;
 using NUnit.Framework;
 using TodoApp.Api.Controllers;
 using TodoApp.Api.Tests.Utils;
-using TodoApp.DAL.Entities;
-using TodoApp.DAL.Repositories;
+using TodoApp.Contracts.Models;
+using TodoApp.Contracts.Repositories;
 
 namespace TodoApp.Api.Tests
 {

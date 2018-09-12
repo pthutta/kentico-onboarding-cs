@@ -3,8 +3,8 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.Web.Http;
-using TodoApp.DAL.Entities;
-using TodoApp.DAL.Repositories;
+using TodoApp.Contracts.Models;
+using TodoApp.Contracts.Repositories;
 
 namespace TodoApp.Api.Controllers
 {

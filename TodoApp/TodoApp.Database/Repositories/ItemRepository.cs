@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TodoApp.DAL.Entities;
+using TodoApp.Contracts;
+using TodoApp.Contracts.Models;
+using TodoApp.Contracts.Repositories;
 
 namespace TodoApp.DAL.Repositories
 {
