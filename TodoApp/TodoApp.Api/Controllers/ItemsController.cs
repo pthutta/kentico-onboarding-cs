@@ -2,8 +2,10 @@
 using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.Web.Http;
+using TodoApp.Api.Services;
 using TodoApp.Contracts.Models;
 using TodoApp.Contracts.Repositories;
+using TodoApp.Contracts.Services;
 
 namespace TodoApp.Api.Controllers
 {
@@ -12,10 +14,12 @@ namespace TodoApp.Api.Controllers
     public class ItemsController : ApiController
     {
         private readonly IItemRepository _repository;
+        private readonly IUrlService _urlService;
 
-        public ItemsController(IItemRepository repository)
+        public ItemsController(IItemRepository repository, IUrlService urlService)
         {
             _repository = repository;
+            _urlService = urlService;
         }
 
         // GET: api/v1/items
@@ -30,11 +34,12 @@ namespace TodoApp.Api.Controllers
         
 
         // POST: api/v1/items
-        [Route("", Name = "PostNewItem")]
+        [Route("", Name = UrlService.NewItemRouteName)]
         public async Task<IHttpActionResult> PostItemAsync([FromBody]Item item)
         {
             await _repository.CreateAsync(item);
-            return CreatedAtRoute("PostNewItem", new { id = item.Id }, item);
+            var url = _urlService.GetItemUrl(item.Id);
+            return Created(url, item);
         }
 
         // PUT: api/v1/items/5
