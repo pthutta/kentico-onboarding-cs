@@ -16,6 +16,6 @@ namespace TodoApp.Api.Services
         }
 
         public string GetItemUrl(Guid id)
-            => _urlHelper.Route(NewItemRouteName, new { id });
+            => _urlHelper.Link(NewItemRouteName, new { id });
     }
 }

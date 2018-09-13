@@ -80,6 +80,7 @@
     <Compile Include="Extensions\EqualConstraintExtensions.cs" />
     <Compile Include="Extensions\ItemComparer.cs" />
     <Compile Include="Extensions\ItemExtensions.cs" />
+    <Compile Include="UrlServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
