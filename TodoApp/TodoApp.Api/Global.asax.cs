@@ -8,6 +8,7 @@ namespace TodoApp.Api
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
             GlobalConfiguration.Configure(JsonFormatterConfig.Register);
+            GlobalConfiguration.Configure(UnityConfig.Register);
         }
     }
 }

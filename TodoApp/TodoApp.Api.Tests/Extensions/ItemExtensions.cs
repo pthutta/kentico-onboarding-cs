@@ -1,6 +1,6 @@
 ﻿using TodoApp.Contracts.Models;
 
-namespace TodoApp.Api.Tests.Utils
+namespace TodoApp.Api.Tests.Extensions
 {
     public static class ItemExtensions
     {

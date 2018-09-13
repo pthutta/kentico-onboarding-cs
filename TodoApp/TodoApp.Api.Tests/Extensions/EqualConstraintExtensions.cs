@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NUnit.Framework.Constraints;
+﻿using NUnit.Framework.Constraints;
 
-namespace TodoApp.Api.Tests.Utils
+namespace TodoApp.Api.Tests.Extensions
 {
     public static class EqualConstraintExtensions
     {

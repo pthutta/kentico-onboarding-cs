@@ -1,11 +1,6 @@
 ﻿using System.Web.Http;
 using System.Web.Http.Routing;
 using Microsoft.Web.Http.Routing;
-using TodoApp.Api.Resolvers;
-using TodoApp.Contracts.Repositories;
-using TodoApp.DAL.Repositories;
-using Unity;
-using Unity.Lifetime;
 
 namespace TodoApp.Api
 {
@@ -25,10 +20,6 @@ namespace TodoApp.Api
             // Web API routes
             config.MapHttpAttributeRoutes(constraintResolver);
             config.AddApiVersioning();
-
-            var container = new UnityContainer();
-            container.RegisterType<IItemRepository, ItemRepository>(new HierarchicalLifetimeManager());
-            config.DependencyResolver = new UnityResolver(container);
         }
     }
 }

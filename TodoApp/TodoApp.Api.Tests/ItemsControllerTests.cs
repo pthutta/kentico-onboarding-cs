@@ -7,7 +7,7 @@ using System.Web.Http;
 using NSubstitute;
 using NUnit.Framework;
 using TodoApp.Api.Controllers;
-using TodoApp.Api.Tests.Utils;
+using TodoApp.Api.Tests.Extensions;
 using TodoApp.Contracts.Models;
 using TodoApp.Contracts.Repositories;
 
