@@ -35,18 +35,14 @@ namespace TodoApp.Database.Repositories
         public async Task<IEnumerable<Item>> GetAllAsync()
             => await Task.FromResult(Items);
 
-        public async Task<Item> GetByIdAsync(string id)
+        public async Task<Item> GetByIdAsync(Guid id)
             => await Task.FromResult(Items[0]);
 
-        public async Task CreateAsync(Item item)
-        {
-            await Task.CompletedTask;
-        }
+        public async Task<Item> CreateAsync(Item item)
+            => await Task.FromResult(Items[1]);
 
-        public async Task DeleteAsync(Item item)
-        {
-            await Task.CompletedTask;
-        }
+        public async Task<Item> DeleteAsync(Guid id)
+            => await Task.FromResult(Items[2]);
 
         public async Task UpdateAsync(Item item)
         {

@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.Web.Http;
@@ -30,16 +31,16 @@ namespace TodoApp.Api.Controllers
         // GET: api/v1/items/5
         [Route("{id}")]
         public async Task<IHttpActionResult> GetItemByIdAsync(string id)
-            => Ok(await _repository.GetByIdAsync(id));
+            => Ok(await _repository.GetByIdAsync(Guid.Parse(id)));
         
 
         // POST: api/v1/items
         [Route("", Name = UrlService.NewItemRouteName)]
         public async Task<IHttpActionResult> PostItemAsync([FromBody]Item item)
         {
-            await _repository.CreateAsync(item);
+            var createdItem = await _repository.CreateAsync(item);
             var url = _urlService.GetItemUrl(item.Id);
-            return Created(url, item);
+            return Created(url, createdItem);
         }
 
         // PUT: api/v1/items/5
@@ -53,13 +54,6 @@ namespace TodoApp.Api.Controllers
         // DELETE: api/v1/items/5
         [Route("{id}")]
         public async Task<IHttpActionResult> DeleteItemAsync(string id)
-        {
-            var item = await _repository.GetByIdAsync(id);
-            if (item != null)
-            {
-                await _repository.DeleteAsync(item);
-            }
-            return Ok(item);
-        }
+            => Ok(await _repository.DeleteAsync(Guid.Parse(id)));
     }
 }

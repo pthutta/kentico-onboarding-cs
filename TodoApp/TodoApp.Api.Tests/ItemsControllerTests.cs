@@ -75,12 +75,12 @@ namespace TodoApp.Api.Tests
         [Test]
         public async Task GetItemByIdAsync_ReturnsOkWithRequiredItem()
         {
-            var id = Items[0].Id.ToString();
+            var id = Items[0].Id;
             var expected = Items[0];
 
             _itemRepository.GetByIdAsync(id).Returns(expected);
 
-            var message = await ExecuteAsyncAction(() => _itemsController.GetItemByIdAsync(id));
+            var message = await ExecuteAsyncAction(() => _itemsController.GetItemByIdAsync(id.ToString()));
             message.TryGetContentValue<Item>(out var item);
 
             Assert.Multiple(() =>
@@ -93,7 +93,7 @@ namespace TodoApp.Api.Tests
         [Test]
         public async Task PutItemAsync_ReturnsOkWithUpdatedItem()
         {
-            var changedItem = Items[2];
+            var changedItem = Items[3];
 
             _itemRepository.UpdateAsync(changedItem).Returns(Task.CompletedTask);
 
@@ -105,19 +105,18 @@ namespace TodoApp.Api.Tests
         [Test]
         public async Task DeleteItemAsync_ReturnsOkWithDeletedItem()
         {
-            var id = Items[3].Id.ToString();
-            var expected = Items[3];
+            var deleted = Items[2];
+            var id = deleted.Id;
 
-            _itemRepository.GetByIdAsync(id).Returns(expected);
-            _itemRepository.DeleteAsync(expected).Returns(Task.CompletedTask);
+            _itemRepository.DeleteAsync(id).Returns(deleted);
 
-            var message = await ExecuteAsyncAction(() => _itemsController.DeleteItemAsync(id));
+            var message = await ExecuteAsyncAction(() => _itemsController.DeleteItemAsync(id.ToString()));
             message.TryGetContentValue<Item>(out var item);
 
             Assert.Multiple(() =>
             {
                 Assert.That(message.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-                Assert.That(item, Is.EqualTo(Items[3]).UsingItemComparer());
+                Assert.That(item, Is.EqualTo(deleted).UsingItemComparer());
             });
         }
 
@@ -127,7 +126,7 @@ namespace TodoApp.Api.Tests
             var newItem = Items[1];
             var headerLocation = "http://localhost/";
 
-            _itemRepository.CreateAsync(newItem).Returns(Task.CompletedTask);
+            _itemRepository.CreateAsync(newItem).Returns(newItem);
             _urlService.GetItemUrl(newItem.Id).Returns(headerLocation);
 
             var message = await ExecuteAsyncAction(() => _itemsController.PostItemAsync(newItem));
@@ -137,7 +136,7 @@ namespace TodoApp.Api.Tests
             {
                 Assert.That(message.StatusCode, Is.EqualTo(HttpStatusCode.Created));
                 Assert.That(message.Headers.Location.AbsoluteUri, Is.EqualTo(headerLocation));
-                Assert.That(item, Is.EqualTo(Items[1]).UsingItemComparer());
+                Assert.That(item, Is.EqualTo(newItem).UsingItemComparer());
             });
         }
 
