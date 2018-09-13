@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 using TodoApp.Contracts.Models;
 using TodoApp.Contracts.Repositories;
 
-namespace TodoApp.DAL.Repositories
+namespace TodoApp.Database.Repositories
 {
-    public class ItemRepository : IItemRepository
+    internal class ItemRepository : IItemRepository
     {
         private static readonly Item[] Items =
         {

@@ -1,7 +1,6 @@
 ﻿using System.Web.Http;
 using TodoApp.Api.Resolvers;
-using TodoApp.Contracts.Repositories;
-using TodoApp.DAL.Repositories;
+using TodoApp.Database.Configs;
 using Unity;
 using Unity.Lifetime;
 
@@ -12,7 +11,7 @@ namespace TodoApp.Api
         public static void Register(HttpConfiguration config)
         {
             var container = new UnityContainer();
-            container.RegisterType<IItemRepository, ItemRepository>(new HierarchicalLifetimeManager());
+            new DatabaseConfig().Register(container);
             config.DependencyResolver = new UnityResolver(container);
         }
     }
