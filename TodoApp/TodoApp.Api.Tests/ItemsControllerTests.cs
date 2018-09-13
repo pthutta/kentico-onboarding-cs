@@ -1,17 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Http.Routing;
 using NSubstitute;
 using NUnit.Framework;
 using TodoApp.Api.Controllers;
 using TodoApp.Api.Tests.Extensions;
 using TodoApp.Contracts.Models;
 using TodoApp.Contracts.Repositories;
+using TodoApp.Contracts.Services;
 
 namespace TodoApp.Api.Tests
 {
@@ -20,6 +19,7 @@ namespace TodoApp.Api.Tests
     {
         private ItemsController _itemsController;
         private IItemRepository _itemRepository;
+        private IUrlService _urlService;
 
         private static readonly Item[] Items =
         {
@@ -49,7 +49,8 @@ namespace TodoApp.Api.Tests
         public void SetUp()
         {
             _itemRepository = Substitute.For<IItemRepository>();
-            _itemsController = new ItemsController(_itemRepository)
+            _urlService = Substitute.For<IUrlService>();
+            _itemsController = new ItemsController(_itemRepository, _urlService)
             {
                 Request = new HttpRequestMessage(),
                 Configuration = new HttpConfiguration()
@@ -124,11 +125,10 @@ namespace TodoApp.Api.Tests
         public async Task PostItemAsync_ReturnsCreatedItem()
         {
             var newItem = Items[1];
+            var headerLocation = "http://localhost/";
 
             _itemRepository.CreateAsync(newItem).Returns(Task.CompletedTask);
-
-            _itemsController.Url = Substitute.For<UrlHelper>();
-            _itemsController.Url.Link(Arg.Any<string>(), Arg.Any<IDictionary<string, object>>()).Returns("http://localhost/");
+            _urlService.GetItemUrl(newItem.Id).Returns(headerLocation);
 
             var message = await ExecuteAsyncAction(() => _itemsController.PostItemAsync(newItem));
             message.TryGetContentValue<Item>(out var item);
@@ -136,32 +136,8 @@ namespace TodoApp.Api.Tests
             Assert.Multiple(() =>
             {
                 Assert.That(message.StatusCode, Is.EqualTo(HttpStatusCode.Created));
-                Assert.That(item, Is.EqualTo(Items[1]).UsingItemComparer());
-            });
-        }
-
-        [Test]
-        public async Task PostItemAsync_ReturnsLinkToItem()
-        {
-            _itemsController.Request = new HttpRequestMessage
-            {
-                RequestUri = new Uri("http://localhost/api/test")
-            };
-            _itemsController.Configuration.Routes.MapHttpRoute(
-                name: "PostNewItem",
-                routeTemplate: "api/{id}/test",
-                defaults: new { id = RouteParameter.Optional }
-            );
-
-            var newItem = Items[1];
-            var headerLocation = "http://localhost/api/" + newItem.Id + "/test";
-
-            var message = await ExecuteAsyncAction(() => _itemsController.PostItemAsync(newItem));
-
-            Assert.Multiple(() =>
-            {
-                Assert.That(message.StatusCode, Is.EqualTo(HttpStatusCode.Created));
                 Assert.That(message.Headers.Location.AbsoluteUri, Is.EqualTo(headerLocation));
+                Assert.That(item, Is.EqualTo(Items[1]).UsingItemComparer());
             });
         }
 
