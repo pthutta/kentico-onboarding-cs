@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using TodoApp.Contracts.Configs;
+﻿using TodoApp.Contracts.Configs;
 using Unity;
 
 namespace TodoApp.Api.Extensions

@@ -9,7 +9,6 @@ namespace TodoApp.Api
     {
         public static void Register(HttpConfiguration config)
         {
-            // Configure Json Formatter
             JsonMediaTypeFormatter jsonFormatter = config.Formatters.JsonFormatter;
             jsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
             jsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/x-www-form-urlencoded"));

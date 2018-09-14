@@ -80,7 +80,7 @@ namespace TodoApp.Api.Tests
 
             _itemRepository.GetByIdAsync(id).Returns(expected);
 
-            var message = await ExecuteAsyncAction(() => _itemsController.GetItemByIdAsync(id.ToString()));
+            var message = await ExecuteAsyncAction(() => _itemsController.GetItemByIdAsync(id));
             message.TryGetContentValue<Item>(out var item);
 
             Assert.Multiple(() =>
@@ -97,7 +97,7 @@ namespace TodoApp.Api.Tests
 
             _itemRepository.UpdateAsync(changedItem).Returns(Task.CompletedTask);
 
-            var message = await ExecuteAsyncAction(() => _itemsController.PutItemAsync(changedItem.Id.ToString(), changedItem));
+            var message = await ExecuteAsyncAction(() => _itemsController.PutItemAsync(changedItem.Id, changedItem));
 
             Assert.AreEqual(HttpStatusCode.NoContent, message.StatusCode);
         }
@@ -110,7 +110,7 @@ namespace TodoApp.Api.Tests
 
             _itemRepository.DeleteAsync(id).Returns(deleted);
 
-            var message = await ExecuteAsyncAction(() => _itemsController.DeleteItemAsync(id.ToString()));
+            var message = await ExecuteAsyncAction(() => _itemsController.DeleteItemAsync(id));
             message.TryGetContentValue<Item>(out var item);
 
             Assert.Multiple(() =>
@@ -123,11 +123,15 @@ namespace TodoApp.Api.Tests
         [Test]
         public async Task PostItemAsync_ReturnsCreatedItem()
         {
-            var newItem = Items[1];
-            var headerLocation = "http://localhost/";
+            var expectedItem = Items[1];
+            var newItem = new Item
+            {
+                Text = expectedItem.Text
+            };
+            const string headerLocation = "http://localhost/";
 
-            _itemRepository.CreateAsync(newItem).Returns(newItem);
-            _urlService.GetItemUrl(newItem.Id).Returns(headerLocation);
+            _itemRepository.CreateAsync(newItem).Returns(expectedItem);
+            _urlService.GetItemUrl(expectedItem.Id).Returns(headerLocation);
 
             var message = await ExecuteAsyncAction(() => _itemsController.PostItemAsync(newItem));
             message.TryGetContentValue<Item>(out var item);
@@ -135,8 +139,8 @@ namespace TodoApp.Api.Tests
             Assert.Multiple(() =>
             {
                 Assert.That(message.StatusCode, Is.EqualTo(HttpStatusCode.Created));
-                Assert.That(message.Headers.Location.AbsoluteUri, Is.EqualTo(headerLocation));
-                Assert.That(item, Is.EqualTo(newItem).UsingItemComparer());
+                Assert.That(message.Headers.Location.ToString(), Is.EqualTo(headerLocation));
+                Assert.That(item, Is.EqualTo(expectedItem).UsingItemComparer());
             });
         }
 

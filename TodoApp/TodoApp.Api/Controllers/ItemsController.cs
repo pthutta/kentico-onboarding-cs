@@ -29,23 +29,23 @@ namespace TodoApp.Api.Controllers
             => Ok(await _repository.GetAllAsync());
 
         // GET: api/v1/items/5
-        [Route("{id}")]
-        public async Task<IHttpActionResult> GetItemByIdAsync(string id)
-            => Ok(await _repository.GetByIdAsync(Guid.Parse(id)));
+        [Route("{id}", Name = UrlService.NewItemRouteName)]
+        public async Task<IHttpActionResult> GetItemByIdAsync(Guid id)
+            => Ok(await _repository.GetByIdAsync(id));
         
 
         // POST: api/v1/items
-        [Route("", Name = UrlService.NewItemRouteName)]
+        [Route("")]
         public async Task<IHttpActionResult> PostItemAsync([FromBody]Item item)
         {
             var createdItem = await _repository.CreateAsync(item);
-            var url = _urlService.GetItemUrl(item.Id);
+            var url = _urlService.GetItemUrl(createdItem.Id);
             return Created(url, createdItem);
         }
 
         // PUT: api/v1/items/5
         [Route("{id}")]
-        public async Task<IHttpActionResult> PutItemAsync(string id, [FromBody]Item value)
+        public async Task<IHttpActionResult> PutItemAsync(Guid id, [FromBody]Item value)
         {
             await _repository.UpdateAsync(value);
             return StatusCode(HttpStatusCode.NoContent);
@@ -53,7 +53,7 @@ namespace TodoApp.Api.Controllers
 
         // DELETE: api/v1/items/5
         [Route("{id}")]
-        public async Task<IHttpActionResult> DeleteItemAsync(string id)
-            => Ok(await _repository.DeleteAsync(Guid.Parse(id)));
+        public async Task<IHttpActionResult> DeleteItemAsync(Guid id)
+            => Ok(await _repository.DeleteAsync(id));
     }
 }
