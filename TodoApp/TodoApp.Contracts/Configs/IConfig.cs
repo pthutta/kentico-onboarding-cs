@@ -2,7 +2,7 @@
 
 namespace TodoApp.Contracts.Configs
 {
-    public interface IDatabaseConfig
+    public interface IConfig
     {
         void Register(IUnityContainer container);
     }

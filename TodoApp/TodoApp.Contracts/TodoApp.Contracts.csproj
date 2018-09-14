@@ -70,7 +70,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configs\IDatabaseConfig.cs" />
+    <Compile Include="Configs\IConfig.cs" />
     <Compile Include="Repositories\IItemRepository.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

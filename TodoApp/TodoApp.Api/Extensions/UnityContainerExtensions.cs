@@ -5,10 +5,10 @@ namespace TodoApp.Api.Extensions
 {
     public static class UnityContainerExtensions
     {
-        public static UnityContainer RegisterDatabase<TDatabase>(this UnityContainer container) 
-            where TDatabase : IDatabaseConfig, new()
+        public static UnityContainer Register<TConfig>(this UnityContainer container) 
+            where TConfig : IConfig, new()
         {
-            new TDatabase().Register(container);
+            new TConfig().Register(container);
             return container;
         }
     }

@@ -6,7 +6,7 @@ using Unity.Lifetime;
 
 namespace TodoApp.Database.Configs
 {
-    public class DatabaseConfig : IDatabaseConfig
+    public class DatabaseConfig : IConfig
     {
         public void Register(IUnityContainer container)
         {
