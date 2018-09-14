@@ -45,8 +45,6 @@ namespace TodoApp.Database.Repositories
             => await Task.FromResult(Items[2]);
 
         public async Task UpdateAsync(Item item)
-        {
-            await Task.CompletedTask;
-        }
+            => await Task.CompletedTask;
     }
 }

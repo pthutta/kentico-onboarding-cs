@@ -75,9 +75,8 @@ namespace TodoApp.Api.Tests
         [Test]
         public async Task GetItemByIdAsync_ReturnsOkWithRequiredItem()
         {
-            var id = Items[0].Id;
             var expected = Items[0];
-
+            var id = expected.Id;
             _itemRepository.GetByIdAsync(id).Returns(expected);
 
             var message = await ExecuteAsyncAction(() => _itemsController.GetItemByIdAsync(id));
@@ -94,8 +93,7 @@ namespace TodoApp.Api.Tests
         public async Task PutItemAsync_ReturnsOkWithUpdatedItem()
         {
             var changedItem = Items[3];
-
-            _itemRepository.UpdateAsync(changedItem).Returns(Task.CompletedTask);
+            // _itemRepository.UpdateAsync(changedItem).Returns(Task.CompletedTask);
 
             var message = await ExecuteAsyncAction(() => _itemsController.PutItemAsync(changedItem.Id, changedItem));
 
@@ -107,7 +105,6 @@ namespace TodoApp.Api.Tests
         {
             var deleted = Items[2];
             var id = deleted.Id;
-
             _itemRepository.DeleteAsync(id).Returns(deleted);
 
             var message = await ExecuteAsyncAction(() => _itemsController.DeleteItemAsync(id));
@@ -124,10 +121,7 @@ namespace TodoApp.Api.Tests
         public async Task PostItemAsync_ReturnsCreatedItem()
         {
             var expectedItem = Items[1];
-            var newItem = new Item
-            {
-                Text = expectedItem.Text
-            };
+            var newItem = new Item { Text = expectedItem.Text };
             const string headerLocation = "http://localhost/";
 
             _itemRepository.CreateAsync(newItem).Returns(expectedItem);

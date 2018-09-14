@@ -8,7 +8,7 @@ using Unity.Injection;
 
 namespace TodoApp.Api
 {
-    public class UrlServiceConfig : IConfig
+    public class ApiConfig : IConfig
     {
         public void Register(IUnityContainer container)
         {

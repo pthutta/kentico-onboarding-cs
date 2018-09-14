@@ -7,14 +7,10 @@ namespace TodoApp.Api.Tests.Extensions
     {
         private static readonly Lazy<ItemComparer> ItemComparer = new Lazy<ItemComparer>();
 
-        public static EqualConstraint UsingItemComparer(this EqualConstraint constraint)
-        {
-            return constraint.Using(ItemComparer.Value);
-        }
+        public static EqualConstraint UsingItemComparer(this EqualConstraint constraint) 
+            => constraint.Using(ItemComparer.Value);
 
-        public static CollectionItemsEqualConstraint UsingItemComparer(this CollectionEquivalentConstraint constraint)
-        {
-            return constraint.Using(ItemComparer.Value);
-        }
+        public static CollectionItemsEqualConstraint UsingItemComparer(this CollectionEquivalentConstraint constraint) 
+            => constraint.Using(ItemComparer.Value);
     }
 }

@@ -12,7 +12,7 @@ namespace TodoApp.Api
         {
             var container = new UnityContainer()
                 .Register<DatabaseConfig>()
-                .Register<UrlServiceConfig>();
+                .Register<ApiConfig>();
             config.DependencyResolver = new UnityResolver(container);
         }
     }
