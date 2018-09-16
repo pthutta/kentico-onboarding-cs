@@ -11,9 +11,7 @@ namespace TodoApp.Api.Services
         private readonly UrlHelper _urlHelper;
 
         public UrlService(UrlHelper urlHelper)
-        {
-            _urlHelper = urlHelper;
-        }
+            => _urlHelper = urlHelper;
 
         public string GetItemUrl(Guid id)
             => _urlHelper.Link(NewItemRouteName, new { id });

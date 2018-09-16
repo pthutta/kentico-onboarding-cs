@@ -1,7 +1,7 @@
 ﻿using System.Web.Http;
 using TodoApp.Api.Extensions;
 using TodoApp.Api.Resolvers;
-using TodoApp.Database.Configs;
+using TodoApp.Database;
 using Unity;
 
 namespace TodoApp.Api

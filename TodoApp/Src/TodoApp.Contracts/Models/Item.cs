@@ -9,8 +9,6 @@ namespace TodoApp.Contracts.Models
         public string Text { get; set; }
 
         public override string ToString()
-        {
-            return $"Id: {Id}, Text: {Text}";
-        }
+            => $"Id: {Id}, Text: {Text}";
     }
 }

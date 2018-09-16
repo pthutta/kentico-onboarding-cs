@@ -5,7 +5,7 @@ using NUnit.Framework;
 using TodoApp.Api.Services;
 using TodoApp.Contracts.Services;
 
-namespace TodoApp.Api.Tests
+namespace TodoApp.Api.Tests.Services
 {
     [TestFixture]
     public class UrlServiceTests

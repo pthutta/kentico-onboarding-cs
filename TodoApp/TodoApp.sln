@@ -1,15 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.28010.2016
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.Api", "TodoApp.Api\TodoApp.Api.csproj", "{C94FBFBA-B38B-4F39-BEF5-2A79BEBBCD13}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.Api", "Src\TodoApp.Api\TodoApp.Api.csproj", "{C94FBFBA-B38B-4F39-BEF5-2A79BEBBCD13}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.Api.Tests", "TodoApp.Api.Tests\TodoApp.Api.Tests.csproj", "{2D1C1495-D893-4537-BF2F-EB3E9437F9B3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.Api.Tests", "Tests\TodoApp.Api.Tests\TodoApp.Api.Tests.csproj", "{2D1C1495-D893-4537-BF2F-EB3E9437F9B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.Contracts", "TodoApp.Contracts\TodoApp.Contracts.csproj", "{FDAB04B3-56AB-430D-B4B2-3B0B81536F5E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.Contracts", "Src\TodoApp.Contracts\TodoApp.Contracts.csproj", "{FDAB04B3-56AB-430D-B4B2-3B0B81536F5E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.Database", "TodoApp.Database\TodoApp.Database.csproj", "{E8120002-790C-4E80-9146-006746B4F922}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.Database", "Src\TodoApp.Database\TodoApp.Database.csproj", "{E8120002-790C-4E80-9146-006746B4F922}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{F4D72F4D-2A2B-49DC-97EA-0DFF352E046E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{83B9EA13-50D4-4981-8C6B-1C02FB6928FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,6 +40,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C94FBFBA-B38B-4F39-BEF5-2A79BEBBCD13} = {F4D72F4D-2A2B-49DC-97EA-0DFF352E046E}
+		{2D1C1495-D893-4537-BF2F-EB3E9437F9B3} = {83B9EA13-50D4-4981-8C6B-1C02FB6928FC}
+		{FDAB04B3-56AB-430D-B4B2-3B0B81536F5E} = {F4D72F4D-2A2B-49DC-97EA-0DFF352E046E}
+		{E8120002-790C-4E80-9146-006746B4F922} = {F4D72F4D-2A2B-49DC-97EA-0DFF352E046E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D75EA3E1-120F-4E42-997E-F6F5151C4A4A}

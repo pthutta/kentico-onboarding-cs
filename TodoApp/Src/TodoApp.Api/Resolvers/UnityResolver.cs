@@ -11,9 +11,7 @@ namespace TodoApp.Api.Resolvers
         protected IUnityContainer Container;
 
         public UnityResolver(IUnityContainer container)
-        {
-            Container = container;
-        }
+            => Container = container;
 
         public object GetService(Type serviceType)
         {
@@ -46,8 +44,6 @@ namespace TodoApp.Api.Resolvers
         }
 
         public void Dispose()
-        {
-            Container.Dispose();
-        }
+            => Container.Dispose();
     }
 }

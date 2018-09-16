@@ -4,13 +4,11 @@ using TodoApp.Database.Repositories;
 using Unity;
 using Unity.Lifetime;
 
-namespace TodoApp.Database.Configs
+namespace TodoApp.Database
 {
     public class DatabaseConfig : IConfig
     {
         public void Register(IUnityContainer container)
-        {
-            container.RegisterType<IItemRepository, ItemRepository>(new HierarchicalLifetimeManager());
-        }
+            => container.RegisterType<IItemRepository, ItemRepository>(new HierarchicalLifetimeManager());
     }
 }

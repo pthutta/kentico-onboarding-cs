@@ -10,10 +10,8 @@ namespace TodoApp.Api
 {
     public class ApiConfig : IConfig
     {
-        public void Register(IUnityContainer container)
-        {
-            container.RegisterType<HttpRequestMessage>(new InjectionFactory(_ => HttpContext.Current.Items["MS_HttpRequestMessage"] as HttpRequestMessage))
+        public void Register(IUnityContainer container) 
+            => container.RegisterType<HttpRequestMessage>(new InjectionFactory(_ => HttpContext.Current.Items["MS_HttpRequestMessage"] as HttpRequestMessage))
                 .RegisterType<IUrlService, UrlService>();
-        }
     }
 }
