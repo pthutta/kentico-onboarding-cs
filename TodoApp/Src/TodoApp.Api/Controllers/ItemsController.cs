@@ -46,7 +46,7 @@ namespace TodoApp.Api.Controllers
         [Route("{id}")]
         public async Task<IHttpActionResult> PutItemAsync(Guid id, [FromBody]Item value)
         {
-            // await _repository.UpdateAsync(value);
+            await _repository.UpdateAsync(value);
             return StatusCode(HttpStatusCode.NoContent);
         }
 

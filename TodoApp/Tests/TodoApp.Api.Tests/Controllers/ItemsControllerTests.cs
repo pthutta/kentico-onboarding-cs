@@ -25,22 +25,22 @@ namespace TodoApp.Api.Tests.Controllers
         {
             new Item
             {
-                Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+                Id = Guid.Parse("46A4D418-931F-45EC-8C2F-06236772B245"),
                 Text = "Learn react"
             },
             new Item
             {
-                Id = Guid.Parse("00000000-0000-0000-0000-000000000002"),
+                Id = Guid.Parse("0EBF758B-FC9F-4A42-8A6E-3DD7209E0E46"),
                 Text = "Learn redux"
             },
             new Item
             {
-                Id = Guid.Parse("00000000-0000-0000-0000-000000000003"),
+                Id = Guid.Parse("EA531B21-FC10-4BEB-B6BE-A9635E610213"),
                 Text = "Write Web API"
             },
             new Item
             {
-                Id = Guid.Parse("00000000-0000-0000-0000-000000000004"),
+                Id = Guid.Parse("5694207A-697C-449B-BA49-05AC6683C5E5"),
                 Text = "Write dummier controller"
             }
         };
@@ -93,11 +93,15 @@ namespace TodoApp.Api.Tests.Controllers
         public async Task PutItemAsync_ReturnsOkWithUpdatedItem()
         {
             var changedItem = Items[3];
-            // _itemRepository.UpdateAsync(changedItem).Returns(Task.CompletedTask);
+            _itemRepository.UpdateAsync(changedItem).Returns(Task.CompletedTask);
 
             var message = await ExecuteAsyncAction(() => _itemsController.PutItemAsync(changedItem.Id, changedItem));
 
-            Assert.AreEqual(HttpStatusCode.NoContent, message.StatusCode);
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(HttpStatusCode.NoContent, message.StatusCode);
+                _itemRepository.Received().UpdateAsync(changedItem);
+            });
         }
 
         [Test]

@@ -24,7 +24,7 @@ namespace TodoApp.Api.Tests.Services
         public void GetItemUrl_ReturnsCreatedUrl()
         {
             const string routeName = UrlService.NewItemRouteName;
-            var id = Guid.Parse("00000000-0000-0000-0000-000000000001");
+            var id = Guid.Parse("EAB88043-345B-44F9-9839-296579D8AC62");
             var expectedUrl = $"http://localhost/{id}/tests";
 
             _urlHelper
