@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -63,7 +64,7 @@ namespace TodoApp.Api.Tests.Controllers
             _itemRepository.GetAllAsync().Returns(Items);
 
             var message = await ExecuteAsyncAction(() => _itemsController.GetAllItemsAsync());
-            message.TryGetContentValue<Item[]>(out var items);
+            message.TryGetContentValue<IEnumerable<Item>>(out var items);
 
             Assert.Multiple(() =>
             {

@@ -11,8 +11,8 @@ namespace TodoApp.Api
         public static void Register(HttpConfiguration config)
         {
             var container = new UnityContainer()
-                .Register<DatabaseConfig>()
-                .Register<ApiConfig>();
+                .Register<DatabaseBootstrap>()
+                .Register<ApiBootstrap>();
             config.DependencyResolver = new UnityResolver(container);
         }
     }

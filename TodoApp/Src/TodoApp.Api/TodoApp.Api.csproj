@@ -116,8 +116,8 @@
   <ItemGroup>
     <Compile Include="App_Start\JsonFormatterConfig.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
-    <Compile Include="ApiConfig.cs" />
-    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="ApiBootstrap.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ItemsController.cs" />
     <Compile Include="Extensions\UnityContainerExtensions.cs" />
     <Compile Include="Global.asax.cs">

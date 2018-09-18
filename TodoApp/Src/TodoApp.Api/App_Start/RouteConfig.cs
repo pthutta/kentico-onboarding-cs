@@ -4,7 +4,7 @@ using Microsoft.Web.Http.Routing;
 
 namespace TodoApp.Api
 {
-    public static class WebApiConfig
+    public static class RouteConfig
     {
         public static void Register(HttpConfiguration config)
         {

@@ -1,8 +1,8 @@
 ﻿using Unity;
 
-namespace TodoApp.Contracts.Configs
+namespace TodoApp.Contracts.Bootstraps
 {
-    public interface IConfig
+    public interface IBootstrap
     {
         void Register(IUnityContainer container);
     }

@@ -38,8 +38,8 @@ namespace TodoApp.Api.Controllers
         public async Task<IHttpActionResult> PostItemAsync([FromBody]Item item)
         {
             var createdItem = await _repository.CreateAsync(item);
-            var url = _urlService.GetItemUrl(createdItem.Id);
-            return Created(url, createdItem);
+            var itemUrl = _urlService.GetItemUrl(createdItem.Id);
+            return Created(itemUrl, createdItem);
         }
 
         // PUT: api/v1/items/5

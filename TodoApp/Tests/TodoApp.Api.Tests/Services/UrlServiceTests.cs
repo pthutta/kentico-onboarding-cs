@@ -28,12 +28,15 @@ namespace TodoApp.Api.Tests.Services
             var expectedUrl = $"http://localhost/{id}/tests";
 
             _urlHelper
-                .Link(routeName, Arg.Is<object>(value => (Guid) new HttpRouteValueDictionary(value)["id"] == id))
+                .Link(routeName, Arg.Is<object>(value => CompareIds(value, id)))
                 .Returns(expectedUrl);
 
             var resultUrl = _urlService.GetItemUrl(id);
 
             Assert.That(resultUrl, Is.EqualTo(expectedUrl));
         }
+
+        private static bool CompareIds(object value, Guid id)
+            => (Guid) new HttpRouteValueDictionary(value)["id"] == id;
     }
 }

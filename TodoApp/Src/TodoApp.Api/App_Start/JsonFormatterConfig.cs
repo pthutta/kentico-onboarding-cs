@@ -9,9 +9,12 @@ namespace TodoApp.Api
     {
         public static void Register(HttpConfiguration config)
         {
-            JsonMediaTypeFormatter jsonFormatter = config.Formatters.JsonFormatter;
+            var jsonFormatter = config.Formatters.JsonFormatter;
+
+            // Use json as return type in browser and console
             jsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
             jsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/x-www-form-urlencoded"));
+
             jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             jsonFormatter.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
         }

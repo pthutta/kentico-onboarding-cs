@@ -6,7 +6,7 @@ namespace TodoApp.Api
     {
         protected void Application_Start()
         {
-            GlobalConfiguration.Configure(WebApiConfig.Register);
+            GlobalConfiguration.Configure(RouteConfig.Register);
             GlobalConfiguration.Configure(JsonFormatterConfig.Register);
             GlobalConfiguration.Configure(UnityConfig.Register);
         }

@@ -1,14 +1,14 @@
-﻿using TodoApp.Contracts.Configs;
+﻿using TodoApp.Contracts.Bootstraps;
 using Unity;
 
 namespace TodoApp.Api.Extensions
 {
     public static class UnityContainerExtensions
     {
-        public static UnityContainer Register<TConfig>(this UnityContainer container) 
-            where TConfig : IConfig, new()
+        public static UnityContainer Register<TBootstrap>(this UnityContainer container) 
+            where TBootstrap : IBootstrap, new()
         {
-            new TConfig().Register(container);
+            new TBootstrap().Register(container);
             return container;
         }
     }
