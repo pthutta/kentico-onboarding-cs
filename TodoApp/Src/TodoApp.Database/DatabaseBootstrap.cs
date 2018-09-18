@@ -8,7 +8,7 @@ namespace TodoApp.Database
 {
     public class DatabaseBootstrap : IBootstrap
     {
-        public void Register(IUnityContainer container)
+        public IUnityContainer RegisterTypes(IUnityContainer container)
             => container.RegisterType<IItemRepository, ItemRepository>(new HierarchicalLifetimeManager());
     }
 }

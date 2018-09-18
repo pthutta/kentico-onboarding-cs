@@ -7,9 +7,6 @@ namespace TodoApp.Api.Extensions
     {
         public static UnityContainer Register<TBootstrap>(this UnityContainer container) 
             where TBootstrap : IBootstrap, new()
-        {
-            new TBootstrap().Register(container);
-            return container;
-        }
+            => new TBootstrap().RegisterTypes(container) as UnityContainer;
     }
 }

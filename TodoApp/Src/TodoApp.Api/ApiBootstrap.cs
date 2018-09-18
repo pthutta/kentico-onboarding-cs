@@ -11,7 +11,7 @@ namespace TodoApp.Api
 {
     public class ApiBootstrap : IBootstrap
     {
-        public void Register(IUnityContainer container) 
+        public IUnityContainer RegisterTypes(IUnityContainer container) 
             => container
                 .RegisterType<HttpRequestMessage>(GetHttpRequestMessageInjectionFactory())
                 .RegisterType<IUrlService, UrlService>(new HierarchicalLifetimeManager());
