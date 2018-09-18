@@ -4,6 +4,6 @@ namespace TodoApp.Contracts.Services
 {
     public interface IUrlService
     {
-        string GetItemUrl(Guid id);
+        Uri GetItemUrl(Guid id);
     }
 }

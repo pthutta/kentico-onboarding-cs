@@ -25,11 +25,11 @@ namespace TodoApp.Api.Tests.Services
         {
             const string routeName = UrlService.NewItemRouteName;
             var id = Guid.Parse("EAB88043-345B-44F9-9839-296579D8AC62");
-            var expectedUrl = $"http://localhost/{id}/tests";
+            var expectedUrl = new Uri($"http://localhost/{id}/tests");
 
             _urlHelper
                 .Link(routeName, Arg.Is<object>(value => CompareIds(value, id)))
-                .Returns(expectedUrl);
+                .Returns(expectedUrl.ToString());
 
             var resultUrl = _urlService.GetItemUrl(id);
 

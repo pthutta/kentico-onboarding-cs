@@ -127,7 +127,7 @@ namespace TodoApp.Api.Tests.Controllers
         {
             var expectedItem = Items[1];
             var newItem = new Item { Text = expectedItem.Text };
-            const string headerLocation = "http://localhost/";
+            var headerLocation = new Uri("http://localhost/");
 
             _itemRepository.CreateAsync(newItem).Returns(expectedItem);
             _urlService.GetItemUrl(expectedItem.Id).Returns(headerLocation);
@@ -138,7 +138,7 @@ namespace TodoApp.Api.Tests.Controllers
             Assert.Multiple(() =>
             {
                 Assert.That(message.StatusCode, Is.EqualTo(HttpStatusCode.Created));
-                Assert.That(message.Headers.Location.ToString(), Is.EqualTo(headerLocation));
+                Assert.That(message.Headers.Location, Is.EqualTo(headerLocation));
                 Assert.That(item, Is.EqualTo(expectedItem).UsingItemComparer());
             });
         }

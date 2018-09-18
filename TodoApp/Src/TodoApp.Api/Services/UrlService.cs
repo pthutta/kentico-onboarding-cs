@@ -13,7 +13,10 @@ namespace TodoApp.Api.Services
         public UrlService(UrlHelper urlHelper)
             => _urlHelper = urlHelper;
 
-        public string GetItemUrl(Guid id)
+        public Uri GetItemUrl(Guid id)
+            => new Uri(GetItemLink(id));
+
+        private string GetItemLink(Guid id)
             => _urlHelper.Link(NewItemRouteName, new { id });
     }
 }
