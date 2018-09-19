@@ -1,9 +1,9 @@
-﻿using Unity;
+﻿using TodoApp.Contracts.Containers;
 
 namespace TodoApp.Contracts.Bootstraps
 {
     public interface IBootstrap
     {
-        IUnityContainer RegisterTypes(IUnityContainer container);
+        IDependencyContainer RegisterTypes(IDependencyContainer container);
     }
 }
