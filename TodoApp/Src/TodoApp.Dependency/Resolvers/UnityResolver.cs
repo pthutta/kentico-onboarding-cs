@@ -8,10 +8,10 @@ using System.Web.Http.ExceptionHandling;
 using System.Web.Http.Hosting;
 using System.Web.Http.Metadata;
 using System.Web.Http.Validation;
-using Unity;
+using TodoApp.Contracts.Containers;
 using Unity.Exceptions;
 
-namespace TodoApp.Api.Resolvers
+namespace TodoApp.Dependency.Resolvers
 {
     public class UnityResolver : IDependencyResolver
     {
@@ -25,12 +25,12 @@ namespace TodoApp.Api.Resolvers
             typeof(IContentNegotiator).FullName,
             typeof(IExceptionHandler).FullName,
             typeof(ModelMetadataProvider).FullName,
-            typeof(IModelValidatorCache).FullName,
+            typeof(IModelValidatorCache).FullName
         };
 
-        protected IUnityContainer Container;
+        protected IDependencyContainer Container;
 
-        public UnityResolver(IUnityContainer container)
+        public UnityResolver(IDependencyContainer container)
             => Container = container;
 
         public object GetService(Type serviceType)
