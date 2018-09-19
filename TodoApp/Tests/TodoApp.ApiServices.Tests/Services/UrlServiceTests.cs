@@ -2,10 +2,10 @@
 using System.Web.Http.Routing;
 using NSubstitute;
 using NUnit.Framework;
-using TodoApp.Api.Services;
+using TodoApp.ApiServices.Services;
 using TodoApp.Contracts.Services;
 
-namespace TodoApp.Api.Tests.Services
+namespace TodoApp.ApiServices.Tests.Services
 {
     [TestFixture]
     public class UrlServiceTests

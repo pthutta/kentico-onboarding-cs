@@ -1,15 +1,15 @@
 ﻿using System.Net.Http;
 using System.Web;
-using TodoApp.Api.Services;
+using TodoApp.ApiServices.Services;
 using TodoApp.Contracts.Bootstraps;
 using TodoApp.Contracts.Services;
 using Unity;
 using Unity.Injection;
 using Unity.Lifetime;
 
-namespace TodoApp.Api
+namespace TodoApp.ApiServices
 {
-    public class ApiBootstrap : IBootstrap
+    public class ApiServicesBootstrap : IBootstrap
     {
         public IUnityContainer RegisterTypes(IUnityContainer container) 
             => container

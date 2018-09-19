@@ -1,6 +1,7 @@
 ﻿using System.Web.Http;
 using TodoApp.Api.Extensions;
 using TodoApp.Api.Resolvers;
+using TodoApp.ApiServices;
 using TodoApp.Database;
 using Unity;
 
@@ -12,7 +13,7 @@ namespace TodoApp.Api
         {
             var container = new UnityContainer()
                 .Register<DatabaseBootstrap>()
-                .Register<ApiBootstrap>();
+                .Register<ApiServicesBootstrap>();
             config.DependencyResolver = new UnityResolver(container);
         }
     }

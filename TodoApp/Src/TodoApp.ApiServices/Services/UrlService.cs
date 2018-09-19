@@ -2,7 +2,7 @@
 using System.Web.Http.Routing;
 using TodoApp.Contracts.Services;
 
-namespace TodoApp.Api.Services
+namespace TodoApp.ApiServices.Services
 {
     public class UrlService : IUrlService
     {
