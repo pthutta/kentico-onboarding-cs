@@ -26,6 +26,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		TodoApp.sln.DotSettings = TodoApp.sln.DotSettings
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.Dependency.Tests", "Tests\TodoApp.Dependency.Tests\TodoApp.Dependency.Tests.csproj", "{0B3362B9-AEF5-4482-9B49-9DF97BA72D47}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,6 +62,10 @@ Global
 		{F8A7B479-E472-4E75-9124-83E0233B8F6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8A7B479-E472-4E75-9124-83E0233B8F6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8A7B479-E472-4E75-9124-83E0233B8F6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B3362B9-AEF5-4482-9B49-9DF97BA72D47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B3362B9-AEF5-4482-9B49-9DF97BA72D47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B3362B9-AEF5-4482-9B49-9DF97BA72D47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B3362B9-AEF5-4482-9B49-9DF97BA72D47}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -72,6 +78,7 @@ Global
 		{2D90286C-83DB-4EE8-A9C0-22BCB0D4BA3B} = {F4D72F4D-2A2B-49DC-97EA-0DFF352E046E}
 		{CF4FDECD-1EBE-4478-97C0-A92BE425376E} = {83B9EA13-50D4-4981-8C6B-1C02FB6928FC}
 		{F8A7B479-E472-4E75-9124-83E0233B8F6B} = {F4D72F4D-2A2B-49DC-97EA-0DFF352E046E}
+		{0B3362B9-AEF5-4482-9B49-9DF97BA72D47} = {83B9EA13-50D4-4981-8C6B-1C02FB6928FC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D75EA3E1-120F-4E42-997E-F6F5151C4A4A}
