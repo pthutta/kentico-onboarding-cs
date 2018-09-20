@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Reflection;
+using System.Net.Http;
 using NUnit.Framework;
+using TodoApp.Contracts.Bootstraps;
+using TodoApp.Contracts.Containers;
 using TodoApp.Dependency.Tests.Containers;
 
 namespace TodoApp.Dependency.Tests.Configs
@@ -9,23 +11,28 @@ namespace TodoApp.Dependency.Tests.Configs
     [TestFixture]
     public class UnityConfigTests
     {
-        private static readonly List<string> ExcludedNamespaces = new List<string>
+        private static readonly Type[] ExcludedTypes = 
         {
-            "TodoApp.Contracts.Bootstraps",
-            "TodoApp.Contracts.Containers"
+            typeof(IBootstrap),
+            typeof(IDependencyContainer)
         };
 
         [Test]
         public void RegisterDependencies_RegistersRequiredDependencies()
         {
             var container = new TestContainer();
-            var interfaces = from t in Assembly.Load("TodoApp.Contracts").GetTypes()
-                where t.IsInterface && !ExcludedNamespaces.Contains(t.Namespace)
-                select t;
+            var contractTypes = typeof(IBootstrap).Assembly.GetTypes();
+            var types = contractTypes
+                .Where(IsNotExcludedInterface)
+                .Append(typeof(HttpRequestMessage));
 
             DependencyConfig.RegisterDependencies(container);
 
-            Assert.That(container.GetRegisteredTypes(), Is.SupersetOf(interfaces));
+            Assert.That(container.GetRegisteredTypes(), Is.EquivalentTo(types));
         }
+
+        private static bool IsNotExcludedInterface(Type type)
+            => type.IsInterface 
+               && !Array.Exists(ExcludedTypes, excludedType => excludedType == type);
     }
 }
