@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Net.Http.Formatting;
 using System.Web.Http.Controllers;
@@ -15,17 +16,17 @@ namespace TodoApp.Dependency.Resolvers
 {
     internal class DependencyResolver : IDependencyResolver
     {
-        private static readonly List<string> ExcludedTypes = new List<string>
+        private static readonly Type[] ExcludedTypes =
         {
-            typeof(IHostBufferPolicySelector).FullName,
-            typeof(IHttpControllerSelector).FullName,
-            typeof(IHttpControllerActivator).FullName,
-            typeof(IHttpActionSelector).FullName,
-            typeof(IHttpActionInvoker).FullName,
-            typeof(IContentNegotiator).FullName,
-            typeof(IExceptionHandler).FullName,
-            typeof(ModelMetadataProvider).FullName,
-            typeof(IModelValidatorCache).FullName
+            typeof(IHostBufferPolicySelector),
+            typeof(IHttpControllerSelector),
+            typeof(IHttpControllerActivator),
+            typeof(IHttpActionSelector),
+            typeof(IHttpActionInvoker),
+            typeof(IContentNegotiator),
+            typeof(IExceptionHandler),
+            typeof(ModelMetadataProvider),
+            typeof(IModelValidatorCache)
         };
 
         protected IDependencyContainer Container;
@@ -40,7 +41,7 @@ namespace TodoApp.Dependency.Resolvers
                 return Container.Resolve(serviceType);
             }
             catch (DependencyResolutionFailedException)
-                when (ExcludedTypes.Contains(serviceType.FullName))
+                when (IsInExcludedTypes(serviceType))
             {
                 return null;
             }
@@ -53,7 +54,7 @@ namespace TodoApp.Dependency.Resolvers
                 return Container.ResolveAll(serviceType);
             }
             catch (DependencyResolutionFailedException)
-                when (ExcludedTypes.Contains(serviceType.FullName))
+                when (IsInExcludedTypes(serviceType))
             {
                 return new List<object>();
             }
@@ -67,5 +68,8 @@ namespace TodoApp.Dependency.Resolvers
 
         public void Dispose()
             => Container.Dispose();
+
+        private static bool IsInExcludedTypes(Type serviceType)
+            => Array.Exists(ExcludedTypes, type => type == serviceType);
     }
 }
