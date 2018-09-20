@@ -9,11 +9,11 @@ using System.Web.Http.Hosting;
 using System.Web.Http.Metadata;
 using System.Web.Http.Validation;
 using TodoApp.Contracts.Containers;
-using Unity.Exceptions;
+using TodoApp.Dependency.Exceptions;
 
 namespace TodoApp.Dependency.Resolvers
 {
-    public class UnityResolver : IDependencyResolver
+    internal class DependencyResolver : IDependencyResolver
     {
         private static readonly List<string> ExcludedTypes = new List<string>
         {
@@ -30,7 +30,7 @@ namespace TodoApp.Dependency.Resolvers
 
         protected IDependencyContainer Container;
 
-        public UnityResolver(IDependencyContainer container)
+        public DependencyResolver(IDependencyContainer container)
             => Container = container;
 
         public object GetService(Type serviceType)
@@ -39,7 +39,7 @@ namespace TodoApp.Dependency.Resolvers
             {
                 return Container.Resolve(serviceType);
             }
-            catch (ResolutionFailedException)
+            catch (DependencyResolutionFailedException)
                 when (ExcludedTypes.Contains(serviceType.FullName))
             {
                 return null;
@@ -52,7 +52,7 @@ namespace TodoApp.Dependency.Resolvers
             {
                 return Container.ResolveAll(serviceType);
             }
-            catch (ResolutionFailedException)
+            catch (DependencyResolutionFailedException)
                 when (ExcludedTypes.Contains(serviceType.FullName))
             {
                 return new List<object>();
@@ -62,7 +62,7 @@ namespace TodoApp.Dependency.Resolvers
         public IDependencyScope BeginScope()
         {
             var child = Container.CreateChildContainer();
-            return new UnityResolver(child);
+            return new DependencyResolver(child);
         }
 
         public void Dispose()

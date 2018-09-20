@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using TodoApp.Contracts.Bootstraps;
 using TodoApp.Contracts.Containers;
+using TodoApp.Dependency.Exceptions;
 using Unity;
+using Unity.Exceptions;
 using Unity.Injection;
 using Unity.Lifetime;
 
@@ -35,10 +37,28 @@ namespace TodoApp.Dependency.Containers
         }
 
         public object Resolve(Type type)
-            => Container.Resolve(type);
+        {
+            try
+            {
+                return Container.Resolve(type);
+            }
+            catch (ResolutionFailedException ex)
+            {
+                throw new DependencyResolutionFailedException($"Failed resolution of {type.FullName}", ex);
+            }
+        }
 
         public IEnumerable<object> ResolveAll(Type type)
-            => Container.ResolveAll(type);
+        {
+            try
+            {
+                return Container.ResolveAll(type);
+            }
+            catch (ResolutionFailedException ex)
+            {
+                throw new DependencyResolutionFailedException($"Failed resolution of {type.FullName}", ex);
+            }
+        }
 
         public IDependencyContainer CreateChildContainer()
             => new DependencyContainer(Container.CreateChildContainer());
