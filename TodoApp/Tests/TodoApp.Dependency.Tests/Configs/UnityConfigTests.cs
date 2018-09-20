@@ -23,7 +23,7 @@ namespace TodoApp.Dependency.Tests.Configs
                 where t.IsInterface && !ExcludedNamespaces.Contains(t.Namespace)
                 select t;
 
-            UnityConfig.RegisterDependencies(container);
+            DependencyConfig.RegisterDependencies(container);
 
             Assert.That(container.GetRegisteredTypes(), Is.SupersetOf(interfaces));
         }

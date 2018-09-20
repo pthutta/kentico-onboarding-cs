@@ -1,4 +1,5 @@
-﻿using System.Web.Http.Dependencies;
+﻿using System.Web.Http;
+using System.Web.Http.Dependencies;
 using TodoApp.ApiServices;
 using TodoApp.Contracts.Containers;
 using TodoApp.Database;
@@ -8,7 +9,7 @@ using Unity;
 
 namespace TodoApp.Dependency
 {
-    public static class UnityConfig
+    public static class DependencyConfig
     {
         private static IDependencyContainer CreateGenericContainer()
         {
@@ -28,13 +29,13 @@ namespace TodoApp.Dependency
             => new DependencyResolver(container);
 
 
-        public static IDependencyResolver GetDependencyResolver()
+        public static void Register(HttpConfiguration config)
         {
             var genericContainer = CreateGenericContainer();
 
             RegisterDependencies(genericContainer);
 
-            return CreateResolver(genericContainer);
+            config.DependencyResolver = CreateResolver(genericContainer);
         }
     }
 }

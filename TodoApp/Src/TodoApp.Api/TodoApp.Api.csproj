@@ -77,7 +77,6 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\DependencyInjectionConfig.cs" />
     <Compile Include="App_Start\JsonFormatterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ItemsController.cs" />

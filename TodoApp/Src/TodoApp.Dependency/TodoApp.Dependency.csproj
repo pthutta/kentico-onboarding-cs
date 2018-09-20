@@ -76,7 +76,7 @@
     <Compile Include="Exceptions\DependencyResolutionFailedException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resolvers\DependencyResolver.cs" />
-    <Compile Include="UnityConfig.cs" />
+    <Compile Include="DependencyConfig.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
