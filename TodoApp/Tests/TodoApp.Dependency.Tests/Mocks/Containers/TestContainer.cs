@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TodoApp.Contracts.Bootstraps;
 using TodoApp.Contracts.Containers;
 
-namespace TodoApp.Dependency.Tests.Containers
+namespace TodoApp.Dependency.Tests.Mocks.Containers
 {
     internal class TestContainer : IDependencyContainer
     {
@@ -19,7 +19,7 @@ namespace TodoApp.Dependency.Tests.Containers
             return this;
         }
 
-        public IDependencyContainer RegisterType<TTo>(Func<TTo> objectGetter)
+        public IDependencyContainer RegisterType<TTo>(Func<TTo> instanceFactory)
         {
             _registeredTypes.Add(typeof(TTo));
             return this;

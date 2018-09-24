@@ -10,7 +10,7 @@ namespace TodoApp.Contracts.Containers
 
         IDependencyContainer RegisterType<TFrom, TTo>() where TTo : TFrom;
 
-        IDependencyContainer RegisterType<TTo>(Func<TTo> objectGetter);
+        IDependencyContainer RegisterType<TTo>(Func<TTo> instanceFactory);
 
         object Resolve(Type type);
 

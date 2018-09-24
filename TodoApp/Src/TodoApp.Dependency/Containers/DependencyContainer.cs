@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using TodoApp.Contracts.Bootstraps;
 using TodoApp.Contracts.Containers;
-using TodoApp.Dependency.Exceptions;
+using TodoApp.Contracts.Exceptions;
 using Unity;
 using Unity.Exceptions;
 using Unity.Injection;
@@ -29,9 +29,12 @@ namespace TodoApp.Dependency.Containers
             return this;
         }
 
-        public IDependencyContainer RegisterType<TTo>(Func<TTo> objectGetter)
+        public IDependencyContainer RegisterType<TTo>(Func<TTo> instanceFactory)
         {
-            Container.RegisterType<TTo>(new HierarchicalLifetimeManager(), new InjectionFactory(_ => objectGetter()));
+            Container.RegisterType<TTo>(
+                new HierarchicalLifetimeManager(),
+                new InjectionFactory(_ => instanceFactory())
+            );
 
             return this;
         }

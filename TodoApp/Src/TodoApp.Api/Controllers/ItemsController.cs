@@ -39,14 +39,15 @@ namespace TodoApp.Api.Controllers
         {
             var createdItem = await _repository.CreateAsync(item);
             var itemUrl = _urlService.GetItemUrl(createdItem.Id);
+
             return Created(itemUrl, createdItem);
         }
 
         // PUT: api/v1/items/5
         [Route("{id}")]
-        public async Task<IHttpActionResult> PutItemAsync(Guid id, [FromBody]Item value)
+        public async Task<IHttpActionResult> PutItemAsync(Guid id, [FromBody]Item item)
         {
-            await _repository.UpdateAsync(value);
+            await _repository.UpdateAsync(item);
             return StatusCode(HttpStatusCode.NoContent);
         }
 

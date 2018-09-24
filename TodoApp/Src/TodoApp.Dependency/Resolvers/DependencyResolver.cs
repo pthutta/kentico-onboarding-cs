@@ -9,7 +9,7 @@ using System.Web.Http.Hosting;
 using System.Web.Http.Metadata;
 using System.Web.Http.Validation;
 using TodoApp.Contracts.Containers;
-using TodoApp.Dependency.Exceptions;
+using TodoApp.Contracts.Exceptions;
 
 namespace TodoApp.Dependency.Resolvers
 {
