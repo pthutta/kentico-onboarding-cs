@@ -6,9 +6,11 @@ namespace TodoApp.Contracts.Containers
 {
     public interface IDependencyContainer : IDisposable
     {
-        IDependencyContainer RegisterBootstrapper<TBootstrap>() where TBootstrap : IBootstrap, new();
+        IDependencyContainer RegisterBootstrapper<TBootstrap>()
+            where TBootstrap : IBootstrap, new();
 
-        IDependencyContainer RegisterType<TFrom, TTo>() where TTo : TFrom;
+        IDependencyContainer RegisterType<TFrom, TTo>()
+            where TTo : TFrom;
 
         IDependencyContainer RegisterType<TTo>(Func<TTo> instanceFactory);
 

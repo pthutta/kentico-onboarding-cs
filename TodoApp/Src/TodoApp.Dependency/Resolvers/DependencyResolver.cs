@@ -34,28 +34,22 @@ namespace TodoApp.Dependency.Resolvers
             => Container = container;
 
         public object GetService(Type serviceType)
+            => GetService(() => Container.Resolve(serviceType), serviceType);
+
+        public IEnumerable<object> GetServices(Type serviceType)
+            => GetService(() => Container.ResolveAll(serviceType), serviceType) ?? new List<object>();
+
+        private static TResult GetService<TResult>(Func<TResult> resolve, Type serviceType)
+            where TResult: class
         {
             try
             {
-                return Container.Resolve(serviceType);
+                return resolve();
             }
             catch (DependencyResolutionFailedException)
                 when (IsInExcludedTypes(serviceType))
             {
                 return null;
-            }
-        }
-
-        public IEnumerable<object> GetServices(Type serviceType)
-        {
-            try
-            {
-                return Container.ResolveAll(serviceType);
-            }
-            catch (DependencyResolutionFailedException)
-                when (IsInExcludedTypes(serviceType))
-            {
-                return new List<object>();
             }
         }
 

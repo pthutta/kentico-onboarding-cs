@@ -40,22 +40,17 @@ namespace TodoApp.Dependency.Containers
         }
 
         public object Resolve(Type type)
-        {
-            try
-            {
-                return Container.Resolve(type);
-            }
-            catch (ResolutionFailedException ex)
-            {
-                throw new DependencyResolutionFailedException($"Failed resolution of {type.FullName}", ex);
-            }
-        }
+            => ResolveType(() => Container.Resolve(type), type);
 
         public IEnumerable<object> ResolveAll(Type type)
+            => ResolveType(() => Container.ResolveAll(type), type);
+
+        private static TResult ResolveType<TResult>(Func<TResult> resolve, Type type)
+            where TResult : class
         {
             try
             {
-                return Container.ResolveAll(type);
+                return resolve();
             }
             catch (ResolutionFailedException ex)
             {
