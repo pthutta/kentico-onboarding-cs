@@ -3,7 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.Web.Http;
-using TodoApp.ApiServices.Services;
+using TodoApp.Api.Routes;
 using TodoApp.Contracts.Models;
 using TodoApp.Contracts.Repositories;
 using TodoApp.Contracts.Services;
@@ -29,12 +29,12 @@ namespace TodoApp.Api.Controllers
             => Ok(await _repository.GetAllAsync());
 
         // GET: api/v1/items/5
-        [Route("{id}", Name = UrlService.NewItemRouteName)]
+        [Route("{id}", Name = RouteNames.NewItemRouteName)]
         public async Task<IHttpActionResult> GetItemByIdAsync(Guid id)
             => Ok(await _repository.GetByIdAsync(id));
 
         // POST: api/v1/items
-        [Route("")]
+        [Route]
         public async Task<IHttpActionResult> PostItemAsync([FromBody]Item item)
         {
             var createdItem = await _repository.CreateAsync(item);

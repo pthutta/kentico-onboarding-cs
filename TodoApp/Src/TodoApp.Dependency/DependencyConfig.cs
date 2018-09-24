@@ -2,6 +2,7 @@
 using System.Web.Http.Dependencies;
 using TodoApp.ApiServices;
 using TodoApp.Contracts.Containers;
+using TodoApp.Contracts.Routes;
 using TodoApp.Database;
 using TodoApp.Dependency.Containers;
 using TodoApp.Dependency.Resolvers;
@@ -9,8 +10,13 @@ using Unity;
 
 namespace TodoApp.Dependency
 {
-    public static class DependencyConfig
+    public class DependencyConfig
     {
+        private readonly IRouteNames _routeNames;
+
+        public DependencyConfig(IRouteNames routeNames)
+            => _routeNames = routeNames;
+
         private static IDependencyContainer CreateGenericContainer()
         {
             var unityContainer = new UnityContainer();
@@ -18,9 +24,10 @@ namespace TodoApp.Dependency
             return new DependencyContainer(unityContainer);
         }
 
-        internal static void RegisterDependencies(IDependencyContainer container)
+        internal void RegisterDependencies(IDependencyContainer container)
         {
             container
+                .RegisterType(() => _routeNames)
                 .RegisterBootstrapper<DatabaseBootstrap>()
                 .RegisterBootstrapper<ApiServicesBootstrap>();
         }
@@ -29,7 +36,7 @@ namespace TodoApp.Dependency
             => new DependencyResolver(container);
 
 
-        public static void Register(HttpConfiguration config)
+        public void Register(HttpConfiguration config)
         {
             var genericContainer = CreateGenericContainer();
 

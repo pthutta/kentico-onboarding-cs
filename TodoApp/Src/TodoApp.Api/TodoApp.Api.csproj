@@ -84,6 +84,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Routes\RouteNames.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -98,17 +99,9 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TodoApp.ApiServices\TodoApp.ApiServices.csproj">
-      <Project>{2D90286C-83DB-4EE8-A9C0-22BCB0D4BA3B}</Project>
-      <Name>TodoApp.ApiServices</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TodoApp.Contracts\TodoApp.Contracts.csproj">
       <Project>{FDAB04B3-56AB-430D-B4B2-3B0B81536F5E}</Project>
       <Name>TodoApp.Contracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TodoApp.Database\TodoApp.Database.csproj">
-      <Project>{E8120002-790C-4E80-9146-006746B4F922}</Project>
-      <Name>TodoApp.Database</Name>
     </ProjectReference>
     <ProjectReference Include="..\TodoApp.Dependency\TodoApp.Dependency.csproj">
       <Project>{F8A7B479-E472-4E75-9124-83E0233B8F6B}</Project>

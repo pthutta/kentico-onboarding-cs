@@ -3,6 +3,7 @@ using System.Web.Http.Routing;
 using NSubstitute;
 using NUnit.Framework;
 using TodoApp.ApiServices.Services;
+using TodoApp.Contracts.Routes;
 using TodoApp.Contracts.Services;
 
 namespace TodoApp.ApiServices.Tests.Services
@@ -11,19 +12,23 @@ namespace TodoApp.ApiServices.Tests.Services
     public class UrlServiceTests
     {
         private IUrlService _urlService;
+        private IRouteNames _routeNames;
         private UrlHelper _urlHelper;
 
         [SetUp]
         public void SetUp()
         {
             _urlHelper = Substitute.For<UrlHelper>();
-            _urlService = new UrlService(_urlHelper);
+            _routeNames = Substitute.For<IRouteNames>();
+            _routeNames.ItemRouteName.Returns("NewItemRoute");
+
+            _urlService = new UrlService(_urlHelper, _routeNames);
         }
 
         [Test]
         public void GetItemUrl_ReturnsCreatedUrl()
         {
-            const string routeName = UrlService.NewItemRouteName;
+            var routeName = _routeNames.ItemRouteName;
             var id = Guid.Parse("EAB88043-345B-44F9-9839-296579D8AC62");
             var expectedUrl = new Uri($"http://localhost/{id}/tests");
 

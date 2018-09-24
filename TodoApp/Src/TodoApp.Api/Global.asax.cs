@@ -1,4 +1,5 @@
 ﻿using System.Web.Http;
+using TodoApp.Api.Routes;
 using TodoApp.Dependency;
 
 namespace TodoApp.Api
@@ -9,7 +10,20 @@ namespace TodoApp.Api
         {
             GlobalConfiguration.Configure(RouteConfig.Register);
             GlobalConfiguration.Configure(JsonFormatterConfig.Register);
-            GlobalConfiguration.Configure(DependencyConfig.Register);
+
+            RegisterDependencies();
+        }
+
+        private static void RegisterDependencies()
+        {
+            var dependencyConfig = CreateDependencyConfig();
+            GlobalConfiguration.Configure(dependencyConfig.Register);
+        }
+
+        private static DependencyConfig CreateDependencyConfig()
+        {
+            var routeNames = new RouteNames();
+            return new DependencyConfig(routeNames);
         }
     }
 }
