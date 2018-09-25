@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TodoApp.Contracts.Models;
 using TodoApp.Contracts.Repositories;
+using TodoApp.Contracts.Services;
 
 namespace TodoApp.Database.Repositories
 {
@@ -31,6 +32,11 @@ namespace TodoApp.Database.Repositories
                 Text = "Write dummier controller"
             }
         };
+
+        public ItemRepository(IConnectionService connectionService)
+        {
+            
+        }
 
         public async Task<IEnumerable<Item>> GetAllAsync()
             => await Task.FromResult(Items);
