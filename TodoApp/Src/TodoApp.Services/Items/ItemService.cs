@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using TodoApp.Contracts.Models;
 using TodoApp.Contracts.Repositories;
@@ -14,9 +13,6 @@ namespace TodoApp.Services.Items
 
         public ItemService(IItemRepository repository)
             => _repository = repository;
-
-        public async Task<IEnumerable<Item>> GetAllItemsAsync()
-            => await _repository.GetAllAsync();
 
         public async Task<Item> GetItemByIdAsync(Guid id)
         {
@@ -36,14 +32,17 @@ namespace TodoApp.Services.Items
             return await _repository.CreateAsync(item);
         }
 
-        public async Task<Item> DeleteItemAsync(Guid id)
-            => await _repository.DeleteAsync(id);
-
-        public async Task UpdateItemAsync(Item item)
+        public async Task<bool> UpdateItemAsync(Item item)
         {
+            if (_repository.GetByIdAsync(item.Id) == null)
+            {
+                return false;
+            }
+
             item.LastUpdateTime = DateTime.Now;
 
             await _repository.UpdateAsync(item);
+            return true;
         }
     }
 }

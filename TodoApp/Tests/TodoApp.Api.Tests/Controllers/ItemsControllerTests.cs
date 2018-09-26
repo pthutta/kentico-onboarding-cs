@@ -10,7 +10,6 @@ using NUnit.Framework;
 using TodoApp.Api.Controllers;
 using TodoApp.Api.Tests.Extensions;
 using TodoApp.Contracts.Models;
-using TodoApp.Contracts.Repositories;
 using TodoApp.Contracts.Services;
 
 namespace TodoApp.Api.Tests.Controllers
@@ -95,6 +94,7 @@ namespace TodoApp.Api.Tests.Controllers
         {
             var changedItem = Items[3];
             _itemService.UpdateItemAsync(changedItem).Returns(Task.CompletedTask);
+            _itemService.GetItemByIdAsync(changedItem.Id).Returns(changedItem);
 
             var message = await ExecuteAsyncAction(() => _itemsController.PutItemAsync(changedItem.Id, changedItem));
 

@@ -73,10 +73,6 @@
       <Project>{2D90286C-83DB-4EE8-A9C0-22BCB0D4BA3B}</Project>
       <Name>TodoApp.ApiServices</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Src\TodoApp.Api\TodoApp.Api.csproj">
-      <Project>{C94FBFBA-B38B-4F39-BEF5-2A79BEBBCD13}</Project>
-      <Name>TodoApp.Api</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Src\TodoApp.Contracts\TodoApp.Contracts.csproj">
       <Project>{FDAB04B3-56AB-430D-B4B2-3B0B81536F5E}</Project>
       <Name>TodoApp.Contracts</Name>

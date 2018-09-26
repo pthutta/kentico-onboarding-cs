@@ -7,7 +7,9 @@ using System.Web.Http.Dispatcher;
 using System.Web.Http.ExceptionHandling;
 using System.Web.Http.Hosting;
 using System.Web.Http.Metadata;
+using System.Web.Http.Tracing;
 using System.Web.Http.Validation;
+using Microsoft.Web.Http.Versioning;
 using TodoApp.Contracts.Containers;
 using TodoApp.Contracts.Exceptions;
 
@@ -25,7 +27,9 @@ namespace TodoApp.Dependency.Resolvers
             typeof(IContentNegotiator),
             typeof(IExceptionHandler),
             typeof(ModelMetadataProvider),
-            typeof(IModelValidatorCache)
+            typeof(IModelValidatorCache),
+            typeof(ITraceWriter),
+            typeof(IReportApiVersions)
         };
 
         protected IDependencyContainer Container;
