@@ -6,6 +6,7 @@ using TodoApp.Contracts.Routes;
 using TodoApp.Database;
 using TodoApp.Dependency.Containers;
 using TodoApp.Dependency.Resolvers;
+using TodoApp.Services;
 using Unity;
 
 namespace TodoApp.Dependency
@@ -29,7 +30,8 @@ namespace TodoApp.Dependency
             container
                 .RegisterType(() => _routeNames)
                 .RegisterBootstrapper<DatabaseBootstrap>()
-                .RegisterBootstrapper<ApiServicesBootstrap>();
+                .RegisterBootstrapper<ApiServicesBootstrap>()
+                .RegisterBootstrapper<ServicesBootstrap>();
         }
 
         private static IDependencyResolver CreateResolver(IDependencyContainer container)

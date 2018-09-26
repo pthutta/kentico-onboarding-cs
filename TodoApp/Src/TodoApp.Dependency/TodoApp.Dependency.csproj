@@ -94,6 +94,10 @@
       <Project>{E8120002-790C-4E80-9146-006746B4F922}</Project>
       <Name>TodoApp.Database</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TodoApp.Services\TodoApp.Services.csproj">
+      <Project>{6CA39B97-0F92-418C-AD6B-4D7C4658F873}</Project>
+      <Name>TodoApp.Services</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -19,7 +19,7 @@ namespace TodoApp.Api.Tests.Controllers
     public class ItemsControllerTests
     {
         private ItemsController _itemsController;
-        private IItemRepository _itemRepository;
+        private IItemService _itemService;
         private IUrlService _urlService;
 
         private static readonly Item[] Items =
@@ -49,9 +49,9 @@ namespace TodoApp.Api.Tests.Controllers
         [SetUp]
         public void SetUp()
         {
-            _itemRepository = Substitute.For<IItemRepository>();
+            _itemService = Substitute.For<IItemService>();
             _urlService = Substitute.For<IUrlService>();
-            _itemsController = new ItemsController(_itemRepository, _urlService)
+            _itemsController = new ItemsController(_itemService, _urlService)
             {
                 Request = new HttpRequestMessage(),
                 Configuration = new HttpConfiguration()
@@ -61,7 +61,7 @@ namespace TodoApp.Api.Tests.Controllers
         [Test]
         public async Task GetAllItemsAsync_ReturnsAllItems()
         {
-            _itemRepository.GetAllAsync().Returns(Items);
+            _itemService.GetAllItemsAsync().Returns(Items);
 
             var message = await ExecuteAsyncAction(() => _itemsController.GetAllItemsAsync());
             message.TryGetContentValue<IEnumerable<Item>>(out var items);
@@ -78,7 +78,7 @@ namespace TodoApp.Api.Tests.Controllers
         {
             var expected = Items[0];
             var id = expected.Id;
-            _itemRepository.GetByIdAsync(id).Returns(expected);
+            _itemService.GetItemByIdAsync(id).Returns(expected);
 
             var message = await ExecuteAsyncAction(() => _itemsController.GetItemByIdAsync(id));
             message.TryGetContentValue<Item>(out var item);
@@ -94,14 +94,14 @@ namespace TodoApp.Api.Tests.Controllers
         public async Task PutItemAsync_ReturnsOkWithUpdatedItem()
         {
             var changedItem = Items[3];
-            _itemRepository.UpdateAsync(changedItem).Returns(Task.CompletedTask);
+            _itemService.UpdateItemAsync(changedItem).Returns(Task.CompletedTask);
 
             var message = await ExecuteAsyncAction(() => _itemsController.PutItemAsync(changedItem.Id, changedItem));
 
             Assert.Multiple(() =>
             {
                 Assert.AreEqual(HttpStatusCode.NoContent, message.StatusCode);
-                _itemRepository.Received().UpdateAsync(changedItem);
+                _itemService.Received().UpdateItemAsync(changedItem);
             });
         }
 
@@ -110,7 +110,7 @@ namespace TodoApp.Api.Tests.Controllers
         {
             var deleted = Items[2];
             var id = deleted.Id;
-            _itemRepository.DeleteAsync(id).Returns(deleted);
+            _itemService.DeleteItemAsync(id).Returns(deleted);
 
             var message = await ExecuteAsyncAction(() => _itemsController.DeleteItemAsync(id));
             message.TryGetContentValue<Item>(out var item);
@@ -129,7 +129,7 @@ namespace TodoApp.Api.Tests.Controllers
             var newItem = new Item { Text = expectedItem.Text };
             var headerLocation = new Uri("http://localhost/");
 
-            _itemRepository.CreateAsync(newItem).Returns(expectedItem);
+            _itemService.CreateItemAsync(newItem).Returns(expectedItem);
             _urlService.GetItemUrl(expectedItem.Id).Returns(headerLocation);
 
             var message = await ExecuteAsyncAction(() => _itemsController.PostItemAsync(newItem));

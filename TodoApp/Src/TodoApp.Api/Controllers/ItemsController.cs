@@ -5,7 +5,6 @@ using System.Web.Http;
 using Microsoft.Web.Http;
 using TodoApp.Api.Routes;
 using TodoApp.Contracts.Models;
-using TodoApp.Contracts.Repositories;
 using TodoApp.Contracts.Services;
 
 namespace TodoApp.Api.Controllers
@@ -14,30 +13,30 @@ namespace TodoApp.Api.Controllers
     [RoutePrefix("api/v{version:apiVersion}/items")]
     public class ItemsController : ApiController
     {
-        private readonly IItemRepository _repository;
+        private readonly IItemService _itemService;
         private readonly IUrlService _urlService;
 
-        public ItemsController(IItemRepository repository, IUrlService urlService)
+        public ItemsController(IItemService itemService, IUrlService urlService)
         {
-            _repository = repository;
+            _itemService = itemService;
             _urlService = urlService;
         }
 
         // GET: api/v1/items
         [Route]
         public async Task<IHttpActionResult> GetAllItemsAsync()
-            => Ok(await _repository.GetAllAsync());
+            => Ok(await _itemService.GetAllItemsAsync());
 
         // GET: api/v1/items/5
         [Route("{id}", Name = RouteNames.NewItemRouteName)]
         public async Task<IHttpActionResult> GetItemByIdAsync(Guid id)
-            => Ok(await _repository.GetByIdAsync(id));
+            => Ok(await _itemService.GetItemByIdAsync(id));
 
         // POST: api/v1/items
         [Route]
         public async Task<IHttpActionResult> PostItemAsync([FromBody]Item item)
         {
-            var createdItem = await _repository.CreateAsync(item);
+            var createdItem = await _itemService.CreateItemAsync(item);
             var itemUrl = _urlService.GetItemUrl(createdItem.Id);
 
             return Created(itemUrl, createdItem);
@@ -47,13 +46,13 @@ namespace TodoApp.Api.Controllers
         [Route("{id}")]
         public async Task<IHttpActionResult> PutItemAsync(Guid id, [FromBody]Item item)
         {
-            await _repository.UpdateAsync(item);
+            await _itemService.UpdateItemAsync(item);
             return StatusCode(HttpStatusCode.NoContent);
         }
 
         // DELETE: api/v1/items/5
         [Route("{id}")]
         public async Task<IHttpActionResult> DeleteItemAsync(Guid id)
-            => Ok(await _repository.DeleteAsync(id));
+            => Ok(await _itemService.DeleteItemAsync(id));
     }
 }
