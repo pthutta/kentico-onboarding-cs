@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MongoDB.Bson;
+using MongoDB.Driver;
 using TodoApp.Contracts.Models;
 using TodoApp.Contracts.Repositories;
 using TodoApp.Contracts.Services;
@@ -9,48 +11,41 @@ namespace TodoApp.Database.Repositories
 {
     internal class ItemRepository : IItemRepository
     {
-        private static readonly Item[] Items =
-        {
-            new Item
-            {
-                Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
-                Text = "Learn react"
-            },
-            new Item
-            {
-                Id = Guid.Parse("00000000-0000-0000-0000-000000000002"),
-                Text = "Learn redux"
-            },
-            new Item
-            {
-                Id = Guid.Parse("00000000-0000-0000-0000-000000000003"),
-                Text = "Write Web API"
-            },
-            new Item
-            {
-                Id = Guid.Parse("00000000-0000-0000-0000-000000000004"),
-                Text = "Write dummier controller"
-            }
-        };
+        private readonly IMongoCollection<Item> _items;
 
         public ItemRepository(IConnectionService connectionService)
         {
-            
+            var mongoUrl = new MongoUrl(connectionService.DefaultConnectionString);
+            var client = new MongoClient(mongoUrl);
+            var database = client.GetDatabase(mongoUrl.DatabaseName);
+
+            BsonDefaults.GuidRepresentation = GuidRepresentation.Standard;
+
+            _items = database.GetCollection<Item>("items");
         }
 
         public async Task<IEnumerable<Item>> GetAllAsync()
-            => await Task.FromResult(Items);
+        {
+            var allItems = await _items.FindAsync(FilterDefinition<Item>.Empty);
+            return allItems.ToEnumerable();
+        }
 
         public async Task<Item> GetByIdAsync(Guid id)
-            => await Task.FromResult(Items[0]);
+        {
+            var foundItem = await _items.FindAsync(item => item.Id == id);
+            return foundItem.FirstOrDefault();
+        }
 
         public async Task<Item> CreateAsync(Item item)
-            => await Task.FromResult(Items[1]);
+        {
+            await _items.InsertOneAsync(item);
+            return item;
+        }
 
         public async Task<Item> DeleteAsync(Guid id)
-            => await Task.FromResult(Items[2]);
+            => await _items.FindOneAndDeleteAsync(item => item.Id == id);
 
         public async Task UpdateAsync(Item item)
-            => await Task.CompletedTask;
+            => await _items.FindOneAndReplaceAsync(dbItem => dbItem.Id == item.Id, item);
     }
 }
