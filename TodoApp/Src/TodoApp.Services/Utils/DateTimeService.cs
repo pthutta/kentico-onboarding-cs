@@ -3,7 +3,7 @@ using TodoApp.Contracts.Services;
 
 namespace TodoApp.Services.Utils
 {
-    public class DateTimeService : IDateTimeService
+    internal class DateTimeService : IDateTimeService
     {
         public DateTime CurrentDateTime => DateTime.Now;
     }

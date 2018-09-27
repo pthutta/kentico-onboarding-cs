@@ -30,6 +30,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.Dependency.Tests", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.Services", "Src\TodoApp.Services\TodoApp.Services.csproj", "{6CA39B97-0F92-418C-AD6B-4D7C4658F873}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.Services.Tests", "Tests\TodoApp.Services.Tests\TodoApp.Services.Tests.csproj", "{969C3D92-7C67-4865-92A3-571197DB9692}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,6 +74,10 @@ Global
 		{6CA39B97-0F92-418C-AD6B-4D7C4658F873}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CA39B97-0F92-418C-AD6B-4D7C4658F873}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6CA39B97-0F92-418C-AD6B-4D7C4658F873}.Release|Any CPU.Build.0 = Release|Any CPU
+		{969C3D92-7C67-4865-92A3-571197DB9692}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{969C3D92-7C67-4865-92A3-571197DB9692}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{969C3D92-7C67-4865-92A3-571197DB9692}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{969C3D92-7C67-4865-92A3-571197DB9692}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -86,6 +92,7 @@ Global
 		{F8A7B479-E472-4E75-9124-83E0233B8F6B} = {F4D72F4D-2A2B-49DC-97EA-0DFF352E046E}
 		{0B3362B9-AEF5-4482-9B49-9DF97BA72D47} = {83B9EA13-50D4-4981-8C6B-1C02FB6928FC}
 		{6CA39B97-0F92-418C-AD6B-4D7C4658F873} = {F4D72F4D-2A2B-49DC-97EA-0DFF352E046E}
+		{969C3D92-7C67-4865-92A3-571197DB9692} = {83B9EA13-50D4-4981-8C6B-1C02FB6928FC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D75EA3E1-120F-4E42-997E-F6F5151C4A4A}

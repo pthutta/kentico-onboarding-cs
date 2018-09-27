@@ -42,7 +42,8 @@ namespace TodoApp.Services.Items
 
         public async Task<bool> UpdateItemAsync(Item item)
         {
-            if (_repository.GetByIdAsync(item.Id) == null)
+            var foundItem = await _repository.GetByIdAsync(item.Id);
+            if (foundItem == null)
             {
                 return false;
             }

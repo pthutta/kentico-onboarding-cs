@@ -10,6 +10,7 @@ using NUnit.Framework;
 using TodoApp.Api.Controllers;
 using TodoApp.Api.Tests.Extensions;
 using TodoApp.Contracts.Models;
+using TodoApp.Contracts.Repositories;
 using TodoApp.Contracts.Services;
 
 namespace TodoApp.Api.Tests.Controllers
@@ -19,6 +20,7 @@ namespace TodoApp.Api.Tests.Controllers
     {
         private ItemsController _itemsController;
         private IItemService _itemService;
+        private IItemRepository _itemRepository;
         private IUrlService _urlService;
 
         private static readonly Item[] Items =
@@ -49,8 +51,9 @@ namespace TodoApp.Api.Tests.Controllers
         public void SetUp()
         {
             _itemService = Substitute.For<IItemService>();
+            _itemRepository = Substitute.For<IItemRepository>();
             _urlService = Substitute.For<IUrlService>();
-            _itemsController = new ItemsController(_itemService, _urlService)
+            _itemsController = new ItemsController(_itemService, _itemRepository, _urlService)
             {
                 Request = new HttpRequestMessage(),
                 Configuration = new HttpConfiguration()
@@ -60,7 +63,7 @@ namespace TodoApp.Api.Tests.Controllers
         [Test]
         public async Task GetAllItemsAsync_ReturnsAllItems()
         {
-            _itemService.GetAllItemsAsync().Returns(Items);
+            _itemRepository.GetAllAsync().Returns(Items);
 
             var message = await ExecuteAsyncAction(() => _itemsController.GetAllItemsAsync());
             message.TryGetContentValue<IEnumerable<Item>>(out var items);
@@ -90,17 +93,81 @@ namespace TodoApp.Api.Tests.Controllers
         }
 
         [Test]
+        public async Task GetItemByIdAsync_ReturnsNotFound()
+        {
+            var id = Items[0].Id;
+            _itemService.GetItemByIdAsync(id).Returns((Item) null);
+
+            var message = await ExecuteAsyncAction(() => _itemsController.GetItemByIdAsync(id));
+
+            Assert.That(message.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
+        }
+
+        [Test]
         public async Task PutItemAsync_ReturnsOkWithUpdatedItem()
         {
             var changedItem = Items[3];
-            _itemService.UpdateItemAsync(changedItem).Returns(Task.CompletedTask);
-            _itemService.GetItemByIdAsync(changedItem.Id).Returns(changedItem);
+            _itemService.UpdateItemAsync(changedItem).Returns(true);
 
             var message = await ExecuteAsyncAction(() => _itemsController.PutItemAsync(changedItem.Id, changedItem));
 
             Assert.Multiple(() =>
             {
-                Assert.AreEqual(HttpStatusCode.NoContent, message.StatusCode);
+                Assert.That(message.StatusCode, Is.EqualTo(HttpStatusCode.NoContent));
+                _itemService.Received().UpdateItemAsync(changedItem);
+            });
+        }
+
+        [Test]
+        public async Task PutItemAsync_WithNullItem_ReturnsBadRequest()
+        {
+            var message = await ExecuteAsyncAction(() => _itemsController.PutItemAsync(Guid.Empty, null));
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(message.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+                Assert.That(_itemsController.ModelState.IsValid, Is.False);
+                Assert.That(_itemsController.ModelState.ContainsKey("item"), Is.True);
+            });
+        }
+
+        [Test]
+        public async Task PutItemAsync_WithItemWithIncorrectText_ReturnsBadRequest()
+        {
+            var newItem = Items[1];
+            newItem.Text = string.Empty;
+
+            var message = await ExecuteAsyncAction(() => _itemsController.PutItemAsync(newItem.Id, newItem));
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(message.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+                Assert.That(_itemsController.ModelState.IsValid, Is.False);
+                Assert.That(_itemsController.ModelState.ContainsKey("item.Text"), Is.True);
+            });
+        }
+
+        [Test]
+        public async Task PutItemAsync_ReturnsConflict()
+        {
+            var changedItem = Items[3];
+
+            var message = await ExecuteAsyncAction(() => _itemsController.PutItemAsync(Items[2].Id, changedItem));
+
+            Assert.That(message.StatusCode, Is.EqualTo(HttpStatusCode.Conflict));
+        }
+
+        [Test]
+        public async Task PutItemAsync_ReturnsNotFound()
+        {
+            var changedItem = Items[3];
+            _itemService.UpdateItemAsync(changedItem).Returns(false);
+
+            var message = await ExecuteAsyncAction(() => _itemsController.PutItemAsync(changedItem.Id, changedItem));
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(message.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
                 _itemService.Received().UpdateItemAsync(changedItem);
             });
         }
@@ -110,7 +177,7 @@ namespace TodoApp.Api.Tests.Controllers
         {
             var deleted = Items[2];
             var id = deleted.Id;
-            _itemService.DeleteItemAsync(id).Returns(deleted);
+            _itemRepository.DeleteAsync(id).Returns(deleted);
 
             var message = await ExecuteAsyncAction(() => _itemsController.DeleteItemAsync(id));
             message.TryGetContentValue<Item>(out var item);
@@ -120,6 +187,17 @@ namespace TodoApp.Api.Tests.Controllers
                 Assert.That(message.StatusCode, Is.EqualTo(HttpStatusCode.OK));
                 Assert.That(item, Is.EqualTo(deleted).UsingItemComparer());
             });
+        }
+
+        [Test]
+        public async Task DeleteItemAsync_ReturnsNotFound()
+        {
+            var id = Items[2].Id;
+            _itemRepository.DeleteAsync(id).Returns((Item) null);
+
+            var message = await ExecuteAsyncAction(() => _itemsController.DeleteItemAsync(id));
+
+            Assert.That(message.StatusCode, Is.EqualTo(HttpStatusCode.NotFound));
         }
 
         [Test]
@@ -140,6 +218,50 @@ namespace TodoApp.Api.Tests.Controllers
                 Assert.That(message.StatusCode, Is.EqualTo(HttpStatusCode.Created));
                 Assert.That(message.Headers.Location, Is.EqualTo(headerLocation));
                 Assert.That(item, Is.EqualTo(expectedItem).UsingItemComparer());
+            });
+        }
+
+        [Test]
+        public async Task PostItemAsync_WithNullItem_ReturnsBadRequest()
+        {
+            var message = await ExecuteAsyncAction(() => _itemsController.PostItemAsync(null));
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(message.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+                Assert.That(_itemsController.ModelState.IsValid, Is.False);
+                Assert.That(_itemsController.ModelState.ContainsKey("item"), Is.True);
+            });
+        }
+
+        [Test]
+        public async Task PostItemAsync_WithItemWithIncorrectText_ReturnsBadRequest()
+        {
+            var newItem = Items[1];
+            newItem.Text = string.Empty;
+
+            var message = await ExecuteAsyncAction(() => _itemsController.PostItemAsync(newItem));
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(message.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+                Assert.That(_itemsController.ModelState.IsValid, Is.False);
+                Assert.That(_itemsController.ModelState.ContainsKey("item.Text"), Is.True);
+            });
+        }
+
+        [Test]
+        public async Task PostItemAsync_WithItemWithSetId_ReturnsBadRequest()
+        {
+            var newItem = Items[1];
+
+            var message = await ExecuteAsyncAction(() => _itemsController.PostItemAsync(newItem));
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(message.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+                Assert.That(_itemsController.ModelState.IsValid, Is.False);
+                Assert.That(_itemsController.ModelState.ContainsKey("item.Id"), Is.True);
             });
         }
 
