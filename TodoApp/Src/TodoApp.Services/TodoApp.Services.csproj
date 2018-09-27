@@ -39,6 +39,8 @@
     <Compile Include="Items\ItemService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServicesBootstrap.cs" />
+    <Compile Include="Utils\DateTimeService.cs" />
+    <Compile Include="Utils\GuidService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TodoApp.Contracts\TodoApp.Contracts.csproj">

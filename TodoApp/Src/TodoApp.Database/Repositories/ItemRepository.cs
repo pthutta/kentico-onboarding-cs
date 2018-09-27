@@ -19,8 +19,6 @@ namespace TodoApp.Database.Repositories
             var client = new MongoClient(mongoUrl);
             var database = client.GetDatabase(mongoUrl.DatabaseName);
 
-            BsonDefaults.GuidRepresentation = GuidRepresentation.Standard;
-
             _items = database.GetCollection<Item>("items");
         }
 
