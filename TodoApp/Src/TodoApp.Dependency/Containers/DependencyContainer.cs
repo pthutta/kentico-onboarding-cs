@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using TodoApp.Contracts.Bootstraps;
 using TodoApp.Contracts.Containers;
+using TodoApp.Contracts.Enums;
 using TodoApp.Contracts.Exceptions;
+using TodoApp.Dependency.LifetimeManagers;
 using Unity;
 using Unity.Exceptions;
 using Unity.Injection;
@@ -21,18 +23,18 @@ namespace TodoApp.Dependency.Containers
             where TBootstrap : IBootstrap, new()
             => new TBootstrap().RegisterTypes(this);
 
-        public IDependencyContainer RegisterType<TFrom, TTo>() 
+        public IDependencyContainer RegisterType<TFrom, TTo>(LifetimeManagerType lifetimeManagerType = LifetimeManagerType.SingletonPerRequest) 
             where TTo : TFrom
         {
-            Container.RegisterType<TFrom, TTo>(new HierarchicalLifetimeManager());
+            Container.RegisterType<TFrom, TTo>(lifetimeManagerType.GetLifetimeManager());
 
             return this;
         }
 
-        public IDependencyContainer RegisterType<TTo>(Func<TTo> instanceFactory)
+        public IDependencyContainer RegisterType<TTo>(Func<TTo> instanceFactory, LifetimeManagerType lifetimeManagerType = LifetimeManagerType.SingletonPerRequest)
         {
             Container.RegisterType<TTo>(
-                new HierarchicalLifetimeManager(),
+                lifetimeManagerType.GetLifetimeManager(),
                 new InjectionFactory(_ => instanceFactory())
             );
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TodoApp.Contracts.Bootstraps;
 using TodoApp.Contracts.Containers;
+using TodoApp.Contracts.Enums;
 
 namespace TodoApp.Dependency.Tests.Mocks.Containers
 {
@@ -13,13 +14,13 @@ namespace TodoApp.Dependency.Tests.Mocks.Containers
             where TBootstrap : IBootstrap, new()
             => new TBootstrap().RegisterTypes(this);
 
-        public IDependencyContainer RegisterType<TFrom, TTo>() where TTo : TFrom
+        public IDependencyContainer RegisterType<TFrom, TTo>(LifetimeManagerType lifetimeManagerType) where TTo : TFrom
         {
             _registeredTypes.Add(typeof(TFrom));
             return this;
         }
 
-        public IDependencyContainer RegisterType<TTo>(Func<TTo> instanceFactory)
+        public IDependencyContainer RegisterType<TTo>(Func<TTo> instanceFactory, LifetimeManagerType lifetimeManagerType)
         {
             _registeredTypes.Add(typeof(TTo));
             return this;
