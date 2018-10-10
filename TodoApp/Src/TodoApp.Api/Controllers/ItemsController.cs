@@ -34,6 +34,11 @@ namespace TodoApp.Api.Controllers
         [Route("{id}", Name = RouteNames.NewItemRouteName)]
         public async Task<IHttpActionResult> GetItemByIdAsync(Guid id)
         {
+            if (!IsIdValid(id))
+            {
+                return BadRequest(ModelState);
+            }
+
             var item = await _itemService.GetItemByIdAsync(id);
 
             if (item == null)
@@ -62,19 +67,14 @@ namespace TodoApp.Api.Controllers
         [Route("{id}")]
         public async Task<IHttpActionResult> PutItemAsync(Guid id, [FromBody]Item item)
         {
-            if (!IsItemValid(item))
+            if (!IsIdValid(id) || !PutIsItemValid(id, item))
             {
                 return BadRequest(ModelState);
             }
 
-            if (item.Id != id)
-            {
-                return Conflict();
-            }
-
             if (!await _itemService.UpdateItemAsync(item))
             {
-                return NotFound();
+                return await PostItemAsync(item);
             }
 
             return StatusCode(HttpStatusCode.NoContent);
@@ -84,6 +84,11 @@ namespace TodoApp.Api.Controllers
         [Route("{id}")]
         public async Task<IHttpActionResult> DeleteItemAsync(Guid id)
         {
+            if (!IsIdValid(id))
+            {
+                return BadRequest(ModelState);
+            }
+
             var deletedItem = await _itemRepository.DeleteAsync(id);
 
             if (deletedItem == null)
@@ -95,11 +100,29 @@ namespace TodoApp.Api.Controllers
 
         private bool PostIsItemValid(Item item)
         {
-            IsItemValid(item);
-
-            if (item != null && item.Id != Guid.Empty)
+            if (!IsItemValid(item))
             {
-                ModelState.AddModelError("item.Id", "Item id must not be set.");
+                return false;
+            }
+
+            if (item.Id != Guid.Empty)
+            {
+                ModelState.AddModelError(nameof(item.Id), "Resource id must not be set.");
+            }
+
+            return ModelState.IsValid;
+        }
+
+        private bool PutIsItemValid(Guid id, Item item)
+        {
+            if (!IsItemValid(item))
+            {
+                return false;
+            }
+
+            if (item.Id != id)
+            {
+                ModelState.AddModelError(nameof(item.Id), "Resource id is not the same as provided id.");
             }
 
             return ModelState.IsValid;
@@ -109,12 +132,33 @@ namespace TodoApp.Api.Controllers
         {
             if (item == null)
             {
-                ModelState.AddModelError("item", "Provided item is null.");
+                ModelState.AddModelError("", "Provided Resource is null.");
                 return false;
             }
+
             if (item.Text.Trim() == string.Empty)
             {
-                ModelState.AddModelError("item.Text", "Item text must be non-empty.");
+                ModelState.AddModelError(nameof(item.Text), "Resource text must be non-empty.");
+            }
+
+            if (item.CreationTime != default(DateTime))
+            {
+                ModelState.AddModelError(nameof(item.CreationTime), "Resource creation time must not be set.");
+            }
+
+            if (item.LastUpdateTime != default(DateTime))
+            {
+                ModelState.AddModelError(nameof(item.LastUpdateTime), "Resource last update time must not be set.");
+            }
+
+            return ModelState.IsValid;
+        }
+
+        private bool IsIdValid(Guid id)
+        {
+            if (id == Guid.Empty)
+            {
+                ModelState.AddModelError("", "Provided id is empty.");
             }
 
             return ModelState.IsValid;
