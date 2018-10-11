@@ -46,7 +46,9 @@
     <Compile Include="Services\IConnectionService.cs" />
     <Compile Include="Services\IDateTimeService.cs" />
     <Compile Include="Services\IGuidService.cs" />
-    <Compile Include="Services\IItemService.cs" />
+    <Compile Include="Services\IItemCreatingService.cs" />
+    <Compile Include="Services\IItemObtainingService.cs" />
+    <Compile Include="Services\IItemUpdatingService.cs" />
     <Compile Include="Services\IUrlService.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -12,6 +12,8 @@ namespace TodoApp.Services
             => container
                 .RegisterType<IGuidService, GuidService>()
                 .RegisterType<IDateTimeService, DateTimeService>()
-                .RegisterType<IItemService, ItemService>();
+                .RegisterType<IItemObtainingService, ItemObtainingService>()
+                .RegisterType<IItemCreatingService, ItemCreatingService>()
+                .RegisterType<IItemUpdatingService, ItemUpdatingService>();
     }
 }

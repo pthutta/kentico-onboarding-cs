@@ -14,13 +14,18 @@ namespace TodoApp.Api.Controllers
     [RoutePrefix("api/v{version:apiVersion}/items")]
     public class ItemsController : ApiController
     {
-        private readonly IItemService _itemService;
+        private readonly IItemObtainingService _itemObtainingService;
+        private readonly IItemCreatingService _itemCreatingService;
+        private readonly IItemUpdatingService _itemUpdatingService;
         private readonly IItemRepository _itemRepository;
         private readonly IUrlService _urlService;
 
-        public ItemsController(IItemService itemService, IItemRepository itemRepository, IUrlService urlService)
+        public ItemsController(IItemObtainingService itemObtainingObtainingService, IItemCreatingService itemCreatingService,
+            IItemUpdatingService itemUpdatingService, IItemRepository itemRepository, IUrlService urlService)
         {
-            _itemService = itemService;
+            _itemObtainingService = itemObtainingObtainingService;
+            _itemCreatingService = itemCreatingService;
+            _itemUpdatingService = itemUpdatingService;
             _itemRepository = itemRepository;
             _urlService = urlService;
         }
@@ -39,12 +44,13 @@ namespace TodoApp.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var item = await _itemService.GetItemByIdAsync(id);
-
-            if (item == null)
+            if (!await _itemObtainingService.Exists(id))
             {
                 return NotFound();
             }
+
+            var item = await _itemObtainingService.GetByIdAsync(id);
+
             return Ok(item);
         }
 
@@ -57,7 +63,7 @@ namespace TodoApp.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var createdItem = await _itemService.CreateItemAsync(item);
+            var createdItem = await _itemCreatingService.CreateAsync(item);
             var itemUrl = _urlService.GetItemUrl(createdItem.Id);
 
             return Created(itemUrl, createdItem);
@@ -72,10 +78,15 @@ namespace TodoApp.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (!await _itemService.UpdateItemAsync(item))
+            if (!await _itemObtainingService.Exists(id))
             {
-                return await PostItemAsync(item);
+                return await PostItemAsync(new Item
+                {
+                    Text = item.Text
+                });
             }
+
+            await _itemUpdatingService.UpdateAsync(item);
 
             return StatusCode(HttpStatusCode.NoContent);
         }
@@ -89,12 +100,13 @@ namespace TodoApp.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var deletedItem = await _itemRepository.DeleteAsync(id);
-
-            if (deletedItem == null)
+            if (!await _itemObtainingService.Exists(id))
             {
                 return NotFound();
             }
+
+            var deletedItem = await _itemRepository.DeleteAsync(id);
+
             return Ok(deletedItem);
         }
 
