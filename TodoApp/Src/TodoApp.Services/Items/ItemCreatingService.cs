@@ -2,26 +2,27 @@
 using TodoApp.Contracts.Models;
 using TodoApp.Contracts.Repositories;
 using TodoApp.Contracts.Services;
+using TodoApp.Contracts.Wrappers;
 
 namespace TodoApp.Services.Items
 {
     internal class ItemCreatingService : IItemCreatingService
     {
         private readonly IItemRepository _repository;
-        private readonly IDateTimeService _dateTimeService;
-        private readonly IGuidService _guidService;
+        private readonly IDateTimeWrapper _dateTimeWrapper;
+        private readonly IGuidWrapper _guidWrapper;
 
-        public ItemCreatingService(IItemRepository repository, IDateTimeService dateTimeService, IGuidService guidService)
+        public ItemCreatingService(IItemRepository repository, IDateTimeWrapper dateTimeWrapper, IGuidWrapper guidWrapper)
         {
             _repository = repository;
-            _dateTimeService = dateTimeService;
-            _guidService = guidService;
+            _dateTimeWrapper = dateTimeWrapper;
+            _guidWrapper = guidWrapper;
         }
 
         public async Task<Item> CreateAsync(Item item)
         {
-            item.Id = _guidService.GenerateGuid;
-            item.CreationTime = _dateTimeService.CurrentDateTime;
+            item.Id = _guidWrapper.GenerateGuid;
+            item.CreationTime = _dateTimeWrapper.CurrentDateTime;
             item.LastUpdateTime = item.CreationTime;
 
             return await _repository.CreateAsync(item);

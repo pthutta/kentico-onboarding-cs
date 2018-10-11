@@ -2,6 +2,7 @@
 using TodoApp.Contracts.Models;
 using TodoApp.Contracts.Repositories;
 using TodoApp.Contracts.Services;
+using TodoApp.Contracts.Wrappers;
 
 namespace TodoApp.Services.Items
 {
@@ -9,13 +10,13 @@ namespace TodoApp.Services.Items
     {
         private readonly IItemObtainingService _itemObtainingService;
         private readonly IItemRepository _repository;
-        private readonly IDateTimeService _dateTimeService;
+        private readonly IDateTimeWrapper _dateTimeWrapper;
 
-        public ItemUpdatingService(IItemObtainingService itemObtainingService, IItemRepository repository, IDateTimeService dateTimeService)
+        public ItemUpdatingService(IItemObtainingService itemObtainingService, IItemRepository repository, IDateTimeWrapper dateTimeWrapper)
         {
             _itemObtainingService = itemObtainingService;
             _repository = repository;
-            _dateTimeService = dateTimeService;
+            _dateTimeWrapper = dateTimeWrapper;
         }
 
         public async Task UpdateAsync(Item item)
@@ -26,7 +27,7 @@ namespace TodoApp.Services.Items
             }
             var foundItem = await _itemObtainingService.GetByIdAsync(item.Id);
 
-            foundItem.LastUpdateTime = _dateTimeService.CurrentDateTime;
+            foundItem.LastUpdateTime = _dateTimeWrapper.CurrentDateTime;
             foundItem.Text = item.Text;
 
             await _repository.UpdateAsync(foundItem);

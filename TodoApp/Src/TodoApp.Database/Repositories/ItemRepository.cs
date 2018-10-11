@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using MongoDB.Driver;
 using TodoApp.Contracts.Models;
 using TodoApp.Contracts.Repositories;
-using TodoApp.Contracts.Services;
+using TodoApp.Contracts.Wrappers;
 
 namespace TodoApp.Database.Repositories
 {
@@ -14,9 +14,9 @@ namespace TodoApp.Database.Repositories
 
         private readonly IMongoCollection<Item> _items;
 
-        public ItemRepository(IConnectionService connectionService)
+        public ItemRepository(IConnectionStringWrapper connectionStringWrapper)
         {
-            var mongoUrl = new MongoUrl(connectionService.DefaultConnectionString);
+            var mongoUrl = new MongoUrl(connectionStringWrapper.DefaultConnectionString);
             var client = new MongoClient(mongoUrl);
             var database = client.GetDatabase(mongoUrl.DatabaseName);
 

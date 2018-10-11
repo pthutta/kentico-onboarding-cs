@@ -41,8 +41,8 @@
     <Compile Include="Items\ItemUpdatingService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServicesBootstrap.cs" />
-    <Compile Include="Wrappers\DateTimeService.cs" />
-    <Compile Include="Wrappers\GuidService.cs" />
+    <Compile Include="Wrappers\DateTimeWrapper.cs" />
+    <Compile Include="Wrappers\GuidWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TodoApp.Contracts\TodoApp.Contracts.csproj">

@@ -1,9 +1,9 @@
 ﻿using System.Configuration;
-using TodoApp.Contracts.Services;
+using TodoApp.Contracts.Wrappers;
 
-namespace TodoApp.ApiServices.Services
+namespace TodoApp.ApiServices.Wrappers
 {
-    public class ConnectionService : IConnectionService
+    public class ConnectionStringWrapper : IConnectionStringWrapper
     {
         public string DefaultConnectionString =>
             ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;

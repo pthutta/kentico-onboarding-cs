@@ -2,8 +2,9 @@
 using TodoApp.Contracts.Containers;
 using TodoApp.Contracts.Enums;
 using TodoApp.Contracts.Services;
+using TodoApp.Contracts.Wrappers;
 using TodoApp.Services.Items;
-using TodoApp.Services.Utils;
+using TodoApp.Services.Wrappers;
 
 namespace TodoApp.Services
 {
@@ -11,8 +12,8 @@ namespace TodoApp.Services
     {
         public IDependencyContainer RegisterTypes(IDependencyContainer container)
             => container
-                .RegisterType<IGuidService, GuidService>(LifetimeManagerType.SingletonPerApplication)
-                .RegisterType<IDateTimeService, DateTimeService>(LifetimeManagerType.SingletonPerApplication)
+                .RegisterType<IGuidWrapper, GuidWrapper>(LifetimeManagerType.SingletonPerApplication)
+                .RegisterType<IDateTimeWrapper, DateTimeWrapper>(LifetimeManagerType.SingletonPerApplication)
                 .RegisterType<IItemObtainingService, ItemObtainingService>()
                 .RegisterType<IItemCreatingService, ItemCreatingService>()
                 .RegisterType<IItemUpdatingService, ItemUpdatingService>();

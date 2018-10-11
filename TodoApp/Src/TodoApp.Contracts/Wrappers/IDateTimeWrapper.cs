@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace TodoApp.Contracts.Services
+namespace TodoApp.Contracts.Wrappers
 {
-    public interface IDateTimeService
+    public interface IDateTimeWrapper
     {
         DateTime CurrentDateTime { get; }
     }
