@@ -44,12 +44,12 @@ namespace TodoApp.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (!await _itemObtainingService.Exists(id))
+            if (!await _itemObtainingService.ExistsAsync(id))
             {
                 return NotFound();
             }
 
-            var item = await _itemObtainingService.GetByIdAsync(id);
+            var item = _itemObtainingService.GetById(id);
 
             return Ok(item);
         }
@@ -78,7 +78,7 @@ namespace TodoApp.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (!await _itemObtainingService.Exists(id))
+            if (!await _itemObtainingService.ExistsAsync(id))
             {
                 return await PostItemAsync(new Item
                 {
@@ -100,7 +100,7 @@ namespace TodoApp.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (!await _itemObtainingService.Exists(id))
+            if (!await _itemObtainingService.ExistsAsync(id))
             {
                 return NotFound();
             }
@@ -112,14 +112,11 @@ namespace TodoApp.Api.Controllers
 
         private bool PostIsItemValid(Item item)
         {
-            if (!IsItemValid(item))
-            {
-                return false;
-            }
+            IsItemValid(item);
 
-            if (item.Id != Guid.Empty)
+            if (item != null && item.Id != Guid.Empty)
             {
-                ModelState.AddModelError(nameof(item.Id), "Resource id must not be set.");
+                ModelState.AddModelError(nameof(item.Id), "Item id must not be set.");
             }
 
             return ModelState.IsValid;
@@ -127,43 +124,38 @@ namespace TodoApp.Api.Controllers
 
         private bool PutIsItemValid(Guid id, Item item)
         {
-            if (!IsItemValid(item))
-            {
-                return false;
-            }
+            IsItemValid(item);
 
-            if (item.Id != id)
+            if (item != null && item.Id != id)
             {
-                ModelState.AddModelError(nameof(item.Id), "Resource id is not the same as provided id.");
+                ModelState.AddModelError(nameof(item.Id), "Item id is not the same as provided id.");
             }
 
             return ModelState.IsValid;
         }
 
-        private bool IsItemValid(Item item)
+        private void IsItemValid(Item item)
         {
             if (item == null)
             {
-                ModelState.AddModelError("", "Provided Resource is null.");
-                return false;
+                ModelState.AddModelError("", "Provided item is null.");
+                return;
             }
 
             if (item.Text.Trim() == string.Empty)
             {
-                ModelState.AddModelError(nameof(item.Text), "Resource text must be non-empty.");
+                ModelState.AddModelError(nameof(item.Text), "Item text must be non-empty.");
             }
 
             if (item.CreationTime != default(DateTime))
             {
-                ModelState.AddModelError(nameof(item.CreationTime), "Resource creation time must not be set.");
+                ModelState.AddModelError(nameof(item.CreationTime), "Item creation time must not be set.");
             }
 
             if (item.LastUpdateTime != default(DateTime))
             {
-                ModelState.AddModelError(nameof(item.LastUpdateTime), "Resource last update time must not be set.");
+                ModelState.AddModelError(nameof(item.LastUpdateTime), "Item last update time must not be set.");
             }
-
-            return ModelState.IsValid;
         }
 
         private bool IsIdValid(Guid id)

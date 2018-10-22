@@ -33,8 +33,8 @@ namespace TodoApp.Services.Tests.Items
             };
             _itemRepository.GetByIdAsync(item.Id).Returns(item);
 
-            var foundItem = await _itemObtainingService.GetByIdAsync(item.Id);
-            await _itemObtainingService.GetByIdAsync(item.Id);
+            var foundItem = await _itemObtainingService.GetById(item.Id);
+            await _itemObtainingService.GetById(item.Id);
             
             Assert.Multiple(() =>
             {
@@ -49,7 +49,7 @@ namespace TodoApp.Services.Tests.Items
             var id = Guid.Parse("F7148339-E162-4657-B886-C29BF6A2D312");
             _itemRepository.GetByIdAsync(id).Returns((Item) null);
 
-            var foundItem = await _itemObtainingService.GetByIdAsync(id);
+            var foundItem = await _itemObtainingService.GetById(id);
 
             Assert.That(foundItem, Is.Null);
         }
@@ -64,7 +64,7 @@ namespace TodoApp.Services.Tests.Items
             };
             _itemRepository.GetByIdAsync(item.Id).Returns(item);
 
-            var exists = await _itemObtainingService.Exists(item.Id);
+            var exists = await _itemObtainingService.ExistsAsync(item.Id);
 
             Assert.That(exists, Is.True);
         }
@@ -75,7 +75,7 @@ namespace TodoApp.Services.Tests.Items
             var id = Guid.Parse("F7148339-E162-4657-B886-C29BF6A2D312");
             _itemRepository.GetByIdAsync(id).Returns((Item) null);
 
-            var exists = await _itemObtainingService.Exists(id);
+            var exists = await _itemObtainingService.ExistsAsync(id);
 
             Assert.That(exists, Is.False);
         }

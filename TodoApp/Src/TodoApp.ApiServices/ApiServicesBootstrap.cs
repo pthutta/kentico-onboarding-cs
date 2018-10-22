@@ -14,8 +14,11 @@ namespace TodoApp.ApiServices
     {
         public IDependencyContainer RegisterTypes(IDependencyContainer container) 
             => container
-                .RegisterType(() => HttpContext.Current.Items["MS_HttpRequestMessage"] as HttpRequestMessage)
-                .RegisterType<IConnectionStringWrapper, ConnectionStringWrapper>(LifetimeManagerType.SingletonPerApplication)
-                .RegisterType<IUrlService, UrlService>();
+                .RegisterType(CurrentHttpRequestMessage, Lifecycle.SingletonPerRequest)
+                .RegisterType<IConnectionStringWrapper, ConnectionStringWrapper>(Lifecycle.SingletonPerApplication)
+                .RegisterType<IUrlService, UrlService>(Lifecycle.SingletonPerRequest);
+
+        private static HttpRequestMessage CurrentHttpRequestMessage()
+            => HttpContext.Current.Items["MS_HttpRequestMessage"] as HttpRequestMessage;
     }
 }

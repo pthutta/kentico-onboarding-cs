@@ -38,8 +38,9 @@
   <ItemGroup>
     <Compile Include="Bootstraps\IBootstrap.cs" />
     <Compile Include="Containers\IDependencyContainer.cs" />
-    <Compile Include="Enums\LifetimeManagerType.cs" />
+    <Compile Include="Enums\Lifecycle.cs" />
     <Compile Include="Exceptions\DependencyResolutionFailedException.cs" />
+    <Compile Include="Exceptions\ItemNotFoundException.cs" />
     <Compile Include="Repositories\IItemRepository.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

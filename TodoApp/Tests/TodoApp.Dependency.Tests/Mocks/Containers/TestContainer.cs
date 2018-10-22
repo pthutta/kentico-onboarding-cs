@@ -6,7 +6,7 @@ using TodoApp.Contracts.Enums;
 
 namespace TodoApp.Dependency.Tests.Mocks.Containers
 {
-    internal class TestContainer : IDependencyContainer
+    internal sealed class TestContainer : IDependencyContainer
     {
         private readonly List<Type> _registeredTypes = new List<Type>();
 
@@ -14,13 +14,13 @@ namespace TodoApp.Dependency.Tests.Mocks.Containers
             where TBootstrap : IBootstrap, new()
             => new TBootstrap().RegisterTypes(this);
 
-        public IDependencyContainer RegisterType<TFrom, TTo>(LifetimeManagerType lifetimeManagerType) where TTo : TFrom
+        public IDependencyContainer RegisterType<TFrom, TTo>(Lifecycle lifecycle) where TTo : TFrom
         {
             _registeredTypes.Add(typeof(TFrom));
             return this;
         }
 
-        public IDependencyContainer RegisterType<TTo>(Func<TTo> instanceFactory, LifetimeManagerType lifetimeManagerType)
+        public IDependencyContainer RegisterType<TTo>(Func<TTo> instanceFactory, Lifecycle lifecycle)
         {
             _registeredTypes.Add(typeof(TTo));
             return this;

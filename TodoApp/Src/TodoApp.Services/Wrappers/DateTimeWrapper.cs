@@ -5,6 +5,6 @@ namespace TodoApp.Services.Wrappers
 {
     internal class DateTimeWrapper : IDateTimeWrapper
     {
-        public DateTime CurrentDateTime => DateTime.Now;
+        public DateTime CurrentDateTime() => DateTime.UtcNow;
     }
 }

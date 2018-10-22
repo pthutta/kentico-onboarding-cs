@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using TodoApp.Contracts.Exceptions;
 using TodoApp.Contracts.Models;
 using TodoApp.Contracts.Repositories;
 using TodoApp.Contracts.Services;
@@ -15,7 +16,20 @@ namespace TodoApp.Services.Items
         public ItemObtainingService(IItemRepository repository)
             => _repository = repository;
 
-        public async Task<Item> GetByIdAsync(Guid id)
+        public Item GetById(Guid id)
+        {
+            if (_cachedItem == null)
+            {
+                throw new ItemNotFoundException("Item with id=" + id + " was not found.");
+            }
+
+            return _cachedItem;
+        }
+
+        public async Task<bool> ExistsAsync(Guid id)
+            => await GetItemAsync(id) != null;
+
+        private async Task<Item> GetItemAsync(Guid id)
         {
             if (_cachedItem?.Id != id)
             {
@@ -23,11 +37,6 @@ namespace TodoApp.Services.Items
             }
 
             return _cachedItem;
-        }
-
-        public async Task<bool> Exists(Guid id)
-        {
-            return await GetByIdAsync(id) != null;
         }
     }
 }

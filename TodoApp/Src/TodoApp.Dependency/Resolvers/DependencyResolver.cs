@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http.Formatting;
 using System.Web.Http.Controllers;
 using System.Web.Http.Dependencies;
@@ -15,7 +16,7 @@ using TodoApp.Contracts.Exceptions;
 
 namespace TodoApp.Dependency.Resolvers
 {
-    internal class DependencyResolver : IDependencyResolver
+    internal sealed class DependencyResolver : IDependencyResolver
     {
         private static readonly Type[] ExcludedTypes =
         {
@@ -32,16 +33,16 @@ namespace TodoApp.Dependency.Resolvers
             typeof(IReportApiVersions)
         };
 
-        protected IDependencyContainer Container;
+        private readonly IDependencyContainer _container;
 
         public DependencyResolver(IDependencyContainer container)
-            => Container = container;
+            => _container = container;
 
         public object GetService(Type serviceType)
-            => GetService(() => Container.Resolve(serviceType), serviceType);
+            => GetService(() => _container.Resolve(serviceType), serviceType);
 
         public IEnumerable<object> GetServices(Type serviceType)
-            => GetService(() => Container.ResolveAll(serviceType), serviceType) ?? new List<object>();
+            => GetService(() => _container.ResolveAll(serviceType), serviceType) ?? new List<object>();
 
         private static TResult GetService<TResult>(Func<TResult> resolve, Type serviceType)
             where TResult: class
@@ -59,14 +60,14 @@ namespace TodoApp.Dependency.Resolvers
 
         public IDependencyScope BeginScope()
         {
-            var child = Container.CreateChildContainer();
+            var child = _container.CreateChildContainer();
             return new DependencyResolver(child);
         }
 
         public void Dispose()
-            => Container.Dispose();
+            => _container.Dispose();
 
         private static bool IsInExcludedTypes(Type serviceType)
-            => Array.Exists(ExcludedTypes, type => type == serviceType);
+            => ExcludedTypes.Any(type => type == serviceType);
     }
 }

@@ -6,8 +6,8 @@ namespace TodoApp.Contracts.Services
 {
     public interface IItemObtainingService
     {
-        Task<Item> GetByIdAsync(Guid id);
+        Item GetById(Guid id);
 
-        Task<bool> Exists(Guid id);
+        Task<bool> ExistsAsync(Guid id);
     }
 }

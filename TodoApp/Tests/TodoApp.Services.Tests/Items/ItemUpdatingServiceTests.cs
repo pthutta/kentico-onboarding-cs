@@ -22,7 +22,7 @@ namespace TodoApp.Services.Tests.Items
         public void SetUp()
         {
             _dateTimeWrapper = Substitute.For<IDateTimeWrapper>();
-            _dateTimeWrapper.CurrentDateTime.Returns(new DateTime(2018, 9, 27));
+            _dateTimeWrapper.CurrentDateTime().Returns(new DateTime(2018, 9, 27));
 
             _itemObtainingService = Substitute.For<IItemObtainingService>();
             _itemRepository = Substitute.For<IItemRepository>();
@@ -37,14 +37,14 @@ namespace TodoApp.Services.Tests.Items
             {
                 Id = Guid.Parse("F7148339-E162-4657-B886-C29BF6A2D312"),
                 Text = "This is a text.",
-                CreationTime = _dateTimeWrapper.CurrentDateTime,
-                LastUpdateTime = _dateTimeWrapper.CurrentDateTime
+                CreationTime = _dateTimeWrapper.CurrentDateTime(),
+                LastUpdateTime = _dateTimeWrapper.CurrentDateTime()
             };
             var currentTime = new DateTime(2018, 10, 1);
 
-            _itemObtainingService.Exists(updatedItem.Id).Returns(true);
-            _itemObtainingService.GetByIdAsync(updatedItem.Id).Returns(updatedItem);
-            _dateTimeWrapper.CurrentDateTime.Returns(currentTime);
+            _itemObtainingService.ExistsAsync(updatedItem.Id).Returns(true);
+            _itemObtainingService.GetById(updatedItem.Id).Returns(updatedItem);
+            _dateTimeWrapper.CurrentDateTime().Returns(currentTime);
 
             await _itemUpdatingService.UpdateAsync(updatedItem);
 
@@ -62,11 +62,11 @@ namespace TodoApp.Services.Tests.Items
             {
                 Id = Guid.Parse("F7148339-E162-4657-B886-C29BF6A2D312"),
                 Text = "This is a text.",
-                CreationTime = _dateTimeWrapper.CurrentDateTime,
-                LastUpdateTime = _dateTimeWrapper.CurrentDateTime
+                CreationTime = _dateTimeWrapper.CurrentDateTime(),
+                LastUpdateTime = _dateTimeWrapper.CurrentDateTime()
             };
 
-            _itemObtainingService.Exists(updatedItem.Id).Returns(false);
+            _itemObtainingService.ExistsAsync(updatedItem.Id).Returns(false);
 
             await _itemUpdatingService.UpdateAsync(updatedItem);
 

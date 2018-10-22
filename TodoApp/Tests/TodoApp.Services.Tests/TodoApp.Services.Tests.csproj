@@ -62,8 +62,8 @@
     <Compile Include="Items\ItemObtainingServiceTests.cs" />
     <Compile Include="Items\ItemUpdatingServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utils\DateTimeServiceTests.cs" />
-    <Compile Include="Utils\GuidServiceTests.cs" />
+    <Compile Include="Wrappers\DateTimeServiceTests.cs" />
+    <Compile Include="Wrappers\GuidServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

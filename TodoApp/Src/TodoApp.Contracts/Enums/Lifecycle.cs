@@ -1,6 +1,6 @@
 ﻿namespace TodoApp.Contracts.Enums
 {
-    public enum LifetimeManagerType
+    public enum Lifecycle
     {
         SingletonPerApplication,
         SingletonPerRequest

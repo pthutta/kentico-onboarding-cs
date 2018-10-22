@@ -21,11 +21,16 @@ namespace TodoApp.Services.Items
 
         public async Task<Item> CreateAsync(Item item)
         {
-            item.Id = _guidWrapper.GenerateGuid;
-            item.CreationTime = _dateTimeWrapper.CurrentDateTime;
-            item.LastUpdateTime = item.CreationTime;
+            var currentTime = _dateTimeWrapper.CurrentDateTime();
+            var newItem = new Item
+            {
+                Id = _guidWrapper.GenerateGuid(),
+                Text = item.Text,
+                CreationTime = currentTime,
+                LastUpdateTime = currentTime
+            };
 
-            return await _repository.CreateAsync(item);
+            return await _repository.CreateAsync(newItem);
         }
     }
 }

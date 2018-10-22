@@ -4,6 +4,6 @@ namespace TodoApp.Contracts.Wrappers
 {
     public interface IGuidWrapper
     {
-        Guid GenerateGuid { get; }
+        Guid GenerateGuid();
     }
 }

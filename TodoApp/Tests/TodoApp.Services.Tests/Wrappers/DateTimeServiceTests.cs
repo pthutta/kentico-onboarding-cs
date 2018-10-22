@@ -3,7 +3,7 @@ using NUnit.Framework;
 using TodoApp.Contracts.Wrappers;
 using TodoApp.Services.Wrappers;
 
-namespace TodoApp.Services.Tests.Utils
+namespace TodoApp.Services.Tests.Wrappers
 {
     [TestFixture]
     public class DateTimeServiceTests
@@ -20,9 +20,9 @@ namespace TodoApp.Services.Tests.Utils
         public void CurrentDateTime_ReturnsNotTooDistantTimes()
         {
             const int milliseconds = 1000;
-            var time1 = _dateTimeWrapper.CurrentDateTime;
+            var time1 = _dateTimeWrapper.CurrentDateTime();
             Thread.Sleep(milliseconds);
-            var time2 = _dateTimeWrapper.CurrentDateTime;
+            var time2 = _dateTimeWrapper.CurrentDateTime();
 
             var difference = time1.Subtract(time2);
 

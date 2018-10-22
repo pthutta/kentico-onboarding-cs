@@ -2,9 +2,11 @@
 using System.Web.Http.Dependencies;
 using TodoApp.ApiServices;
 using TodoApp.Contracts.Containers;
+using TodoApp.Contracts.Enums;
 using TodoApp.Contracts.Routes;
 using TodoApp.Database;
 using TodoApp.Dependency.Containers;
+using TodoApp.Dependency.Extensions;
 using TodoApp.Dependency.Resolvers;
 using TodoApp.Services;
 using Unity;
@@ -28,7 +30,7 @@ namespace TodoApp.Dependency
         internal void RegisterDependencies(IDependencyContainer container)
         {
             container
-                .RegisterType(() => _routeNames)
+                .RegisterType(() => _routeNames, Lifecycle.SingletonPerRequest)
                 .RegisterBootstrapper<DatabaseBootstrap>()
                 .RegisterBootstrapper<ApiServicesBootstrap>()
                 .RegisterBootstrapper<ServicesBootstrap>();

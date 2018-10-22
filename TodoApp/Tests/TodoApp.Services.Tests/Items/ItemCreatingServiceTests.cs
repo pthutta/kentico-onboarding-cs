@@ -23,10 +23,10 @@ namespace TodoApp.Services.Tests.Items
         public void SetUp()
         {
             _dateTimeWrapper = Substitute.For<IDateTimeWrapper>();
-            _dateTimeWrapper.CurrentDateTime.Returns(new DateTime(2018, 9, 27));
+            _dateTimeWrapper.CurrentDateTime().Returns(new DateTime(2018, 9, 27));
 
             _guidWrapper = Substitute.For<IGuidWrapper>();
-            _guidWrapper.GenerateGuid.Returns(Guid.Parse("F7148339-E162-4657-B886-C29BF6A2D312"));
+            _guidWrapper.GenerateGuid().Returns(Guid.Parse("F7148339-E162-4657-B886-C29BF6A2D312"));
 
             _itemRepository = Substitute.For<IItemRepository>();
 
@@ -38,17 +38,17 @@ namespace TodoApp.Services.Tests.Items
         {
             var expectedItem = new Item
             {
-                Id = _guidWrapper.GenerateGuid,
+                Id = _guidWrapper.GenerateGuid(),
                 Text = "This is a text.",
-                CreationTime = _dateTimeWrapper.CurrentDateTime,
-                LastUpdateTime = _dateTimeWrapper.CurrentDateTime
+                CreationTime = _dateTimeWrapper.CurrentDateTime(),
+                LastUpdateTime = _dateTimeWrapper.CurrentDateTime()
             };
             var item = new Item
             {
                 Id = expectedItem.Id,
                 Text = "This is a text.",
-                CreationTime = _dateTimeWrapper.CurrentDateTime,
-                LastUpdateTime = _dateTimeWrapper.CurrentDateTime
+                CreationTime = _dateTimeWrapper.CurrentDateTime(),
+                LastUpdateTime = _dateTimeWrapper.CurrentDateTime()
             };
             _itemRepository.CreateAsync(item).Returns(expectedItem);
 

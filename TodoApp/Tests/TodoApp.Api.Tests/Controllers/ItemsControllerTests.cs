@@ -84,8 +84,8 @@ namespace TodoApp.Api.Tests.Controllers
         {
             var expected = Items[0];
             var id = expected.Id;
-            _itemObtainingService.Exists(id).Returns(true);
-            _itemObtainingService.GetByIdAsync(id).Returns(expected);
+            _itemObtainingService.ExistsAsync(id).Returns(true);
+            _itemObtainingService.GetById(id).Returns(expected);
 
             var message = await ExecuteAsyncAction(() => _itemsController.GetItemByIdAsync(id));
             message.TryGetContentValue<Item>(out var item);
@@ -101,7 +101,7 @@ namespace TodoApp.Api.Tests.Controllers
         public async Task GetItemByIdAsync_ReturnsNotFound()
         {
             var id = Items[0].Id;
-            _itemObtainingService.Exists(id).Returns(false);
+            _itemObtainingService.ExistsAsync(id).Returns(false);
 
             var message = await ExecuteAsyncAction(() => _itemsController.GetItemByIdAsync(id));
 
@@ -112,7 +112,7 @@ namespace TodoApp.Api.Tests.Controllers
         public async Task PutItemAsync_ReturnsOkWithUpdatedItem()
         {
             var changedItem = Items[3];
-            _itemObtainingService.Exists(changedItem.Id).Returns(true);
+            _itemObtainingService.ExistsAsync(changedItem.Id).Returns(true);
 
             var message = await ExecuteAsyncAction(() => _itemsController.PutItemAsync(changedItem.Id, changedItem));
 
@@ -172,7 +172,7 @@ namespace TodoApp.Api.Tests.Controllers
             var expectedItem = Items[3];
             var headerLocation = new Uri("http://localhost/");
 
-            _itemObtainingService.Exists(changedItem.Id).Returns(false);
+            _itemObtainingService.ExistsAsync(changedItem.Id).Returns(false);
             _itemCreatingService.CreateAsync(Arg.Is<Item>(newItem => newItem.Text == changedItem.Text)).Returns(expectedItem);
             _urlService.GetItemUrl(expectedItem.Id).Returns(headerLocation);
 
@@ -192,7 +192,7 @@ namespace TodoApp.Api.Tests.Controllers
         {
             var deleted = Items[2];
             var id = deleted.Id;
-            _itemObtainingService.Exists(id).Returns(true);
+            _itemObtainingService.ExistsAsync(id).Returns(true);
             _itemRepository.DeleteAsync(id).Returns(deleted);
 
             var message = await ExecuteAsyncAction(() => _itemsController.DeleteItemAsync(id));
@@ -209,7 +209,7 @@ namespace TodoApp.Api.Tests.Controllers
         public async Task DeleteItemAsync_ReturnsNotFound()
         {
             var id = Items[2].Id;
-            _itemObtainingService.Exists(id).Returns(false);
+            _itemObtainingService.ExistsAsync(id).Returns(false);
 
             var message = await ExecuteAsyncAction(() => _itemsController.DeleteItemAsync(id));
 

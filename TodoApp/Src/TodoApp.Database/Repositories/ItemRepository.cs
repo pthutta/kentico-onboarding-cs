@@ -10,7 +10,7 @@ namespace TodoApp.Database.Repositories
 {
     internal class ItemRepository : IItemRepository
     {
-        private const string ItemsCollection = "items";
+        private const string ItemsCollectionName = "items";
 
         private readonly IMongoCollection<Item> _items;
 
@@ -20,14 +20,14 @@ namespace TodoApp.Database.Repositories
             var client = new MongoClient(mongoUrl);
             var database = client.GetDatabase(mongoUrl.DatabaseName);
 
-            _items = database.GetCollection<Item>(ItemsCollection);
+            _items = database.GetCollection<Item>(ItemsCollectionName);
         }
 
         public async Task<IEnumerable<Item>> GetAllAsync()
             => await _items.Find(FilterDefinition<Item>.Empty).ToListAsync();
 
         public async Task<Item> GetByIdAsync(Guid id)
-            => await _items.Find(item => item.Id == id).FirstAsync();
+            => await _items.Find(item => item.Id == id).FirstOrDefaultAsync();
 
         public async Task<Item> CreateAsync(Item item)
         {

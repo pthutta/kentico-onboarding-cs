@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using TodoApp.Contracts.Bootstraps;
 using TodoApp.Contracts.Containers;
 using TodoApp.Contracts.Enums;
 using TodoApp.Contracts.Exceptions;
@@ -12,29 +11,25 @@ using Unity.Lifetime;
 
 namespace TodoApp.Dependency.Containers
 {
-    internal class DependencyContainer : IDependencyContainer
+    internal sealed class DependencyContainer : IDependencyContainer
     {
-        protected IUnityContainer Container;
+        private readonly IUnityContainer _container;
 
         public DependencyContainer(IUnityContainer container)
-            => Container = container;
+            => _container = container;
 
-        public IDependencyContainer RegisterBootstrapper<TBootstrap>()
-            where TBootstrap : IBootstrap, new()
-            => new TBootstrap().RegisterTypes(this);
-
-        public IDependencyContainer RegisterType<TFrom, TTo>(LifetimeManagerType lifetimeManagerType = LifetimeManagerType.SingletonPerRequest) 
+        public IDependencyContainer RegisterType<TFrom, TTo>(Lifecycle lifecycle) 
             where TTo : TFrom
         {
-            Container.RegisterType<TFrom, TTo>(lifetimeManagerType.GetLifetimeManager());
+            _container.RegisterType<TFrom, TTo>(lifecycle.GetLifetimeManager());
 
             return this;
         }
 
-        public IDependencyContainer RegisterType<TTo>(Func<TTo> instanceFactory, LifetimeManagerType lifetimeManagerType = LifetimeManagerType.SingletonPerRequest)
+        public IDependencyContainer RegisterType<TTo>(Func<TTo> instanceFactory, Lifecycle lifecycle)
         {
-            Container.RegisterType<TTo>(
-                lifetimeManagerType.GetLifetimeManager(),
+            _container.RegisterType<TTo>(
+                lifecycle.GetLifetimeManager(),
                 new InjectionFactory(_ => instanceFactory())
             );
 
@@ -42,10 +37,10 @@ namespace TodoApp.Dependency.Containers
         }
 
         public object Resolve(Type type)
-            => ResolveType(() => Container.Resolve(type), type);
+            => ResolveType(() => _container.Resolve(type), type);
 
         public IEnumerable<object> ResolveAll(Type type)
-            => ResolveType(() => Container.ResolveAll(type), type);
+            => ResolveType(() => _container.ResolveAll(type), type);
 
         private static TResult ResolveType<TResult>(Func<TResult> resolve, Type type)
             where TResult : class
@@ -61,9 +56,9 @@ namespace TodoApp.Dependency.Containers
         }
 
         public IDependencyContainer CreateChildContainer()
-            => new DependencyContainer(Container.CreateChildContainer());
+            => new DependencyContainer(_container.CreateChildContainer());
 
         public void Dispose()
-            => Container.Dispose();
+            => _container.Dispose();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using TodoApp.Contracts.Exceptions;
 using TodoApp.Contracts.Models;
 using TodoApp.Contracts.Repositories;
 using TodoApp.Contracts.Services;
@@ -21,13 +22,13 @@ namespace TodoApp.Services.Items
 
         public async Task UpdateAsync(Item item)
         {
-            if (!await _itemObtainingService.Exists(item.Id))
+            if (!await _itemObtainingService.ExistsAsync(item.Id))
             {
-                return;
+                throw new ItemNotFoundException("Item with id=" + item.Id + " was not found.");
             }
-            var foundItem = await _itemObtainingService.GetByIdAsync(item.Id);
+            var foundItem = _itemObtainingService.GetById(item.Id);
 
-            foundItem.LastUpdateTime = _dateTimeWrapper.CurrentDateTime;
+            foundItem.LastUpdateTime = _dateTimeWrapper.CurrentDateTime();
             foundItem.Text = item.Text;
 
             await _repository.UpdateAsync(foundItem);

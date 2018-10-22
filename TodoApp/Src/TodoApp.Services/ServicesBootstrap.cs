@@ -12,10 +12,10 @@ namespace TodoApp.Services
     {
         public IDependencyContainer RegisterTypes(IDependencyContainer container)
             => container
-                .RegisterType<IGuidWrapper, GuidWrapper>(LifetimeManagerType.SingletonPerApplication)
-                .RegisterType<IDateTimeWrapper, DateTimeWrapper>(LifetimeManagerType.SingletonPerApplication)
-                .RegisterType<IItemObtainingService, ItemObtainingService>()
-                .RegisterType<IItemCreatingService, ItemCreatingService>()
-                .RegisterType<IItemUpdatingService, ItemUpdatingService>();
+                .RegisterType<IGuidWrapper, GuidWrapper>(Lifecycle.SingletonPerApplication)
+                .RegisterType<IDateTimeWrapper, DateTimeWrapper>(Lifecycle.SingletonPerApplication)
+                .RegisterType<IItemObtainingService, ItemObtainingService>(Lifecycle.SingletonPerRequest)
+                .RegisterType<IItemCreatingService, ItemCreatingService>(Lifecycle.SingletonPerRequest)
+                .RegisterType<IItemUpdatingService, ItemUpdatingService>(Lifecycle.SingletonPerRequest);
     }
 }

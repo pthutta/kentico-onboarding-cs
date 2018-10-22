@@ -1,11 +1,16 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using TodoApp.Contracts.Wrappers;
 
 namespace TodoApp.ApiServices.Wrappers
 {
     public class ConnectionStringWrapper : IConnectionStringWrapper
     {
-        public string DefaultConnectionString =>
-            ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+        private readonly Lazy<string> _defaultConnectionString = new Lazy<string>(() => GetConnectionString("DefaultConnection"));
+
+        public string DefaultConnectionString => _defaultConnectionString.Value;
+
+        private static string GetConnectionString(string name)
+            => ConfigurationManager.ConnectionStrings[name].ConnectionString;
     }
 }

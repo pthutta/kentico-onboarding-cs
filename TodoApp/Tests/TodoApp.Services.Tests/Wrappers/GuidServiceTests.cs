@@ -2,7 +2,7 @@
 using TodoApp.Contracts.Wrappers;
 using TodoApp.Services.Wrappers;
 
-namespace TodoApp.Services.Tests.Utils
+namespace TodoApp.Services.Tests.Wrappers
 {
     [TestFixture]
     public class GuidServiceTests
@@ -18,9 +18,9 @@ namespace TodoApp.Services.Tests.Utils
         [Test]
         public void GenerateGuid_ReturnsDifferentIds()
         {
-            var id1 = _guidWrapper.GenerateGuid;
-            var id2 = _guidWrapper.GenerateGuid;
-            var id3 = _guidWrapper.GenerateGuid;
+            var id1 = _guidWrapper.GenerateGuid();
+            var id2 = _guidWrapper.GenerateGuid();
+            var id3 = _guidWrapper.GenerateGuid();
 
             Assert.Multiple(() =>
             {

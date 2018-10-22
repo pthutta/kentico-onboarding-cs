@@ -5,6 +5,6 @@ namespace TodoApp.Services.Wrappers
 {
     internal class GuidWrapper : IGuidWrapper
     {
-        public Guid GenerateGuid => Guid.NewGuid();
+        public Guid GenerateGuid() => Guid.NewGuid();
     }
 }
