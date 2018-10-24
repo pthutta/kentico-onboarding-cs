@@ -7,7 +7,6 @@ using TodoApp.Dependency.LifetimeManagers;
 using Unity;
 using Unity.Exceptions;
 using Unity.Injection;
-using Unity.Lifetime;
 
 namespace TodoApp.Dependency.Containers
 {

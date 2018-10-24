@@ -12,6 +12,7 @@ namespace TodoApp.Services.Items
         private readonly IItemRepository _repository;
 
         private Item _cachedItem;
+        private Guid _cachedId;
 
         public ItemObtainingService(IItemRepository repository)
             => _repository = repository;
@@ -20,7 +21,7 @@ namespace TodoApp.Services.Items
         {
             if (_cachedItem == null)
             {
-                throw new ItemNotFoundException("Item with id=" + id + " was not found.");
+                throw new InvalidOperationException("Please, call ExistsAsync(Guid id) method before GetById(Guid id).");
             }
 
             return _cachedItem;
@@ -31,8 +32,9 @@ namespace TodoApp.Services.Items
 
         private async Task<Item> GetItemAsync(Guid id)
         {
-            if (_cachedItem?.Id != id)
+            if (_cachedItem?.Id != id && _cachedId != id)
             {
+                _cachedId = id;
                 _cachedItem = await _repository.GetByIdAsync(id);
             }
 

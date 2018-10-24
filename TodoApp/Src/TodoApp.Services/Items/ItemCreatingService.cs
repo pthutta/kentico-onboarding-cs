@@ -22,9 +22,10 @@ namespace TodoApp.Services.Items
         public async Task<Item> CreateAsync(Item item)
         {
             var currentTime = _dateTimeWrapper.CurrentDateTime();
+            var id = _guidWrapper.GenerateGuid();
             var newItem = new Item
             {
-                Id = _guidWrapper.GenerateGuid(),
+                Id = id,
                 Text = item.Text,
                 CreationTime = currentTime,
                 LastUpdateTime = currentTime

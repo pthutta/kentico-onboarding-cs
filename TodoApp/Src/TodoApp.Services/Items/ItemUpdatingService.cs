@@ -26,12 +26,17 @@ namespace TodoApp.Services.Items
             {
                 throw new ItemNotFoundException("Item with id=" + item.Id + " was not found.");
             }
-            var foundItem = _itemObtainingService.GetById(item.Id);
 
-            foundItem.LastUpdateTime = _dateTimeWrapper.CurrentDateTime();
-            foundItem.Text = item.Text;
+            var originalItem = _itemObtainingService.GetById(item.Id);
+            UpdateExistingItem(originalItem, item);
 
-            await _repository.UpdateAsync(foundItem);
+            await _repository.UpdateAsync(originalItem);
+        }
+
+        private void UpdateExistingItem(Item existingItem, Item updatedItem)
+        {
+            existingItem.LastUpdateTime = _dateTimeWrapper.CurrentDateTime();
+            existingItem.Text = updatedItem.Text;
         }
     }
 }

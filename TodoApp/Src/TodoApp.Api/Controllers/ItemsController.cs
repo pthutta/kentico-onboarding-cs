@@ -142,17 +142,21 @@ namespace TodoApp.Api.Controllers
                 return;
             }
 
-            if (item.Text.Trim() == string.Empty)
+            if (item.Text == null)
+            {
+                ModelState.AddModelError(nameof(item.Text), "Item text must not be null.");
+            }
+            else if (item.Text?.Trim() == string.Empty)
             {
                 ModelState.AddModelError(nameof(item.Text), "Item text must be non-empty.");
             }
 
-            if (item.CreationTime != default(DateTime))
+            if (item.CreationTime != DateTime.MinValue)
             {
                 ModelState.AddModelError(nameof(item.CreationTime), "Item creation time must not be set.");
             }
 
-            if (item.LastUpdateTime != default(DateTime))
+            if (item.LastUpdateTime != DateTime.MinValue)
             {
                 ModelState.AddModelError(nameof(item.LastUpdateTime), "Item last update time must not be set.");
             }

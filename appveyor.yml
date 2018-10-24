@@ -14,5 +14,10 @@ before_build:
   - cmd: dotnet --version
   - cmd: cd ./TodoApp
   - cmd: nuget restore
+  
+test:
+  # only assemblies to test
+  assemblies:
+    - '**\*.Tests.dll'
 
 deploy: off

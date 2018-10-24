@@ -2,11 +2,15 @@
 using System.Threading.Tasks;
 using NSubstitute;
 using NUnit.Framework;
+using TodoApp.Contracts.Exceptions;
 using TodoApp.Contracts.Models;
 using TodoApp.Contracts.Repositories;
 using TodoApp.Contracts.Services;
 using TodoApp.Contracts.Wrappers;
 using TodoApp.Services.Items;
+using TodoApp.TestContracts.Extensions;
+using TodoApp.TestContracts.Factories;
+using TodoApp.TestContracts.Wrappers;
 
 namespace TodoApp.Services.Tests.Items
 {
@@ -22,8 +26,6 @@ namespace TodoApp.Services.Tests.Items
         public void SetUp()
         {
             _dateTimeWrapper = Substitute.For<IDateTimeWrapper>();
-            _dateTimeWrapper.CurrentDateTime().Returns(new DateTime(2018, 9, 27));
-
             _itemObtainingService = Substitute.For<IItemObtainingService>();
             _itemRepository = Substitute.For<IItemRepository>();
 
@@ -31,46 +33,48 @@ namespace TodoApp.Services.Tests.Items
         }
 
         [Test]
-        public async Task UpdateItemAsync_UpdatesItem()
+        public async Task UpdateAsync_ExistingItem_UpdatesItem()
         {
-            var updatedItem = new Item
-            {
-                Id = Guid.Parse("F7148339-E162-4657-B886-C29BF6A2D312"),
-                Text = "This is a text.",
-                CreationTime = _dateTimeWrapper.CurrentDateTime(),
-                LastUpdateTime = _dateTimeWrapper.CurrentDateTime()
-            };
-            var currentTime = new DateTime(2018, 10, 1);
+            var currentTime = new DateTime(2018, 10, 1, 8, 42, 5);
+            var id = Guid.Parse("F7148339-E162-4657-B886-C29BF6A2D312");
+            var (originalItem, receivedItem, changedItem) = CreateItems(id, currentTime);
 
-            _itemObtainingService.ExistsAsync(updatedItem.Id).Returns(true);
-            _itemObtainingService.GetById(updatedItem.Id).Returns(updatedItem);
-            _dateTimeWrapper.CurrentDateTime().Returns(currentTime);
+            _itemObtainingService.ExistsAsync(id).Returns(true);
+            _itemObtainingService.GetById(id).Returns(originalItem);
+            _dateTimeWrapper.CurrentDateTime().Returns(currentTime, DateTime.MinValue);
 
-            await _itemUpdatingService.UpdateAsync(updatedItem);
+            await _itemUpdatingService.UpdateAsync(receivedItem);
 
-            Assert.Multiple(() =>
-            {
-                Assert.That(updatedItem.LastUpdateTime, Is.EqualTo(currentTime));
-                _itemRepository.Received().UpdateAsync(updatedItem);
-            });
+            await _itemRepository.Received(1).UpdateAsync(ArgExtended.IsItem(changedItem));
         }
 
         [Test]
-        public async Task UpdateItemAsync_WhenNotFound_Returns()
+        public void UpdateAsync_NonexistentItem_ThrowsItemNotFoundException()
         {
-            var updatedItem = new Item
+            var creationTime = new DateTime(2018, 9, 27, 12, 33, 41);
+            var id = Guid.Parse("F7148339-E162-4657-B886-C29BF6A2D312");
+            var updatedItem = ItemFactory.CreateItem(id, "This is a text.", creationTime, creationTime);
+            _itemObtainingService.ExistsAsync(id).Returns(false);
+
+            Assert.Multiple(() =>
             {
-                Id = Guid.Parse("F7148339-E162-4657-B886-C29BF6A2D312"),
-                Text = "This is a text.",
-                CreationTime = _dateTimeWrapper.CurrentDateTime(),
-                LastUpdateTime = _dateTimeWrapper.CurrentDateTime()
-            };
+                Assert.ThrowsAsync<ItemNotFoundException>(async () =>
+                    await _itemUpdatingService.UpdateAsync(updatedItem)
+                );
+                _itemRepository.DidNotReceive().UpdateAsync(Arg.Any<Item>());
+            });
+        }
 
-            _itemObtainingService.ExistsAsync(updatedItem.Id).Returns(false);
+        private (Item, Item, Item) CreateItems(Guid id, DateTime currentTime)
+        {
+            var creationTime = new DateTime(2018, 9, 27, 12, 33, 41);
+            var newText = "This is a text.";
 
-            await _itemUpdatingService.UpdateAsync(updatedItem);
+            var originalItem = ItemFactory.CreateItem(id, "Some old text.", creationTime, creationTime);
+            var receivedItem = ItemFactory.CreateItem(id, newText);
+            var changedItem = ItemFactory.CreateItem(id, newText, creationTime, currentTime);
 
-            await _itemRepository.Received(0).UpdateAsync(updatedItem);
+            return (originalItem, receivedItem, changedItem);
         }
     }
 }

@@ -62,10 +62,11 @@
     <Compile Include="Items\ItemObtainingServiceTests.cs" />
     <Compile Include="Items\ItemUpdatingServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Wrappers\DateTimeServiceTests.cs" />
-    <Compile Include="Wrappers\GuidServiceTests.cs" />
+    <Compile Include="Wrappers\DateTimeWrapperTests.cs" />
+    <Compile Include="Wrappers\GuidWrapperTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
@@ -78,9 +79,9 @@
       <Project>{6ca39b97-0f92-418c-ad6b-4d7c4658f873}</Project>
       <Name>TodoApp.Services</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TodoApp.Api.Tests\TodoApp.Api.Tests.csproj">
-      <Project>{2D1C1495-D893-4537-BF2F-EB3E9437F9B3}</Project>
-      <Name>TodoApp.Api.Tests</Name>
+    <ProjectReference Include="..\TodoApp.TestContracts\TodoApp.TestContracts.csproj">
+      <Project>{BDF68765-3588-42A4-AAE5-EDFD7BCA1D04}</Project>
+      <Name>TodoApp.TestContracts</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

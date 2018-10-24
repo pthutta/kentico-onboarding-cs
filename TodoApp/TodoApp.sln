@@ -23,6 +23,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.Dependency", "Src\T
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{264A1F0F-9CB2-43CF-9108-6700F7419112}"
 	ProjectSection(SolutionItems) = preProject
+		..\.gitignore = ..\.gitignore
+		..\appveyor.yml = ..\appveyor.yml
+		..\README.md = ..\README.md
 		TodoApp.sln.DotSettings = TodoApp.sln.DotSettings
 	EndProjectSection
 EndProject
@@ -31,6 +34,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.Services", "Src\TodoApp.Services\TodoApp.Services.csproj", "{6CA39B97-0F92-418C-AD6B-4D7C4658F873}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.Services.Tests", "Tests\TodoApp.Services.Tests\TodoApp.Services.Tests.csproj", "{969C3D92-7C67-4865-92A3-571197DB9692}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.TestContracts", "Tests\TodoApp.TestContracts\TodoApp.TestContracts.csproj", "{BDF68765-3588-42A4-AAE5-EDFD7BCA1D04}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -78,6 +83,10 @@ Global
 		{969C3D92-7C67-4865-92A3-571197DB9692}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{969C3D92-7C67-4865-92A3-571197DB9692}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{969C3D92-7C67-4865-92A3-571197DB9692}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDF68765-3588-42A4-AAE5-EDFD7BCA1D04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDF68765-3588-42A4-AAE5-EDFD7BCA1D04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDF68765-3588-42A4-AAE5-EDFD7BCA1D04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDF68765-3588-42A4-AAE5-EDFD7BCA1D04}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -93,6 +102,7 @@ Global
 		{0B3362B9-AEF5-4482-9B49-9DF97BA72D47} = {83B9EA13-50D4-4981-8C6B-1C02FB6928FC}
 		{6CA39B97-0F92-418C-AD6B-4D7C4658F873} = {F4D72F4D-2A2B-49DC-97EA-0DFF352E046E}
 		{969C3D92-7C67-4865-92A3-571197DB9692} = {83B9EA13-50D4-4981-8C6B-1C02FB6928FC}
+		{BDF68765-3588-42A4-AAE5-EDFD7BCA1D04} = {83B9EA13-50D4-4981-8C6B-1C02FB6928FC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D75EA3E1-120F-4E42-997E-F6F5151C4A4A}
