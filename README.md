@@ -1,4 +1,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/49jsxe0gwet1bddt/branch/master?svg=true)](https://ci.appveyor.com/project/pthutta/kentico-onboarding-cs/branch/master)
+[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=pthutta_kentico-onboarding-cs&metric=alert_status)](https://sonarcloud.io/dashboard?id=pthutta_kentico-onboarding-cs)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=pthutta_kentico-onboarding-cs&metric=bugs)](https://sonarcloud.io/project/issues?id=pthutta_kentico-onboarding-cs&resolved=false&types=BUG)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=pthutta_kentico-onboarding-cs&metric=code_smells)](https://sonarcloud.io/project/issues?id=pthutta_kentico-onboarding-cs&resolved=false&types=CODE_SMELL)
 
 # kentico-onboarding-cs
 
