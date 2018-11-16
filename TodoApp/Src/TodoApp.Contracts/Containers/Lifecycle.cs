@@ -1,4 +1,4 @@
-﻿namespace TodoApp.Contracts.Enums
+﻿namespace TodoApp.Contracts.Containers
 {
     public enum Lifecycle
     {

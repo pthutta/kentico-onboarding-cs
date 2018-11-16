@@ -101,6 +101,7 @@
   <ItemGroup>
     <Compile Include="Configs\UnityConfigTests.cs" />
     <Compile Include="Containers\DependencyContainerTests.cs" />
+    <Compile Include="Containers\DependencyProviderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Mocks\Containers\TestContainer.cs" />
     <Compile Include="Resolvers\DependencyResolverTests.cs" />

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TodoApp.Contracts.Services
+namespace TodoApp.Contracts.Routes
 {
     public interface IUrlService
     {

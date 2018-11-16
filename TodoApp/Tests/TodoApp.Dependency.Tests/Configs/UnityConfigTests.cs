@@ -18,7 +18,8 @@ namespace TodoApp.Dependency.Tests.Configs
         private static readonly Type[] ExcludedTypes = 
         {
             typeof(IBootstrap),
-            typeof(IDependencyContainer)
+            typeof(IDependencyContainer),
+            typeof(IDependencyProvider)
         };
 
         private static readonly Type[] IncludedTypes =

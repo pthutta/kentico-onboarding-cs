@@ -4,9 +4,8 @@ using TodoApp.ApiServices.Services;
 using TodoApp.ApiServices.Wrappers;
 using TodoApp.Contracts.Bootstraps;
 using TodoApp.Contracts.Containers;
-using TodoApp.Contracts.Enums;
-using TodoApp.Contracts.Services;
-using TodoApp.Contracts.Wrappers;
+using TodoApp.Contracts.Repositories;
+using TodoApp.Contracts.Routes;
 
 namespace TodoApp.ApiServices
 {

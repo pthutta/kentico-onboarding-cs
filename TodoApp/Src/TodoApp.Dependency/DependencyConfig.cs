@@ -2,7 +2,6 @@
 using System.Web.Http.Dependencies;
 using TodoApp.ApiServices;
 using TodoApp.Contracts.Containers;
-using TodoApp.Contracts.Enums;
 using TodoApp.Contracts.Routes;
 using TodoApp.Database;
 using TodoApp.Dependency.Containers;
@@ -36,8 +35,8 @@ namespace TodoApp.Dependency
                 .RegisterBootstrapper<ServicesBootstrap>();
         }
 
-        private static IDependencyResolver CreateResolver(IDependencyContainer container)
-            => new DependencyResolver(container);
+        private static IDependencyResolver CreateResolver(IDependencyProvider provider)
+            => new DependencyResolver(provider);
 
 
         public void Register(HttpConfiguration config)
@@ -45,8 +44,9 @@ namespace TodoApp.Dependency
             var genericContainer = CreateGenericContainer();
 
             RegisterDependencies(genericContainer);
+            var provider = genericContainer.CreateDependencyProvider();
 
-            config.DependencyResolver = CreateResolver(genericContainer);
+            config.DependencyResolver = CreateResolver(provider);
         }
     }
 }

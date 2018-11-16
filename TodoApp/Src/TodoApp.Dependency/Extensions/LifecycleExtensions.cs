@@ -1,8 +1,8 @@
 ﻿using System;
-using TodoApp.Contracts.Enums;
+using TodoApp.Contracts.Containers;
 using Unity.Lifetime;
 
-namespace TodoApp.Dependency.LifetimeManagers
+namespace TodoApp.Dependency.Extensions
 {
     internal static class LifecycleExtensions
     {

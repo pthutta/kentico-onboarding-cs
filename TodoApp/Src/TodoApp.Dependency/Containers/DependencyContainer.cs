@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using TodoApp.Contracts.Containers;
-using TodoApp.Contracts.Enums;
-using TodoApp.Contracts.Exceptions;
-using TodoApp.Dependency.LifetimeManagers;
+using TodoApp.Dependency.Extensions;
 using Unity;
-using Unity.Exceptions;
 using Unity.Injection;
 
 namespace TodoApp.Dependency.Containers
@@ -35,27 +31,8 @@ namespace TodoApp.Dependency.Containers
             return this;
         }
 
-        public object Resolve(Type type)
-            => ResolveType(() => _container.Resolve(type), type);
-
-        public IEnumerable<object> ResolveAll(Type type)
-            => ResolveType(() => _container.ResolveAll(type), type);
-
-        private static TResult ResolveType<TResult>(Func<TResult> resolve, Type type)
-            where TResult : class
-        {
-            try
-            {
-                return resolve();
-            }
-            catch (ResolutionFailedException ex)
-            {
-                throw new DependencyResolutionFailedException($"Failed resolution of {type.FullName}", ex);
-            }
-        }
-
-        public IDependencyContainer CreateChildContainer()
-            => new DependencyContainer(_container.CreateChildContainer());
+        public IDependencyProvider CreateDependencyProvider()
+            => new DependencyProvider(_container);
 
         public void Dispose()
             => _container.Dispose();

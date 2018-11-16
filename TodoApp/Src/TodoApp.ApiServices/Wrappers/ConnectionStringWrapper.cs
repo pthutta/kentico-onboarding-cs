@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Configuration;
-using TodoApp.Contracts.Wrappers;
+using TodoApp.Contracts.Repositories;
 
 namespace TodoApp.ApiServices.Wrappers
 {

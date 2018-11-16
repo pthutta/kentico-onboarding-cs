@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using TodoApp.Contracts.Exceptions;
 using TodoApp.Contracts.Models;
 using TodoApp.Contracts.Repositories;
 using TodoApp.Contracts.Services;

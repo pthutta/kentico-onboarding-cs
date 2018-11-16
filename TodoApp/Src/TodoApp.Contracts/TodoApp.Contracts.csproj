@@ -37,21 +37,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstraps\IBootstrap.cs" />
+    <Compile Include="Containers\DependencyResolutionFailedException.cs" />
     <Compile Include="Containers\IDependencyContainer.cs" />
-    <Compile Include="Enums\Lifecycle.cs" />
-    <Compile Include="Exceptions\DependencyResolutionFailedException.cs" />
-    <Compile Include="Exceptions\ItemNotFoundException.cs" />
+    <Compile Include="Containers\IDependencyProvider.cs" />
+    <Compile Include="Containers\Lifecycle.cs" />
+    <Compile Include="Repositories\IConnectionStringWrapper.cs" />
     <Compile Include="Repositories\IItemRepository.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Routes\IRouteNames.cs" />
-    <Compile Include="Wrappers\IConnectionStringWrapper.cs" />
+    <Compile Include="Routes\IUrlService.cs" />
+    <Compile Include="Services\ItemNotFoundException.cs" />
     <Compile Include="Wrappers\IDateTimeWrapper.cs" />
     <Compile Include="Wrappers\IGuidWrapper.cs" />
     <Compile Include="Services\IItemCreatingService.cs" />
     <Compile Include="Services\IItemObtainingService.cs" />
     <Compile Include="Services\IItemUpdatingService.cs" />
-    <Compile Include="Services\IUrlService.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

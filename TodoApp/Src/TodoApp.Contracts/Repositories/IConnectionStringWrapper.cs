@@ -1,4 +1,4 @@
-﻿namespace TodoApp.Contracts.Wrappers
+﻿namespace TodoApp.Contracts.Repositories
 {
     public interface IConnectionStringWrapper
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace TodoApp.Contracts.Exceptions
+namespace TodoApp.Contracts.Services
 {
     [Serializable]
     public class ItemNotFoundException : Exception

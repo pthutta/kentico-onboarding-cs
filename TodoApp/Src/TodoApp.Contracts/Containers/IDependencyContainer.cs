@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using TodoApp.Contracts.Enums;
 
 namespace TodoApp.Contracts.Containers
 {
@@ -11,10 +9,6 @@ namespace TodoApp.Contracts.Containers
 
         IDependencyContainer RegisterType<TTo>(Func<TTo> instanceFactory, Lifecycle lifecycle);
 
-        object Resolve(Type type);
-
-        IEnumerable<object> ResolveAll(Type type);
-
-        IDependencyContainer CreateChildContainer();
+        IDependencyProvider CreateDependencyProvider();
     }
 }

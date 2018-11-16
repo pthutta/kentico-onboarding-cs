@@ -12,7 +12,6 @@ using System.Web.Http.Tracing;
 using System.Web.Http.Validation;
 using Microsoft.Web.Http.Versioning;
 using TodoApp.Contracts.Containers;
-using TodoApp.Contracts.Exceptions;
 
 namespace TodoApp.Dependency.Resolvers
 {
@@ -33,16 +32,16 @@ namespace TodoApp.Dependency.Resolvers
             typeof(IReportApiVersions)
         };
 
-        private readonly IDependencyContainer _container;
+        private readonly IDependencyProvider _provider;
 
-        public DependencyResolver(IDependencyContainer container)
-            => _container = container;
+        public DependencyResolver(IDependencyProvider provider)
+            => _provider = provider;
 
         public object GetService(Type serviceType)
-            => GetService(() => _container.Resolve(serviceType), serviceType);
+            => GetService(() => _provider.Resolve(serviceType), serviceType);
 
         public IEnumerable<object> GetServices(Type serviceType)
-            => GetService(() => _container.ResolveAll(serviceType), serviceType) ?? new List<object>();
+            => GetService(() => _provider.ResolveAll(serviceType), serviceType) ?? new List<object>();
 
         private static TResult GetService<TResult>(Func<TResult> resolve, Type serviceType)
             where TResult: class
@@ -60,12 +59,12 @@ namespace TodoApp.Dependency.Resolvers
 
         public IDependencyScope BeginScope()
         {
-            var child = _container.CreateChildContainer();
+            var child = _provider.CreateChildProvider();
             return new DependencyResolver(child);
         }
 
         public void Dispose()
-            => _container.Dispose();
+            => _provider.Dispose();
 
         private static bool IsInExcludedTypes(Type serviceType)
             => ExcludedTypes.Any(type => type == serviceType);

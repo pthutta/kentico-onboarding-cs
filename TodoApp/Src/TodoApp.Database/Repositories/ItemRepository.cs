@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using MongoDB.Driver;
 using TodoApp.Contracts.Models;
 using TodoApp.Contracts.Repositories;
-using TodoApp.Contracts.Wrappers;
 
 namespace TodoApp.Database.Repositories
 {
