@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using NUnit.Framework;
@@ -26,14 +25,14 @@ namespace TodoApp.Dependency.Tests.Containers
         [Test]
         public void Resolve_RegisteredType_ReturnsObject()
         {
-            var testString = "Test string";
-            var type = testString.GetType();
-            _unityContainer.Resolve(type).Returns(testString);
+            var expectedInstance = new { value = "Test string" };
+            var type = expectedInstance.GetType();
+            _unityContainer.Resolve(type).Returns(expectedInstance);
 
-            var resolvedString = (string)_provider.Resolve(type);
+            var actualInstance = _provider.Resolve(type);
 
-            _unityContainer.Received().Resolve(type);
-            Assert.That(resolvedString, Is.EqualTo(testString));
+            _unityContainer.Received(1).Resolve(type);
+            Assert.That(actualInstance, Is.EqualTo(expectedInstance));
         }
 
         [Test]
@@ -49,13 +48,18 @@ namespace TodoApp.Dependency.Tests.Containers
         [Test]
         public void ResolveAll_RegisteredType_ReturnsObject()
         {
-            var testStrings = new [] { "Test string" };
-            var type = testStrings[0].GetType();
-            _unityContainer.Resolve(type.MakeArrayType()).Returns(testStrings);
+            var expectedInstances = new [] 
+            {
+                new { value = "Test string" },
+                new { value = "Another string" },
+                new { value = "This is the final one" }
+            };
+            var type = expectedInstances[0].GetType();
+            _unityContainer.Resolve(type.MakeArrayType()).Returns(expectedInstances);
 
-            var resolvedStrings = _provider.ResolveAll(type);
+            var actualInstances = _provider.ResolveAll(type);
 
-            Assert.That(resolvedStrings, Is.EquivalentTo(testStrings));
+            Assert.That(actualInstances, Is.EquivalentTo(expectedInstances));
         }
 
         [Test]

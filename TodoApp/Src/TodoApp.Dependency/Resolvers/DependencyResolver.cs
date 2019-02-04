@@ -41,7 +41,7 @@ namespace TodoApp.Dependency.Resolvers
             => GetService(() => _provider.Resolve(serviceType), serviceType);
 
         public IEnumerable<object> GetServices(Type serviceType)
-            => GetService(() => _provider.ResolveAll(serviceType), serviceType) ?? new List<object>();
+            => GetService(() => _provider.ResolveAll(serviceType), serviceType) ?? Enumerable.Empty<object>();
 
         private static TResult GetService<TResult>(Func<TResult> resolve, Type serviceType)
             where TResult: class

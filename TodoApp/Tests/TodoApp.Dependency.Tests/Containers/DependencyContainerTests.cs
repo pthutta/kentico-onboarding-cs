@@ -30,7 +30,7 @@ namespace TodoApp.Dependency.Tests.Containers
             _container.RegisterType<IDependencyContainer, DependencyContainer>(lifecycle);
 
             _unityContainer
-                .Received()
+                .Received(1)
                 .RegisterType<IDependencyContainer, DependencyContainer>(
                     Arg.Any<ContainerControlledLifetimeManager>()
                 );
@@ -45,7 +45,7 @@ namespace TodoApp.Dependency.Tests.Containers
             _container.RegisterType(factory, lifecycle);
 
             _unityContainer
-                .Received()
+                .Received(1)
                 .RegisterType<DependencyContainer>(
                     Arg.Any<HierarchicalLifetimeManager>(),
                     Arg.Any<InjectionFactory>()

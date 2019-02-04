@@ -54,7 +54,7 @@ namespace TodoApp.Services.Tests.Items
         }
 
         [Test]
-        public async Task ExistsAsync_ExistingItem_ReturnsTrue()
+        public async Task ExistsAsync_ExistingItem_ReturnsTrueAndCachesResult()
         {
             var id = Guid.Parse("F7148339-E162-4657-B886-C29BF6A2D312");
             var item = ItemFactory.CreateItem(id, "This is a text.");
@@ -72,7 +72,7 @@ namespace TodoApp.Services.Tests.Items
         }
 
         [Test]
-        public async Task ExistsAsync_NonexistentItem_ReturnsFalse()
+        public async Task ExistsAsync_NonexistentItem_ReturnsFalseAndCachesResult()
         {
             var id = Guid.Parse("F7148339-E162-4657-B886-C29BF6A2D312");
             _itemRepository.GetByIdAsync(id).Returns((Item) null);

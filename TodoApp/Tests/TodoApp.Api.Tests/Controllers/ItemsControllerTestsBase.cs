@@ -1,6 +1,7 @@
 ﻿using System.Net.Http;
 using System.Web.Http;
 using NSubstitute;
+using NUnit.Framework;
 using TodoApp.Api.Controllers;
 using TodoApp.Contracts.Repositories;
 using TodoApp.Contracts.Routes;
@@ -17,7 +18,8 @@ namespace TodoApp.Api.Tests.Controllers
         protected IItemRepository ItemRepository;
         protected IUrlService UrlService;
 
-        protected void Init()
+        [SetUp]
+        protected void SetUpDependencies()
         {
             ItemCreatingService = Substitute.For<IItemCreatingService>();
             ItemUpdatingService = Substitute.For<IItemUpdatingService>();

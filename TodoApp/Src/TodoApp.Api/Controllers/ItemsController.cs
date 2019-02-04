@@ -139,7 +139,7 @@ namespace TodoApp.Api.Controllers
         {
             if (item == null)
             {
-                ModelState.AddModelError("", "Provided item is null.");
+                ModelState.AddModelError(string.Empty, "Provided item is null.");
                 return;
             }
 
@@ -167,7 +167,7 @@ namespace TodoApp.Api.Controllers
         {
             if (id == Guid.Empty)
             {
-                ModelState.AddModelError("", "Provided id is empty.");
+                ModelState.AddModelError(string.Empty, "Provided id is empty.");
             }
 
             return ModelState.IsValid;

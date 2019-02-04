@@ -18,6 +18,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.ApiServices", "Src\TodoApp.ApiServices\TodoApp.ApiServices.csproj", "{2D90286C-83DB-4EE8-A9C0-22BCB0D4BA3B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.ApiServices.Tests", "Tests\TodoApp.ApiServices.Tests\TodoApp.ApiServices.Tests.csproj", "{CF4FDECD-1EBE-4478-97C0-A92BE425376E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BDF68765-3588-42A4-AAE5-EDFD7BCA1D04} = {BDF68765-3588-42A4-AAE5-EDFD7BCA1D04}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.Dependency", "Src\TodoApp.Dependency\TodoApp.Dependency.csproj", "{F8A7B479-E472-4E75-9124-83E0233B8F6B}"
 EndProject
@@ -30,6 +33,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.Dependency.Tests", "Tests\TodoApp.Dependency.Tests\TodoApp.Dependency.Tests.csproj", "{0B3362B9-AEF5-4482-9B49-9DF97BA72D47}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BDF68765-3588-42A4-AAE5-EDFD7BCA1D04} = {BDF68765-3588-42A4-AAE5-EDFD7BCA1D04}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.Services", "Src\TodoApp.Services\TodoApp.Services.csproj", "{6CA39B97-0F92-418C-AD6B-4D7C4658F873}"
 EndProject

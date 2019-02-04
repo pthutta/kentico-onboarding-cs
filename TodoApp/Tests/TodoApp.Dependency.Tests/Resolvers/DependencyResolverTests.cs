@@ -1,21 +1,11 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Net.Http.Formatting;
-using System.Web.Http.Controllers;
 using System.Web.Http.Dependencies;
-using System.Web.Http.Dispatcher;
-using System.Web.Http.ExceptionHandling;
-using System.Web.Http.Hosting;
-using System.Web.Http.Metadata;
-using System.Web.Http.Tracing;
-using System.Web.Http.Validation;
-using Microsoft.Web.Http.Versioning;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using NUnit.Framework;
 using TodoApp.Contracts.Containers;
 using TodoApp.Dependency.Resolvers;
+using TodoApp.Dependency.Tests.TestData;
 
 namespace TodoApp.Dependency.Tests.Resolvers
 {
@@ -44,7 +34,7 @@ namespace TodoApp.Dependency.Tests.Resolvers
             Assert.That(actualInstance, Is.EqualTo(expectedInstance));
         }
 
-        [Test, TestCaseSource(typeof(DependencyResolverDataClass), nameof(DependencyResolverDataClass.TestCases))]
+        [Test, TestCaseSource(typeof(DependencyResolverTestData))]
         public void GetService_ExcludedTypes_ReturnsNull(Type excludedType)
         {
             var exception = new DependencyResolutionFailedException("Resolution failed", new Exception());
@@ -82,15 +72,15 @@ namespace TodoApp.Dependency.Tests.Resolvers
             Assert.That(actualInstances, Is.EqualTo(expectedInstances));
         }
 
-        [Test, TestCaseSource(typeof(DependencyResolverDataClass), nameof(DependencyResolverDataClass.TestCases))]
+        [Test, TestCaseSource(typeof(DependencyResolverTestData))]
         public void GetServices_ExcludedTypes_ReturnsEmptyIEnumerable(Type excludedType)
         {
             var exception = new DependencyResolutionFailedException("Resolution failed", new Exception());
             _provider.ResolveAll(excludedType).Throws(exception);
 
-            var actualInstance = _resolver.GetServices(excludedType);
+            var actualInstances = _resolver.GetServices(excludedType);
 
-            Assert.That(actualInstance, Is.Empty);
+            Assert.That(actualInstances, Is.Empty);
         }
 
         [Test]
@@ -110,27 +100,6 @@ namespace TodoApp.Dependency.Tests.Resolvers
 
             _provider.Received().CreateChildProvider();
             Assert.That(resolver, Is.Not.EqualTo(_resolver));
-        }
-    }
-
-    public class DependencyResolverDataClass
-    {
-        public static IEnumerable TestCases
-        {
-            get
-            {
-                yield return new TestCaseData(typeof(IHostBufferPolicySelector));
-                yield return new TestCaseData(typeof(IHttpControllerSelector));
-                yield return new TestCaseData(typeof(IHttpControllerActivator));
-                yield return new TestCaseData(typeof(IHttpActionSelector));
-                yield return new TestCaseData(typeof(IHttpActionInvoker));
-                yield return new TestCaseData(typeof(IContentNegotiator));
-                yield return new TestCaseData(typeof(IExceptionHandler));
-                yield return new TestCaseData(typeof(ModelMetadataProvider));
-                yield return new TestCaseData(typeof(IModelValidatorCache));
-                yield return new TestCaseData(typeof(ITraceWriter));
-                yield return new TestCaseData(typeof(IReportApiVersions));
-            }
         }
     }
 }

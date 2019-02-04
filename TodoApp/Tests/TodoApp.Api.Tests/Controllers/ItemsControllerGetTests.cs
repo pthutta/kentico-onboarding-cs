@@ -16,10 +16,6 @@ namespace TodoApp.Api.Tests.Controllers
     [TestFixture]
     public class ItemsControllerGetTests : ItemsControllerTestsBase
     {
-        [SetUp]
-        public void SetUp()
-            => Init();
-
         [Test]
         public async Task GetAllItemsAsync_ReturnsAllItems()
         {
@@ -56,7 +52,7 @@ namespace TodoApp.Api.Tests.Controllers
             Assert.Multiple(() =>
             {
                 Assert.That(message.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-                Assert.That(actualItem, Is.EqualTo(expectedItem).UsingItemComparer());
+                Assert.That(actualItem, Is.EqualTo(expectedItem));
             });
         }
 

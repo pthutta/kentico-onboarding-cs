@@ -4,7 +4,6 @@ using NSubstitute;
 using NUnit.Framework;
 using TodoApp.ApiServices.Services;
 using TodoApp.Contracts.Routes;
-using TodoApp.Contracts.Services;
 
 namespace TodoApp.ApiServices.Tests.Services
 {

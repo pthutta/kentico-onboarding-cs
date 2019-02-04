@@ -2,14 +2,12 @@
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Web.Http;
 using NSubstitute;
 using NUnit.Framework;
 using TodoApp.Api.Tests.Extensions;
 using TodoApp.Api.Tests.TestData;
 using TodoApp.Api.Tests.Wrappers;
 using TodoApp.Contracts.Models;
-using TodoApp.TestContracts.Extensions;
 using TodoApp.TestContracts.Factories;
 
 namespace TodoApp.Api.Tests.Controllers
@@ -17,10 +15,6 @@ namespace TodoApp.Api.Tests.Controllers
     [TestFixture]
     public class ItemsControllerPostTests : ItemsControllerTestsBase
     {
-        [SetUp]
-        public void SetUp()
-            => Init();
-
         [Test]
         public async Task PostItemAsync_ValidItem_ReturnsCreatedItem()
         {
@@ -39,7 +33,7 @@ namespace TodoApp.Api.Tests.Controllers
             {
                 Assert.That(message.StatusCode, Is.EqualTo(HttpStatusCode.Created));
                 Assert.That(message.Headers.Location, Is.EqualTo(headerLocation));
-                Assert.That(actualItem, Is.EqualTo(expectedItem).UsingItemComparer());
+                Assert.That(actualItem, Is.EqualTo(expectedItem));
             });
         }
 
@@ -51,7 +45,7 @@ namespace TodoApp.Api.Tests.Controllers
             AssertExtended.IsBadResponseMessage(message, string.Empty);
         }
 
-        [Test, TestCaseSource(typeof(ItemsControllerTestData), nameof(ItemsControllerTestData.IncorrectTextTestCases))]
+        [Test, TestCaseSource(typeof(ItemsControllerTestData))]
         public async Task PostItemAsync_ItemWithIncorrectText_ReturnsBadRequest(string text)
         {
             var newItem = ItemFactory.CreateItem(Guid.Empty, text);

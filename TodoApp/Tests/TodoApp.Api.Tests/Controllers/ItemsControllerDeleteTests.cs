@@ -14,10 +14,6 @@ namespace TodoApp.Api.Tests.Controllers
     [TestFixture]
     public class ItemsControllerDeleteTests : ItemsControllerTestsBase
     {
-        [SetUp]
-        public void SetUp()
-            => Init();
-
         [Test]
         public async Task DeleteItemAsync_ExistingItem_ReturnsOkWithDeletedItem()
         {
