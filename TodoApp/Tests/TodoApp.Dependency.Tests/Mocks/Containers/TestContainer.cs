@@ -1,25 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using TodoApp.Contracts.Bootstraps;
 using TodoApp.Contracts.Containers;
 
 namespace TodoApp.Dependency.Tests.Mocks.Containers
 {
-    internal class TestContainer : IDependencyContainer
+    internal sealed class TestContainer : IDependencyContainer
     {
         private readonly List<Type> _registeredTypes = new List<Type>();
 
-        public IDependencyContainer RegisterBootstrapper<TBootstrap>()
-            where TBootstrap : IBootstrap, new()
-            => new TBootstrap().RegisterTypes(this);
-
-        public IDependencyContainer RegisterType<TFrom, TTo>() where TTo : TFrom
+        public IDependencyContainer RegisterType<TFrom, TTo>(Lifecycle lifecycle) where TTo : TFrom
         {
             _registeredTypes.Add(typeof(TFrom));
             return this;
         }
 
-        public IDependencyContainer RegisterType<TTo>(Func<TTo> instanceFactory)
+        public IDependencyContainer RegisterType<TTo>(Func<TTo> instanceFactory, Lifecycle lifecycle)
         {
             _registeredTypes.Add(typeof(TTo));
             return this;
@@ -28,16 +23,10 @@ namespace TodoApp.Dependency.Tests.Mocks.Containers
         public IEnumerable<Type> GetRegisteredTypes()
             => _registeredTypes;
 
+        public IDependencyProvider CreateDependencyProvider()
+            => throw new NotImplementedException();
+
         public void Dispose()
-            => throw new NotImplementedException();
-
-        public object Resolve(Type type)
-            => throw new NotImplementedException();
-
-        public IEnumerable<object> ResolveAll(Type type)
-            => throw new NotImplementedException();
-
-        public IDependencyContainer CreateChildContainer()
             => throw new NotImplementedException();
     }
 }

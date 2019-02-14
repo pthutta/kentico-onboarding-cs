@@ -4,7 +4,6 @@ using NSubstitute;
 using NUnit.Framework;
 using TodoApp.ApiServices.Services;
 using TodoApp.Contracts.Routes;
-using TodoApp.Contracts.Services;
 
 namespace TodoApp.ApiServices.Tests.Services
 {
@@ -36,9 +35,9 @@ namespace TodoApp.ApiServices.Tests.Services
                 .Link(routeName, Arg.Is<object>(value => CompareIds(value, id)))
                 .Returns(expectedUrl.ToString());
 
-            var resultUrl = _urlService.GetItemUrl(id);
+            var actualUrl = _urlService.GetItemUrl(id);
 
-            Assert.That(resultUrl, Is.EqualTo(expectedUrl));
+            Assert.That(actualUrl, Is.EqualTo(expectedUrl));
         }
 
         private static bool CompareIds(object value, Guid id)

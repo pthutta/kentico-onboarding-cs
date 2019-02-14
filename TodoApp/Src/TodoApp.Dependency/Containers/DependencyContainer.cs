@@ -1,67 +1,40 @@
 ﻿using System;
-using System.Collections.Generic;
-using TodoApp.Contracts.Bootstraps;
 using TodoApp.Contracts.Containers;
-using TodoApp.Contracts.Exceptions;
+using TodoApp.Dependency.Extensions;
 using Unity;
-using Unity.Exceptions;
 using Unity.Injection;
-using Unity.Lifetime;
 
 namespace TodoApp.Dependency.Containers
 {
-    internal class DependencyContainer : IDependencyContainer
+    internal sealed class DependencyContainer : IDependencyContainer
     {
-        protected IUnityContainer Container;
+        private readonly IUnityContainer _container;
 
         public DependencyContainer(IUnityContainer container)
-            => Container = container;
+            => _container = container;
 
-        public IDependencyContainer RegisterBootstrapper<TBootstrap>()
-            where TBootstrap : IBootstrap, new()
-            => new TBootstrap().RegisterTypes(this);
-
-        public IDependencyContainer RegisterType<TFrom, TTo>() 
+        public IDependencyContainer RegisterType<TFrom, TTo>(Lifecycle lifecycle) 
             where TTo : TFrom
         {
-            Container.RegisterType<TFrom, TTo>(new HierarchicalLifetimeManager());
+            _container.RegisterType<TFrom, TTo>(lifecycle.GetLifetimeManager());
 
             return this;
         }
 
-        public IDependencyContainer RegisterType<TTo>(Func<TTo> instanceFactory)
+        public IDependencyContainer RegisterType<TTo>(Func<TTo> instanceFactory, Lifecycle lifecycle)
         {
-            Container.RegisterType<TTo>(
-                new HierarchicalLifetimeManager(),
+            _container.RegisterType<TTo>(
+                lifecycle.GetLifetimeManager(),
                 new InjectionFactory(_ => instanceFactory())
             );
 
             return this;
         }
 
-        public object Resolve(Type type)
-            => ResolveType(() => Container.Resolve(type), type);
-
-        public IEnumerable<object> ResolveAll(Type type)
-            => ResolveType(() => Container.ResolveAll(type), type);
-
-        private static TResult ResolveType<TResult>(Func<TResult> resolve, Type type)
-            where TResult : class
-        {
-            try
-            {
-                return resolve();
-            }
-            catch (ResolutionFailedException ex)
-            {
-                throw new DependencyResolutionFailedException($"Failed resolution of {type.FullName}", ex);
-            }
-        }
-
-        public IDependencyContainer CreateChildContainer()
-            => new DependencyContainer(Container.CreateChildContainer());
+        public IDependencyProvider CreateDependencyProvider()
+            => new DependencyProvider(_container);
 
         public void Dispose()
-            => Container.Dispose();
+            => _container.Dispose();
     }
 }
