@@ -8,6 +8,6 @@ namespace TodoApp.Database
     public class DatabaseBootstrap : IBootstrap
     {
         public IDependencyContainer RegisterTypes(IDependencyContainer container)
-            => container.RegisterType<IItemRepository, ItemRepository>();
+            => container.RegisterType<IItemRepository, ItemRepository>(Lifecycle.SingletonPerApplication);
     }
 }

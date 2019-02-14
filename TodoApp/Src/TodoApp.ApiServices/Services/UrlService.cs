@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Web.Http.Routing;
 using TodoApp.Contracts.Routes;
-using TodoApp.Contracts.Services;
 
 namespace TodoApp.ApiServices.Services
 {

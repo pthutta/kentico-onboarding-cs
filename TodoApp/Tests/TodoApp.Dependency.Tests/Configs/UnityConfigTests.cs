@@ -18,7 +18,8 @@ namespace TodoApp.Dependency.Tests.Configs
         private static readonly Type[] ExcludedTypes = 
         {
             typeof(IBootstrap),
-            typeof(IDependencyContainer)
+            typeof(IDependencyContainer),
+            typeof(IDependencyProvider)
         };
 
         private static readonly Type[] IncludedTypes =
@@ -37,14 +38,15 @@ namespace TodoApp.Dependency.Tests.Configs
         public void RegisterDependencies_RegistersRequiredDependencies()
         {
             var contractTypes = typeof(IBootstrap).Assembly.GetTypes();
-            var types = contractTypes
+            var expectedTypes = contractTypes
                 .Where(IsNotExcludedAndInterface)
                 .Concat(IncludedTypes);
             var container = new TestContainer();
 
             _dependencyConfig.RegisterDependencies(container);
+            var actualTypes = container.GetRegisteredTypes();
 
-            Assert.That(container.GetRegisteredTypes(), Is.EquivalentTo(types));
+            Assert.That(actualTypes, Is.EquivalentTo(expectedTypes));
         }
 
         private static bool IsNotExcludedAndInterface(Type type)

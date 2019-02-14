@@ -4,15 +4,75 @@ init:
   # Good practise, because Windows line endings are different from Unix/Linux ones
   - cmd: git config --global core.autocrlf true
   
+install:
+  - choco install opencover.portable
+  # Install msbuild SonarQube runner
+  - choco install "msbuild-sonarqube-runner" -y
+
+environment:
+  sonar_token:
+    secure: fLD8hpSxlVv8JSjvHd9pFliP82D/awU0b07THR0C9YwmNx+yUqGXhaxT5ZgMam6T
+
 # Build settings, not to be confused with "before_build" and "after_build".
 # "project" is relative to the original build directory and not influenced by directory changes in "before_build".
-build:
-  verbosity: minimal
 
 # scripts to run before build
 before_build:
   - cmd: dotnet --version
   - cmd: cd ./TodoApp
   - cmd: nuget restore
+  - ps: New-Item -path "./Src/TodoApp.Api/" -Name "ConnectionStrings.config" -Value "<connectionStrings/>"
+  # Begin SonarScanner
+  - ps: | 
+        if ($env:APPVEYOR_PULL_REQUEST_NUMBER) {
+            SonarScanner.MSBuild.exe begin `
+            /k:"pthutta_kentico-onboarding-cs" `
+            /d:sonar.organization="pthutta-github" `
+            /d:sonar.host.url="https://sonarcloud.io" `
+            /d:sonar.login="$env:sonar_token" `
+            /v:"$env:APPVEYOR_BUILD_NUMBER" `
+            /d:sonar.cs.opencover.reportsPaths="opencover.xml" `
+            /d:sonar.pullrequest.branch="$env:APPVEYOR_PULL_REQUEST_HEAD_REPO_BRANCH" `
+            /d:sonar.pullrequest.key="$env:APPVEYOR_PULL_REQUEST_NUMBER" `
+            /d:sonar.pullrequest.base="$env:APPVEYOR_REPO_BRANCH" 
+        }
+        else {
+            SonarScanner.MSBuild.exe begin `
+            /k:"pthutta_kentico-onboarding-cs" `
+            /d:sonar.organization="pthutta-github" `
+            /d:sonar.host.url="https://sonarcloud.io" `
+            /d:sonar.login="$env:sonar_token" `
+            /v:"$env:APPVEYOR_BUILD_NUMBER" `
+            /d:sonar.cs.opencover.reportsPaths="opencover.xml" `
+            /d:sonar.branch.name="$env:APPVEYOR_REPO_BRANCH"
+        }
+  
+build:
+  publish_wap_xcopy: true
+  verbosity: minimal
 
-deploy: off
+test:
+  # assemblies to test
+  assemblies:
+    - '**\*.Tests.dll'
+
+after_test:
+  - ps: $TestAssemblies = Get-ChildItem -Attributes Directory bin -Recurse | %{ Get-ChildItem $_ -Recurse -Include *.Tests.dll }
+  - ps: |
+        OpenCover.Console.exe `
+            -register:user `
+            -target:"nunit3-console.exe" `
+            -targetargs:"$TestAssemblies" `
+            -output:".\opencover.xml"
+  # End SonarScanner
+  - ps: SonarScanner.MSBuild.exe end /d:sonar.login="$env:sonar_token"
+
+deploy:
+- provider: AzureAppServiceZipDeploy
+  appservice_environment: false
+  website: peterh-todoapp
+  username: $PeterH-TodoApp
+  password:
+    secure: ur9YWnZqdoZS2V2hdZx1vejps/8ZkTk3t89IFaw56R0szXMnYLx91RcGeKlP0Ixcp6B8Vft2hyQ6RZ2c/IxxBg==
+  on:
+    branch: feature/task-3
